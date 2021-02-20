@@ -1,5 +1,7 @@
 package com.algorithm.ninth;
 
+import com.basic.comon.dataStructure.ListNode;
+import com.basic.comon.util.GsonUtil;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -40,6 +42,46 @@ public class NinthDemo {
             right--;
         }
         return false;
+    }
+
+    /**
+     * railgun
+     * 2021/2/21 1:10
+     * PS:删除排序链表中的重复元素 II
+     */
+    @Test
+    public void test82() {
+        GsonUtil.objectSoutJson(deleteDuplicates(new ListNode(1, new ListNode(1, new ListNode(1, new ListNode(2, new ListNode(3)))))));
+    }
+
+    /**
+     * railgun
+     * 2021/2/21 1:12
+     * PS:熟悉链表操作
+     */
+    public ListNode deleteDuplicates(ListNode head) {
+        ListNode dummyHead = new ListNode(0);
+        dummyHead.next = head;
+        ListNode prev = dummyHead;
+        ListNode cur = prev.next;
+        while (cur != null) {
+            int curRepeatNum = 0;
+            ListNode difNode = cur;
+            // 找到和cur指向的结点值不同的结点
+            while (difNode != null && difNode.val == cur.val) {
+                curRepeatNum++;
+                difNode = difNode.next;
+            }
+            // 如果curRepeatNum的值大于1，则表示cur指向的结点重复出现了
+            if (curRepeatNum > 1) {
+                prev.next = difNode;
+            } else {
+                // cur指向的结点没有重复出现，则将变量prev指向cur所指向的结点
+                prev = cur;
+            }
+            cur = difNode;
+        }
+        return dummyHead.next;
     }
 
 }

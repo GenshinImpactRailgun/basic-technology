@@ -53,4 +53,49 @@ public class SeventhDemo {
         return new_head;
     }
 
+    /**
+     * railgun
+     * 2021/2/21 1:03
+     * PS:不同路径
+     */
+    @Test
+    public void test62() {
+        System.out.println(uniquePaths(3, 7));
+        System.out.println(uniquePaths2(3, 7));
+    }
+
+    /**
+     * railgun
+     * 2021/2/21 1:03
+     * PS:动态规划
+     */
+    public int uniquePaths(int m, int n) {
+        int[][] f = new int[m][n];
+        for (int i = 0; i < m; ++i) {
+            f[i][0] = 1;
+        }
+        for (int j = 0; j < n; ++j) {
+            f[0][j] = 1;
+        }
+        for (int i = 1; i < m; ++i) {
+            for (int j = 1; j < n; ++j) {
+                f[i][j] = f[i - 1][j] + f[i][j - 1];
+            }
+        }
+        return f[m - 1][n - 1];
+    }
+
+    /**
+     * railgun
+     * 2021/2/21 1:04
+     * PS:组合数学
+     */
+    public int uniquePaths2(int m, int n) {
+        long ans = 1;
+        for (int x = n, y = 1; y < m; ++x, ++y) {
+            ans = ans * x / y;
+        }
+        return (int) ans;
+    }
+
 }
