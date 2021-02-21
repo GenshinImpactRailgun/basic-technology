@@ -84,4 +84,51 @@ public class NinthDemo {
         return dummyHead.next;
     }
 
+    /**
+     * railgun
+     * 2021/2/21 23:25
+     * PS:
+     */
+    @Test
+    public void test83() {
+        ListNode l = new ListNode(1, new ListNode(1, new ListNode(2, new ListNode(3, new ListNode(3)))));
+        GsonUtil.objectSoutJson(deleteDuplicates83(l));
+        ListNode l2 = new ListNode(1, new ListNode(1, new ListNode(2, new ListNode(3, new ListNode(3)))));
+        GsonUtil.objectSoutJson(deleteDuplicates832(l2));
+    }
+
+    /**
+     * railgun
+     * 2021/2/21 23:37
+     * PS:哑结点
+     */
+    private ListNode deleteDuplicates83(ListNode l) {
+        ListNode result = new ListNode(Integer.MAX_VALUE), target = result;
+        while (null != l) {
+            if (target.val != l.val) {
+                target.next = new ListNode(l.val);
+                target = target.next;
+            }
+            l = l.next;
+        }
+        return result.next;
+    }
+
+    /**
+     * railgun
+     * 2021/2/21 23:37
+     * PS:直接操作链表对象【速度比哑结点方法快】
+     */
+    private ListNode deleteDuplicates832(ListNode l) {
+        ListNode result = l;
+        while (null != l && null != l.next) {
+            if (l.val == l.next.val) {
+                l.next = l.next.next;
+            } else {
+                l = l.next;
+            }
+        }
+        return result;
+    }
+
 }

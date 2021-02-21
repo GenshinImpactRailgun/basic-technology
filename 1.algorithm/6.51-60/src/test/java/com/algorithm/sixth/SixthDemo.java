@@ -186,4 +186,88 @@ public class SixthDemo {
         }
     }
 
+    /**
+     * railgun
+     * 2021/2/21 22:15
+     * PS:最大子序和
+     */
+    @Test
+    public void test53() {
+        int[] nums = new int[]{-2, 1, -3, 4, -1, 2, 1, -5, 4};
+        System.out.println(maxSubArray(nums));
+        System.out.println(maxSubArray2(nums));
+        System.out.println(maxSubArray3(nums));
+    }
+
+    /**
+     * railgun
+     * 2021/2/21 22:23
+     * PS:暴力解法
+     */
+    private int maxSubArray(int[] nums) {
+        int result = Integer.MIN_VALUE;
+        for (int i = 0; i < nums.length; i++) {
+            int temp = nums[i];
+            result = Math.max(result, temp);
+            for (int j = i + 1; j < nums.length; j++) {
+                temp += nums[j];
+                result = Math.max(result, temp);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * railgun
+     * 2021/2/21 22:38
+     * PS:动态规划
+     */
+    public int maxSubArray2(int[] nums) {
+        int result = nums[0], temp = 0;
+        for (int num : nums) {
+            temp = Math.max(temp + num, num);
+            result = Math.max(result, temp);
+        }
+        return result;
+    }
+
+    /**
+     * railgun
+     * 2021/2/21 22:56
+     * PS:分治
+     * 类似于【线段树求解最长公共上升子序列问题】的 pushUp 操作
+     */
+    public int maxSubArray3(int[] nums) {
+        return getInfo(nums, 0, nums.length - 1).mSum;
+    }
+
+    public class Status {
+        public int lSum, rSum, mSum, iSum;
+
+        public Status(int lSum, int rSum, int mSum, int iSum) {
+            this.lSum = lSum;
+            this.rSum = rSum;
+            this.mSum = mSum;
+            this.iSum = iSum;
+        }
+    }
+
+    public Status getInfo(int[] a, int l, int r) {
+        if (l == r) {
+            return new Status(a[l], a[l], a[l], a[l]);
+        }
+        int m = (l + r) >> 1;
+        Status lSub = getInfo(a, l, m);
+        Status rSub = getInfo(a, m + 1, r);
+        return pushUp(lSub, rSub);
+    }
+
+    public Status pushUp(Status l, Status r) {
+        int iSum = l.iSum + r.iSum;
+        int lSum = Math.max(l.lSum, l.iSum + r.lSum);
+        int rSum = Math.max(r.rSum, r.iSum + l.rSum);
+        int mSum = Math.max(Math.max(l.mSum, r.mSum), l.rSum + r.lSum);
+        return new Status(lSum, rSum, mSum, iSum);
+    }
+
 }

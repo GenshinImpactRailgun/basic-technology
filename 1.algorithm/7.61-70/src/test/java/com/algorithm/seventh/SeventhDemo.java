@@ -98,4 +98,38 @@ public class SeventhDemo {
         return (int) ans;
     }
 
+    /**
+     * railgun
+     * 2021/2/21 22:58
+     * PS:不同路径 Ⅱ
+     */
+    @Test
+    public void test63() {
+        int[][] obstacleGrid = new int[][]{{0, 0, 0}, {0, 1, 0}, {0, 0, 0}};
+        System.out.println(uniquePathsWithObstacles(obstacleGrid));
+    }
+
+    /**
+     * railgun
+     * 2021/2/21 23:04
+     * PS:动态规划
+     */
+    private int uniquePathsWithObstacles(int[][] obstacleGrid) {
+        int m = obstacleGrid[0].length;
+        int[] f = new int[m];
+        f[0] = obstacleGrid[0][0] == 0 ? 1 : 0;
+        for (int[] ints : obstacleGrid) {
+            for (int j = 0; j < m; ++j) {
+                if (ints[j] == 1) {
+                    f[j] = 0;
+                    continue;
+                }
+                if (j - 1 >= 0 && ints[j - 1] == 0) {
+                    f[j] += f[j - 1];
+                }
+            }
+        }
+        return f[m - 1];
+    }
+
 }

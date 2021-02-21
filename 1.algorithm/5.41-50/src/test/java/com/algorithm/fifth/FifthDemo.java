@@ -185,4 +185,126 @@ public class FifthDemo {
         return ans;
     }
 
+    /**
+     * railgun
+     * 2021/2/21 15:28
+     * PS:字符串相乘
+     */
+    @Test
+    public void test43() {
+        String s1 = "123456789";
+        String s2 = "987654321";
+        System.out.println(multiply(s1, s2));
+        System.out.println(multiply2(s1, s2));
+        System.out.println(multiply3(s1, s2));
+    }
+
+    /**
+     * railgun
+     * 2021/2/21 19:26
+     * PS:做加法
+     */
+    public String multiply(String num1, String num2) {
+        if (num1.equals("0") || num2.equals("0")) {
+            return "0";
+        }
+        String ans = "0";
+        int m = num1.length(), n = num2.length();
+        for (int i = n - 1; i >= 0; i--) {
+            StringBuffer curr = new StringBuffer();
+            int add = 0;
+            for (int j = n - 1; j > i; j--) {
+                curr.append(0);
+            }
+            int y = num2.charAt(i) - '0';
+            for (int j = m - 1; j >= 0; j--) {
+                int x = num1.charAt(j) - '0';
+                int product = x * y + add;
+                curr.append(product % 10);
+                add = product / 10;
+            }
+            if (add != 0) {
+                curr.append(add % 10);
+            }
+            ans = addStrings(ans, curr.reverse().toString());
+        }
+        return ans;
+    }
+
+    public String addStrings(String num1, String num2) {
+        int i = num1.length() - 1, j = num2.length() - 1, add = 0;
+        StringBuffer ans = new StringBuffer();
+        while (i >= 0 || j >= 0 || add != 0) {
+            int x = i >= 0 ? num1.charAt(i) - '0' : 0;
+            int y = j >= 0 ? num2.charAt(j) - '0' : 0;
+            int result = x + y + add;
+            ans.append(result % 10);
+            add = result / 10;
+            i--;
+            j--;
+        }
+        ans.reverse();
+        return ans.toString();
+    }
+
+    /**
+     * railgun
+     * 2021/2/21 19:28
+     * PS:做乘法
+     */
+    public String multiply2(String num1, String num2) {
+        if (num1.equals("0") || num2.equals("0")) {
+            return "0";
+        }
+        int m = num1.length(), n = num2.length();
+        int[] ansArr = new int[m + n];
+        for (int i = m - 1; i >= 0; i--) {
+            int x = num1.charAt(i) - '0';
+            for (int j = n - 1; j >= 0; j--) {
+                int y = num2.charAt(j) - '0';
+                ansArr[i + j + 1] += x * y;
+            }
+        }
+        for (int i = m + n - 1; i > 0; i--) {
+            ansArr[i - 1] += ansArr[i] / 10;
+            ansArr[i] %= 10;
+        }
+        int index = ansArr[0] == 0 ? 1 : 0;
+        StringBuffer ans = new StringBuffer();
+        while (index < m + n) {
+            ans.append(ansArr[index]);
+            index++;
+        }
+        return ans.toString();
+    }
+
+    /**
+     * railgun
+     * 2021/2/21 19:28
+     * PS:快速傅里叶变换
+     */
+    public String multiply3(String num1, String num2) {
+        if (num1.equals("0") || num2.equals("0")) {
+            return "0";
+        }
+        //类比，三位数*三位数最多6位，最少5位
+        int prod[] = new int[num1.length() + num2.length() - 1];
+        for (int i = 0; i < num1.length() + num2.length() - 1; i++) {
+            for (int j = Math.max(0, i + 1 - num1.length()); j <= Math.min(i, num2.length() - 1); j++) {
+                prod[i] += (num1.charAt(i - j) - '0') * (num2.charAt(j) - '0');
+            }
+        }
+        StringBuilder ans = new StringBuilder();
+        int jinwei = 0;
+        for (int i = num1.length() + num2.length() - 2; i >= 0; i--) {
+            int sum = jinwei + prod[i];
+            ans.append(sum % 10);
+            jinwei = sum / 10;
+        }
+        if (jinwei > 0) {
+            ans.append(jinwei);
+        }
+        return ans.reverse().toString();
+    }
+
 }

@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.PriorityQueue;
 
 /**
  * @Author: railgun
@@ -155,7 +156,7 @@ public class ThirdDemo {
      * 2021/2/21 0:06
      * PS:按括号序列的长度递归
      */
-    private List<String> generateParenthesis3(int n){
+    private List<String> generateParenthesis3(int n) {
         return generate(n);
     }
 
@@ -170,8 +171,8 @@ public class ThirdDemo {
             ans.add("");
         } else {
             for (int c = 0; c < n; ++c) {
-                for (String left: generate(c)) {
-                    for (String right: generate(n - 1 - c)) {
+                for (String left : generate(c)) {
+                    for (String right : generate(n - 1 - c)) {
                         ans.add("(" + left + ")" + right);
                     }
                 }
@@ -179,6 +180,186 @@ public class ThirdDemo {
         }
         cache[n] = ans;
         return ans;
+    }
+
+    /**
+     * railgun
+     * 2021/2/21 13:05
+     * PS:合并 k 个升序链表
+     */
+    @Test
+    public void test23() {
+        ListNode l1 = new ListNode(1, new ListNode(4, new ListNode(5)));
+        ListNode l2 = new ListNode(1, new ListNode(3, new ListNode(4)));
+        ListNode l3 = new ListNode(2, new ListNode(6));
+        GsonUtil.objectSoutJson(mergeKLists(l1, l2, l3));
+        ListNode l21 = new ListNode(1, new ListNode(4, new ListNode(5)));
+        ListNode l22 = new ListNode(1, new ListNode(3, new ListNode(4)));
+        ListNode l23 = new ListNode(2, new ListNode(6));
+        ListNode[] array2 = new ListNode[]{l21, l22, l23};
+        GsonUtil.objectSoutJson(mergeKLists2(array2));
+        ListNode l31 = new ListNode(1, new ListNode(4, new ListNode(5)));
+        ListNode l32 = new ListNode(1, new ListNode(3, new ListNode(4)));
+        ListNode l33 = new ListNode(2, new ListNode(6));
+        ListNode[] array3 = new ListNode[]{l31, l32, l33};
+        GsonUtil.objectSoutJson(mergeKLists3(array3));
+        ListNode l41 = new ListNode(1, new ListNode(4, new ListNode(5)));
+        ListNode l42 = new ListNode(1, new ListNode(3, new ListNode(4)));
+        ListNode l43 = new ListNode(2, new ListNode(6));
+        ListNode[] array4 = new ListNode[]{l41, l42, l43};
+        GsonUtil.objectSoutJson(mergeKLists4(array4));
+    }
+
+    /**
+     * railgun
+     * 2021/2/21 14:20
+     * PS:一次取一个值的想法，很差
+     */
+    private ListNode mergeKLists(ListNode... l) {
+        ListNode result = new ListNode(-1), target = result;
+        addNode(target, l);
+        return result.next;
+    }
+
+    private void addNode(ListNode target, ListNode... l) {
+        int n = -1, nodeVal = Integer.MAX_VALUE;
+        for (int i = 0; i < l.length; i++) {
+            if (null != l[i] && l[i].val < nodeVal) {
+                nodeVal = l[i].val;
+                n = i;
+            }
+        }
+        if (n >= 0) {
+            target.next = new ListNode(l[n].val);
+            target = target.next;
+            l[n] = l[n].next;
+            boolean arrayEmpty = true;
+            for (ListNode listNode : l) {
+                if (null != listNode) {
+                    arrayEmpty = false;
+                }
+            }
+            if (!arrayEmpty) {
+                addNode(target, l);
+            }
+        }
+    }
+
+    /**
+     * railgun
+     * 2021/2/21 14:22
+     * PS:顺序合并
+     */
+    private ListNode mergeKLists2(ListNode[] list) {
+        ListNode result = null;
+        for (int i = 0; i < list.length; i++) {
+            result = mergeTwoLists32(result, list[i]);
+        }
+        return result;
+    }
+
+    private ListNode mergeTwoLists32(ListNode l1, ListNode l2) {
+        ListNode result = new ListNode(-1), target = result;
+        while (null != l1 || null != l2) {
+            if (null == l1) {
+                target.next = l2;
+                break;
+            }
+            if (null == l2) {
+                target.next = l1;
+                break;
+            }
+            if (l1.val < l2.val) {
+                target.next = new ListNode(l1.val);
+                l1 = l1.next;
+            } else {
+                target.next = new ListNode(l2.val);
+                l2 = l2.next;
+            }
+            target = target.next;
+        }
+        return result.next;
+    }
+
+    /**
+     * railgun
+     * 2021/2/21 14:54
+     * PS:分治合并
+     */
+    public ListNode mergeKLists3(ListNode[] lists) {
+        return merge(lists, 0, lists.length - 1);
+    }
+
+    public ListNode merge(ListNode[] lists, int l, int r) {
+        if (l == r) {
+            return lists[l];
+        }
+        if (l > r) {
+            return null;
+        }
+        int mid = (l + r) >> 1;
+        return mergeTwoLists3(merge(lists, l, mid), merge(lists, mid + 1, r));
+    }
+
+    public ListNode mergeTwoLists3(ListNode a, ListNode b) {
+        if (a == null || b == null) {
+            return a != null ? a : b;
+        }
+        ListNode head = new ListNode(0);
+        ListNode tail = head, aPtr = a, bPtr = b;
+        while (aPtr != null && bPtr != null) {
+            if (aPtr.val < bPtr.val) {
+                tail.next = aPtr;
+                aPtr = aPtr.next;
+            } else {
+                tail.next = bPtr;
+                bPtr = bPtr.next;
+            }
+            tail = tail.next;
+        }
+        tail.next = (aPtr != null ? aPtr : bPtr);
+        return head.next;
+    }
+
+    /**
+     * railgun
+     * 2021/2/21 15:03
+     * PS:使用优先队列合并
+     */
+    private ListNode mergeKLists4(ListNode[] lists) {
+        for (ListNode node : lists) {
+            if (node != null) {
+                queue.offer(new Status(node.val, node));
+            }
+        }
+        ListNode head = new ListNode(0);
+        ListNode tail = head;
+        while (!queue.isEmpty()) {
+            Status f = queue.poll();
+            tail.next = f.ptr;
+            tail = tail.next;
+            if (f.ptr.next != null) {
+                queue.offer(new Status(f.ptr.next.val, f.ptr.next));
+            }
+        }
+        return head.next;
+    }
+
+    PriorityQueue<Status> queue = new PriorityQueue<>();
+
+    class Status implements Comparable<Status> {
+        int val;
+        ListNode ptr;
+
+        Status(int val, ListNode ptr) {
+            this.val = val;
+            this.ptr = ptr;
+        }
+
+        @Override
+        public int compareTo(Status status2) {
+            return this.val - status2.val;
+        }
     }
 
 }

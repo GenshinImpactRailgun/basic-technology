@@ -5,7 +5,9 @@ import com.basic.comon.util.GsonUtil;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @Author: railgun
@@ -99,6 +101,38 @@ public class FirstDemo {
             target.next = new ListNode(carry);
         }
         return result.next;
+    }
+
+    /**
+     * railgun
+     * 2021/2/21 10:24
+     * PS:无重复的最长子串
+     */
+    @Test
+    public void test3() {
+        String s = "djfdkd";
+        System.out.println(lengthOfLongestSubstring(s));
+    }
+
+    /**
+     * railgun
+     * 2021/2/21 10:26
+     * PS:滑动窗口
+     */
+    private int lengthOfLongestSubstring(String s) {
+        int result = 0, r = 0;
+        Set<Character> set = new HashSet<>();
+        for (int i = 0; i < s.length(); i++) {
+            if (0 != i) {
+                set.remove(s.charAt(i - 1));
+            }
+            while (r < s.length() && !set.contains(s.charAt(r))) {
+                set.add(s.charAt(r));
+                r++;
+            }
+            result = Math.max(result, r - i);
+        }
+        return result;
     }
 
 }

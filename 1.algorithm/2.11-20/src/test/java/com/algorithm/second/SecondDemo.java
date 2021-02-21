@@ -82,4 +82,129 @@ public class SecondDemo {
         return result.toString();
     }
 
+    /**
+     * railgun
+     * 2021/2/21 11:27
+     * PS:罗马数字转整数
+     */
+    @Test
+    public void test13() {
+        String s = "MCMXCIV";
+        System.out.println(romanToInt(s));
+        System.out.println(romanToInt2(s));
+        System.out.println(romanToInt3(s));
+    }
+
+    /**
+     * railgun
+     * 2021/2/21 11:42
+     * PS:贪心算法
+     */
+    private int romanToInt(String s) {
+        StringBuilder sb = new StringBuilder(s);
+        int[] values = {1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1};
+        String[] symbols = {"M", "CM", "D", "CD", "C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
+        int result = 0;
+        for (int i = 0; i < symbols.length; i++) {
+            while (sb.length() > 0 && 0 == sb.indexOf(symbols[i])) {
+                result += values[i];
+                sb.delete(0, symbols[i].length());
+            }
+        }
+        return result;
+    }
+
+    /**
+     * railgun
+     * 2021/2/21 11:46
+     * PS:加减思想
+     */
+    private int romanToInt2(String s) {
+        int result = 0, pre = romanGetValue(s.charAt(0));
+        for (int i = 1; i < s.length(); i++) {
+            int n = romanGetValue(s.charAt(i));
+            if (pre < n) {
+                result -= pre;
+            } else {
+                result += pre;
+            }
+            pre = n;
+        }
+        result += pre;
+        return result;
+    }
+
+    private int romanGetValue(char c) {
+        switch (c) {
+            case 'I':
+                return 1;
+            case 'V':
+                return 5;
+            case 'X':
+                return 10;
+            case 'L':
+                return 50;
+            case 'C':
+                return 100;
+            case 'D':
+                return 500;
+            case 'M':
+                return 1000;
+            default:
+                return 0;
+        }
+    }
+
+    /**
+     * railgun
+     * 2021/2/21 13:00
+     * PS:替换字符串思想
+     */
+    private int romanToInt3(String s) {
+        s = s.replace("IV", "a");
+        s = s.replace("IX", "b");
+        s = s.replace("XL", "c");
+        s = s.replace("XC", "d");
+        s = s.replace("CD", "e");
+        s = s.replace("CM", "f");
+        int result = 0;
+        for (int i = 0; i < s.length(); i++) {
+            result += romanGetValue3(s.charAt(i));
+        }
+        return result;
+    }
+
+    private int romanGetValue3(char c) {
+        switch (c) {
+            case 'I':
+                return 1;
+            case 'V':
+                return 5;
+            case 'X':
+                return 10;
+            case 'L':
+                return 50;
+            case 'C':
+                return 100;
+            case 'D':
+                return 500;
+            case 'M':
+                return 1000;
+            case 'a':
+                return 4;
+            case 'b':
+                return 9;
+            case 'c':
+                return 40;
+            case 'd':
+                return 90;
+            case 'e':
+                return 400;
+            case 'f':
+                return 900;
+            default:
+                return 0;
+        }
+    }
+
 }
