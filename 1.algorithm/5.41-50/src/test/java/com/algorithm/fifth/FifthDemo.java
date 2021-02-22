@@ -307,4 +307,23 @@ public class FifthDemo {
         return ans.reverse().toString();
     }
 
+    /**
+     * railgun
+     * 2021/2/23 1:28
+     * PS:通配符匹配
+     */
+    @Test
+    public void test44() {
+
+    }
+
+    /**
+     * railgun
+     * 2021/2/23 1:30
+     * PS:动态规划
+     */
+    private boolean isMatch(String s, String p) {
+        return true;
+    }
+
 }

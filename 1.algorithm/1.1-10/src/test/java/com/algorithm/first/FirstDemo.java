@@ -135,4 +135,50 @@ public class FirstDemo {
         return result;
     }
 
+    /**
+     * railgun
+     * 2021/2/22 21:10
+     * PS:寻找两个正序数组的中位数
+     */
+    @Test
+    public void test4() {
+        int[] nums1 = new int[]{1, 2};
+        int[] nums2 = new int[]{3, 4};
+        System.out.println(findMedianSortedArrays(nums1, nums2));
+    }
+
+    /**
+     * railgun
+     * 2021/2/22 21:26
+     * PS:二分查找
+     */
+    public double findMedianSortedArrays(int[] nums1, int[] nums2) {
+        int m = nums1.length;
+        int n = nums2.length;
+        int left = (m + n + 1) / 2;
+        int right = (m + n + 2) / 2;
+        return (findKth(nums1, 0, nums2, 0, left) + findKth(nums1, 0, nums2, 0, right)) / 2.0;
+    }
+
+    public int findKth(int[] nums1, int i, int[] nums2, int j, int k) {
+        int m = nums1.length;
+        int n = nums2.length;
+        if (i >= m) {
+            return nums2[j + k - 1];
+        }
+        if (j >= n) {
+            return nums1[i + k - 1];
+        }
+        if (1 == k) {
+            return Math.min(nums1[i], nums2[j]);
+        }
+        int midVal1 = (i + k / 2 - 1 < m) ? nums1[i + k / 2 - 1] : Integer.MAX_VALUE;
+        int midVal2 = (j + k / 2 - 1 < n) ? nums2[j + k / 2 - 1] : Integer.MAX_VALUE;
+        if (midVal1 < midVal2) {
+            return findKth(nums1, i + k / 2, nums2, j, k - k / 2);
+        } else {
+            return findKth(nums1, i, nums2, j + k / 2, k - k / 2);
+        }
+    }
+
 }

@@ -362,4 +362,54 @@ public class ThirdDemo {
         }
     }
 
+    /**
+     * railgun
+     * 2021/2/22 22:07
+     * PS:两两交换链表中的节点
+     */
+    @Test
+    public void test24() {
+        ListNode l = new ListNode(1, new ListNode(2, new ListNode(3, new ListNode(4))));
+        GsonUtil.objectSoutJson(swapPairs(l));
+        GsonUtil.objectSoutJson(swapPairs2(l));
+    }
+
+    /**
+     * railgun
+     * 2021/2/22 22:20
+     * PS:判断是否有两个连续的节点提供交换的条件
+     * 迭代
+     */
+    private ListNode swapPairs(ListNode l) {
+        ListNode result = new ListNode(Integer.MAX_VALUE), target = result;
+        while (null != l) {
+            if (null == l.next) {
+                target.next = new ListNode(l.val);
+                break;
+            } else {
+                target.next = new ListNode(l.next.val);
+                target = target.next;
+                target.next = new ListNode(l.val);
+                target = target.next;
+                l = l.next.next;
+            }
+        }
+        return result.next;
+    }
+
+    /**
+     * railgun
+     * 2021/2/22 22:21
+     * PS:递归
+     */
+    private ListNode swapPairs2(ListNode l) {
+        if (null == l || null == l.next) {
+            return l;
+        }
+        ListNode newL = l.next;
+        l.next = swapPairs2(newL.next);
+        newL.next = l;
+        return newL;
+    }
+
 }
