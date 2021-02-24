@@ -195,4 +195,47 @@ public class EighthDemo {
         }
     }
 
+    /**
+     * railgun
+     * 2021/2/25 0:38
+     * PS:搜索二维矩阵
+     */
+    @Test
+    public void test74() {
+        int[][] nums = new int[][]{{1, 2, 3}, {4, 5, 6}};
+        int target = 2;
+        System.out.println(searchMatrix(nums, target));
+    }
+
+    private boolean searchMatrix(int[][] nums, int target) {
+        if (null == nums || 0 == nums.length || 0 == nums[0].length) {
+            return false;
+        }
+        int n = nums.length, m = nums[0].length;
+        return true;
+    }
+
+    @Test
+    public void djkjdjkfd() {
+        int[] nums = new int[]{2, 4, 6, 8, 10, 12, 14, 16, 18};
+        int target = 8, result = -1, left = 0, right = nums.length, count = 0;
+        while (left <= right) {
+            count++;
+            int index = left + ((right - left) >> 1);
+            System.out.println("count: " + count + " index: " + index);
+            if (nums[index] == target) {
+                result = index;
+                break;
+            }
+            if (nums[index] > target) {
+                right = index - 1;
+            }
+            if (nums[index] < target) {
+                left = index + 1;
+            }
+        }
+        System.out.println(result);
+        System.out.println(count);
+    }
+
 }

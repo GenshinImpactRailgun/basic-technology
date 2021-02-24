@@ -132,4 +132,41 @@ public class SeventhDemo {
         return f[m - 1];
     }
 
+    /**
+     * railgun
+     * 2021/2/24 23:54
+     * PS:最小路径和
+     */
+    @Test
+    public void test64() {
+        int[][] nums = new int[][]{{1, 2, 3}, {4, 5, 6}};
+        System.out.println(minPathSum(nums));
+    }
+
+    /**
+     * railgun
+     * 2021/2/25 0:22
+     * PS:动态规划
+     */
+    private int minPathSum(int[][] nums) {
+        if (null == nums || 0 == nums.length || 0 == nums[0].length) {
+            return 0;
+        }
+        int n = nums.length, m = nums[0].length;
+        int[][] result = new int[n][m];
+        result[0][0] = nums[0][0];
+        for (int i = 1; i < n; i++) {
+            result[i][0] = nums[i][0] + result[i - 1][0];
+        }
+        for (int i = 1; i < m; i++) {
+            result[0][i] = nums[0][i] + result[0][i - 1];
+        }
+        for (int i = 1; i < n; i++) {
+            for (int j = 1; j < m; j++) {
+                result[i][j] = nums[i][j] + Math.min(result[i - 1][j], result[i][j - 1]);
+            }
+        }
+        return result[n - 1][m - 1];
+    }
+
 }

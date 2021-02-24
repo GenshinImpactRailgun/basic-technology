@@ -270,4 +270,79 @@ public class SixthDemo {
         return new Status(lSum, rSum, mSum, iSum);
     }
 
+    /**
+     * railgun
+     * 2021/2/23 23:26
+     * PS:螺旋矩阵
+     */
+    @Test
+    public void test54() {
+        int[][] nums = new int[][]{{7}, {9}, {6}};
+        GsonUtil.objectSoutJson(spiralOrder(nums));
+    }
+
+    /**
+     * railgun
+     * 2021/2/24 23:36
+     * PS:按层模拟
+     */
+    private List<Integer> spiralOrder(int[][] nums) {
+        List<Integer> result = new ArrayList<>();
+        if (null == nums || nums.length == 0 || nums[0].length == 0) {
+            return result;
+        }
+        int top = 0, bottom = nums.length - 1, left = 0, right = nums[0].length - 1;
+        while (left <= right && top <= bottom) {
+            for (int i = left; i <= right; i++) {
+                result.add(nums[top][i]);
+            }
+            for (int i = top + 1; i <= bottom; i++) {
+                result.add(nums[i][right]);
+            }
+            if (left < right && top < bottom) {
+                for (int i = right - 1; i >= left; i--) {
+                    result.add(nums[bottom][i]);
+                }
+                for (int i = bottom - 1; i >= top + 1; i--) {
+                    result.add(nums[i][left]);
+                }
+            }
+            top++;
+            bottom--;
+            left++;
+            right--;
+        }
+        return result;
+    }
+
+    /**
+     * railgun
+     * 2021/2/24 23:37
+     * PS:模拟
+     * 这个细节还挺多的
+     */
+    public List<Integer> spiralOrder2(int[][] matrix) {
+        List<Integer> order = new ArrayList<>();
+        if (matrix == null || matrix.length == 0 || matrix[0].length == 0) {
+            return order;
+        }
+        int rows = matrix.length, columns = matrix[0].length;
+        boolean[][] visited = new boolean[rows][columns];
+        int total = rows * columns;
+        int row = 0, column = 0;
+        int[][] directions = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
+        int directionIndex = 0;
+        for (int i = 0; i < total; i++) {
+            order.add(matrix[row][column]);
+            visited[row][column] = true;
+            int nextRow = row + directions[directionIndex][0], nextColumn = column + directions[directionIndex][1];
+            if (nextRow < 0 || nextRow >= rows || nextColumn < 0 || nextColumn >= columns || visited[nextRow][nextColumn]) {
+                directionIndex = (directionIndex + 1) % 4;
+            }
+            row += directions[directionIndex][0];
+            column += directions[directionIndex][1];
+        }
+        return order;
+    }
+
 }
