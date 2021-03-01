@@ -181,4 +181,76 @@ public class FirstDemo {
         }
     }
 
+    /**
+     * railgun
+     * 2021/2/25 23:17
+     * PS:找出最长回文字符串
+     */
+    @Test
+    public void test5() {
+        String s = "babad";
+        System.out.println(longestPalindrome(s));
+        System.out.println(longestPalindrome2(s));
+    }
+
+    /**
+     * railgun
+     * 2021/2/25 23:18
+     * PS:动态规划
+     */
+    private String longestPalindrome(String s) {
+        String result = "";
+        int n = s.length();
+        boolean[][] dp = new boolean[n][n];
+        for (int l = 0; l < n; l++) {
+            for (int i = 0; i + l < n; i++) {
+                int r = i + l;
+                if (0 == l) {
+                    dp[i][r] = true;
+                } else {
+                    boolean b = s.charAt(i) == s.charAt(r);
+                    if (1 == l) {
+                        dp[i][r] = b;
+                    } else {
+                        dp[i][r] = b && dp[i + 1][r - 1];
+                    }
+                }
+                if (dp[i][r] && l + 1 > result.length()) {
+                    result = s.substring(i, r + 1);
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
+     * railgun
+     * 2021/2/26 0:31
+     * PS:中心扩展算法
+     */
+    public String longestPalindrome2(String s) {
+        if (s == null || s.length() < 1) {
+            return "";
+        }
+        int start = 0, end = 0;
+        for (int i = 0; i < s.length(); i++) {
+            int len1 = expandAroundCenter(s, i, i);
+            int len2 = expandAroundCenter(s, i, i + 1);
+            int len = Math.max(len1, len2);
+            if (len > end - start) {
+                start = i - (len - 1) / 2;
+                end = i + len / 2;
+            }
+        }
+        return s.substring(start, end + 1);
+    }
+
+    public int expandAroundCenter(String s, int left, int right) {
+        while (left >= 0 && right < s.length() && s.charAt(left) == s.charAt(right)) {
+            --left;
+            ++right;
+        }
+        return right - left - 1;
+    }
+
 }

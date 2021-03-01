@@ -345,4 +345,28 @@ public class SixthDemo {
         return order;
     }
 
+    /**
+     * railgun
+     * 2021/3/1 21:24
+     * PS:跳跃游戏
+     */
+    @Test
+    public void test55() {
+        int[] nums = new int[]{0};
+        System.out.println(canJump(nums));
+    }
+
+    public boolean canJump(int[] nums) {
+        int n = nums.length, end = 0;
+        for (int i = 0; i < n; i++) {
+            if (i <= end) {
+                end = Math.max(end, i + nums[i]);
+                if (end >= n - 1) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
 }

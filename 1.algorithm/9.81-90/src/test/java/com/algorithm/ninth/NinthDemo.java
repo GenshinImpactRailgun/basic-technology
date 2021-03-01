@@ -4,6 +4,9 @@ import com.basic.comon.dataStructure.ListNode;
 import com.basic.comon.util.GsonUtil;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
+
 /**
  * @Author: railgun
  * 2021/2/18 22:23
@@ -129,6 +132,150 @@ public class NinthDemo {
             }
         }
         return result;
+    }
+
+    /**
+     * railgun
+     * 2021/2/25 1:19
+     * PS:柱状图中最大的矩形
+     */
+    @Test
+    public void test84() {
+        int[] nums = new int[]{2, 1, 5, 6, 2, 3};
+        System.out.println(largestRectangleArea(nums));
+        System.out.println(largestRectangleArea2(nums));
+        System.out.println(largestRectangleArea3(nums));
+        System.out.println(largestRectangleArea4(nums));
+    }
+
+    /**
+     * railgun
+     * 2021/2/25 20:10
+     * PS:暴力方法，枚举宽，用双重 for 循环
+     */
+    private int largestRectangleArea(int[] nums) {
+        int result = 0;
+        int minHeight;
+        for (int i = 0; i < nums.length; i++) {
+            minHeight = nums[i];
+            for (int j = i; j < nums.length; j++) {
+                minHeight = Math.min(minHeight, nums[j]);
+                result = Math.max(result, minHeight * (j - i + 1));
+            }
+        }
+        return result;
+    }
+
+    /**
+     * railgun
+     * 2021/2/25 20:17
+     * PS:暴力方法，枚举高，然后用 while 去确定左右边界
+     */
+    private int largestRectangleArea2(int[] nums) {
+        int result = 0, n = nums.length, height;
+        for (int i = 0; i < n; i++) {
+            height = nums[i];
+            int left = i, right = i;
+            while (left - 1 >= 0 && nums[left - 1] >= height) {
+                left--;
+            }
+            while (right + 1 <= n - 1 && nums[right + 1] >= height) {
+                right++;
+            }
+            result = Math.max(height * (right - left + 1), result);
+        }
+        return result;
+    }
+
+    /**
+     * railgun
+     * 2021/2/25 21:16
+     * PS:栈的使用
+     */
+    public int largestRectangleArea3(int[] heights) {
+        int len = heights.length;
+        if (len == 0) {
+            return 0;
+        }
+        if (len == 1) {
+            return heights[0];
+        }
+
+        int area = 0;
+        Deque<Integer> stack = new ArrayDeque<>();
+        for (int i = 0; i < len; i++) {
+            while (!stack.isEmpty() && heights[stack.peekLast()] > heights[i]) {
+                int height = heights[stack.removeLast()];
+
+                while (!stack.isEmpty() && heights[stack.peekLast()] == height) {
+                    stack.removeLast();
+                }
+
+                int width;
+                if (stack.isEmpty()) {
+                    width = i;
+                } else {
+                    width = i - stack.peekLast() - 1;
+                }
+
+                area = Math.max(area, width * height);
+            }
+            stack.addLast(i);
+        }
+
+        while (!stack.isEmpty()) {
+            int height = heights[stack.removeLast()];
+
+            while (!stack.isEmpty() && heights[stack.peekLast()] == height) {
+                stack.removeLast();
+            }
+
+            int width;
+            if (stack.isEmpty()) {
+                width = len;
+            } else {
+                width = len - stack.peekLast() - 1;
+            }
+
+            area = Math.max(area, width * height);
+        }
+        return area;
+    }
+
+    /**
+     * railgun
+     * 2021/2/25 21:17
+     * PS:栈数据结构思想的优化应用
+     */
+    public int largestRectangleArea4(int[] heights) {
+        int len = heights.length;
+        if (len == 0) {
+            return 0;
+        }
+        if (len == 1) {
+            return heights[0];
+        }
+
+        int area = 0;
+        int[] newHeights = new int[len + 2];
+        for (int i = 0; i < len; i++) {
+            newHeights[i + 1] = heights[i];
+        }
+        len += 2;
+        heights = newHeights;
+
+        Deque<Integer> stack = new ArrayDeque<>();
+        stack.addLast(0);
+
+        for (int i = 1; i < len; i++) {
+            while (heights[stack.peekLast()] > heights[i]) {
+                int height = heights[stack.removeLast()];
+                int width = i - stack.peekLast() - 1;
+                area = Math.max(area, width * height);
+            }
+            stack.addLast(i);
+        }
+        return area;
     }
 
 }

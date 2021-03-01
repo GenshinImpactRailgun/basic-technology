@@ -403,4 +403,52 @@ public class FifthDemo {
         return u == v || v == '?';
     }
 
+    /**
+     * railgun
+     * 2021/2/26 1:20
+     * PS:跳跃游戏 Ⅱ
+     */
+    @Test
+    public void test45() {
+        int[] nums = new int[]{2, 3, 1, 1, 4};
+        System.out.println(jump(nums));
+        System.out.println(jump2(nums));
+    }
+
+    /**
+     * railgun
+     * 2021/2/28 12:58
+     * PS:贪心算法，从前往后找找到第一个满足的，然后再继续
+     */
+    private int jump(int[] nums) {
+        int n = nums.length, position = n - 1, step = 0;
+        while (position > 0) {
+            for (int i = 0; i < n - 1; i++) {
+                if (i + nums[i] >= position) {
+                    position = i;
+                    step++;
+                    break;
+                }
+            }
+        }
+        return step;
+    }
+
+    /**
+     * railgun
+     * 2021/3/1 20:57
+     * PS:
+     */
+    private int jump2(int[] nums) {
+        int n = nums.length, maxPosition = 0, end = 0, step = 0;
+        for (int i = 0; i < n - 1; i++) {
+            maxPosition = Math.max(maxPosition, i + nums[i]);
+            if (i == end) {
+                end = maxPosition;
+                step++;
+            }
+        }
+        return step;
+    }
+
 }

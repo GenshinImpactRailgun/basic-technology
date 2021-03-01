@@ -4,9 +4,7 @@ import com.basic.comon.dataStructure.ListNode;
 import com.basic.comon.util.GsonUtil;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.PriorityQueue;
+import java.util.*;
 
 /**
  * @Author: railgun
@@ -410,6 +408,64 @@ public class ThirdDemo {
         l.next = swapPairs2(newL.next);
         newL.next = l;
         return newL;
+    }
+
+    /**
+     * railgun
+     * 2021/2/26 1:17
+     * PS:K 个一组翻转链表
+     */
+    @Test
+    public void test25() {
+        ListNode head = new ListNode(1, new ListNode(2, new ListNode(3, new ListNode(4, new ListNode(5)))));
+        int k = 2;
+        GsonUtil.objectSoutJson(reverseKGroup(head, k));
+    }
+
+    /**
+     * railgun
+     * 2021/2/27 19:17
+     * PS:引入头部之前节点 hair ，用来更方便的解决问题
+     */
+    public ListNode reverseKGroup(ListNode head, int k) {
+        ListNode hair = new ListNode();
+        hair.next = head;
+        ListNode prev = hair;
+        while (head != null) {
+            ListNode tail = prev;
+            for (int i = 0; i < k; i++) {
+                tail = tail.next;
+                if (tail == null) {
+                    return hair.next;
+                }
+            }
+            ListNode next = tail.next;
+            ListNode[] listNodes = myReverse(head, tail);
+            ListNode newHead = listNodes[0];
+            ListNode newTail = listNodes[1];
+            newTail.next = next;
+            prev.next = newHead;
+            prev = newTail;
+            head = prev.next;
+        }
+        return hair.next;
+    }
+
+    /**
+     * railgun
+     * 2021/2/27 23:29
+     * PS:反转子链表
+     */
+    public ListNode[] myReverse(ListNode head, ListNode tail) {
+        ListNode prev = tail.next;
+        ListNode p = head;
+        while (prev != tail) {
+            ListNode next = p.next;
+            p.next = prev;
+            prev = p;
+            p = next;
+        }
+        return new ListNode[]{tail, head};
     }
 
 }

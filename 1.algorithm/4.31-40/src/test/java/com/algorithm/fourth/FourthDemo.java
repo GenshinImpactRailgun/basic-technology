@@ -287,4 +287,39 @@ public class FourthDemo {
         return ans;
     }
 
+    /**
+     * railgun
+     * 2021/2/26 1:19
+     * PS:搜索插入位置
+     */
+    @Test
+    public void test35() {
+        int[] nums = new int[]{1, 3, 4};
+        int target = 5;
+        System.out.println(searchInsert(nums, target));
+    }
+
+    /**
+     * railgun
+     * 2021/2/28 12:00
+     * PS:二分法
+     */
+    public int searchInsert(int[] nums, int target) {
+        int result = -1, n = nums.length, left = 0, right = n - 1;
+        while (left <= right) {
+            int index = (left + right) / 2;
+            if (target > nums[index]) {
+                left = index + 1;
+                result = index + 1;
+            } else if (target < nums[index]) {
+                right = index - 1;
+                result = index;
+            } else {
+                result = index;
+                break;
+            }
+        }
+        return result;
+    }
+
 }

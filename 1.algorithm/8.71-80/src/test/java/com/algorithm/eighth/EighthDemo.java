@@ -3,6 +3,7 @@ package com.algorithm.eighth;
 import com.basic.comon.util.GsonUtil;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
 import java.util.Stack;
 
 /**
@@ -207,35 +208,71 @@ public class EighthDemo {
         System.out.println(searchMatrix(nums, target));
     }
 
+    /**
+     * railgun
+     * 2021/2/25 20:02
+     * PS:分步骤的二分法
+     */
     private boolean searchMatrix(int[][] nums, int target) {
         if (null == nums || 0 == nums.length || 0 == nums[0].length) {
             return false;
         }
         int n = nums.length, m = nums[0].length;
-        return true;
-    }
-
-    @Test
-    public void djkjdjkfd() {
-        int[] nums = new int[]{2, 4, 6, 8, 10, 12, 14, 16, 18};
-        int target = 8, result = -1, left = 0, right = nums.length, count = 0;
-        while (left <= right) {
-            count++;
-            int index = left + ((right - left) >> 1);
-            System.out.println("count: " + count + " index: " + index);
-            if (nums[index] == target) {
-                result = index;
+        int row = -1, column = -1;
+        int top = 0, bottom = n - 1;
+        while (top <= bottom) {
+            int index = (top + bottom) >> 1;
+            if (nums[index][0] > target) {
+                if (0 == index) {
+                    break;
+                } else {
+                    row = (index - 1);
+                }
+                bottom = index - 1;
+            } else if (nums[index][0] < target) {
+                row = index;
+                top = index + 1;
+            } else {
+                row = index;
+                column = 0;
                 break;
             }
-            if (nums[index] > target) {
-                right = index - 1;
-            }
-            if (nums[index] < target) {
-                left = index + 1;
+        }
+        if (row >= 0) {
+            if (nums[row][m - 1] > target) {
+                int left = 1, right = m - 2;
+                while (left <= right) {
+                    int index = (left + right) >> 1;
+                    if (nums[row][index] > target) {
+                        right = index - 1;
+                    } else if (nums[row][index] < target) {
+                        left = index + 1;
+                    } else {
+                        column = index;
+                        break;
+                    }
+                }
+            } else if (nums[row][m - 1] == target) {
+                column = m - 1;
             }
         }
-        System.out.println(result);
-        System.out.println(count);
+        return row >= 0 && column >= 0;
+    }
+
+    /**
+     * railgun
+     * 2021/3/1 23:01
+     * PS:颜色分类
+     */
+    @Test
+    public void test75() {
+        int[] nums = new int[]{2, 0, 2, 1, 1, 0};
+        sortColors(nums);
+        GsonUtil.objectSoutJson(nums);
+    }
+
+    public void sortColors(int[] nums) {
+        Arrays.sort(nums);
     }
 
 }

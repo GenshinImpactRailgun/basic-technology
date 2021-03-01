@@ -1,10 +1,13 @@
 package com.algorithm.tenth;
 
 import com.basic.comon.dataStructure.ListNode;
+import com.basic.comon.dataStructure.TreeNode;
 import com.basic.comon.util.GsonUtil;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -234,6 +237,59 @@ public class TenthDemo {
                 break;
             }
         }
+    }
+
+    /**
+     * railgun
+     * 2021/2/25 1:20
+     * PS:二叉树的中序遍历
+     */
+    @Test
+    public void test94() {
+        TreeNode t = new TreeNode(1, new TreeNode(2, new TreeNode(4), new TreeNode(5)), new TreeNode(3, new TreeNode(6), null));
+        GsonUtil.objectSoutJson(inorderTraversal(t));
+        TreeNode t2 = new TreeNode(1, new TreeNode(2, new TreeNode(4), new TreeNode(5)), new TreeNode(3, new TreeNode(6), null));
+        GsonUtil.objectSoutJson(inorderTraversal2(t2));
+    }
+
+    /**
+     * railgun
+     * 2021/2/25 21:35
+     * PS:递归
+     */
+    public List<Integer> inorderTraversal(TreeNode root) {
+        List<Integer> result = new ArrayList<>();
+        inorder(root, result);
+        return result;
+    }
+
+    private void inorder(TreeNode treeNode, List<Integer> result) {
+        if (null == treeNode) {
+            return;
+        }
+        inorder(treeNode.left, result);
+        result.add(treeNode.val);
+        inorder(treeNode.right, result);
+    }
+
+    /**
+     * railgun
+     * 2021/2/25 22:07
+     * PS:栈
+     */
+    private List<Integer> inorderTraversal2(TreeNode root) {
+        List<Integer> result = new ArrayList<>();
+        Deque<TreeNode> deque = new LinkedList<>();
+        while (null != root || !deque.isEmpty()) {
+            while (null != root) {
+                deque.push(root);
+                root = root.left;
+            }
+            root = deque.pop();
+            result.add(root.val);
+            root = root.right;
+        }
+        return result;
     }
 
 }

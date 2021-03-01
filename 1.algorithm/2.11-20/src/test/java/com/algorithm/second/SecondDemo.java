@@ -1,6 +1,11 @@
 package com.algorithm.second;
 
+import com.basic.comon.util.GsonUtil;
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * @Author: railgun
@@ -266,6 +271,54 @@ public class SecondDemo {
             index++;
         }
         return str1.substring(0, index);
+    }
+
+    /**
+     * railgun
+     * 2021/2/26 1:01
+     * PS:三数之和
+     */
+    @Test
+    public void test15() {
+        int[] nums = new int[]{-1, 0, 1, 2, -1, -4};
+        GsonUtil.objectSoutJson(threeSum(nums));
+    }
+
+    /**
+     * railgun
+     * 2021/2/26 1:16
+     * PS:排序 + 双指针
+     */
+    private List<List<Integer>> threeSum(int[] nums) {
+        List<List<Integer>> result = new ArrayList<>();
+        Arrays.sort(nums);
+        int n = nums.length;
+        for (int first = 0; first < n - 2; first++) {
+            if (first > 0 && nums[first] == nums[first - 1]) {
+                continue;
+            }
+            int third = n - 1;
+            int target = -nums[first];
+            for (int second = first + 1; second < n - 1; second++) {
+                if (second > first + 1 && nums[second] == nums[second - 1]) {
+                    continue;
+                }
+                while (second < third && nums[second] + nums[third] > target) {
+                    third--;
+                }
+                if (second == third) {
+                    break;
+                }
+                if (nums[second] + nums[third] == target) {
+                    List<Integer> list = new ArrayList<>();
+                    list.add(nums[first]);
+                    list.add(nums[second]);
+                    list.add(nums[third]);
+                    result.add(list);
+                }
+            }
+        }
+        return result;
     }
 
 }
