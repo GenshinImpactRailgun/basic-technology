@@ -4,7 +4,9 @@ import com.basic.comon.dataStructure.ListNode;
 import com.basic.comon.util.GsonUtil;
 import org.junit.jupiter.api.Test;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.PriorityQueue;
 
 /**
  * @Author: railgun
@@ -466,6 +468,55 @@ public class ThirdDemo {
             p = next;
         }
         return new ListNode[]{tail, head};
+    }
+
+    /**
+     * railgun
+     * 2021/3/2 23:58
+     * PS:删除排序数组种的重复项
+     */
+    @Test
+    public void test26() {
+        int[] nums = new int[]{1, 1, 2, 2, 3, 3};
+        System.out.println(removeDuplicates(nums));
+        GsonUtil.objectSoutJson(nums);
+        int[] nums2 = new int[]{1, 1, 2, 2, 3, 3};
+        System.out.println(removeDuplicates2(nums2));
+        GsonUtil.objectSoutJson(nums2);
+    }
+
+    /**
+     * railgun
+     * 2021/3/3 0:13
+     * PS:单指针法
+     */
+    public int removeDuplicates(int[] nums) {
+        int n = nums.length, result = 0, p = 0;
+        for (int i = 0; i < n; i++) {
+            if (i == 0 || nums[i - 1] != nums[i]) {
+                result++;
+                nums[p] = nums[i];
+                p++;
+            }
+        }
+        return result;
+    }
+
+    /**
+     * railgun
+     * 2021/3/3 0:13
+     * PS:双指针法
+     */
+    public int removeDuplicates2(int[] nums) {
+        if (nums.length == 0) return 0;
+        int i = 0;
+        for (int j = 1; j < nums.length; j++) {
+            if (nums[j] != nums[i]) {
+                i++;
+                nums[i] = nums[j];
+            }
+        }
+        return i + 1;
     }
 
 }

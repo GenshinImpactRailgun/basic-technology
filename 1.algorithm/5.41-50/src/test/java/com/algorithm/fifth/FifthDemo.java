@@ -4,6 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Deque;
 import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @Author: railgun
@@ -449,6 +450,20 @@ public class FifthDemo {
             }
         }
         return step;
+    }
+
+    /**
+     * railgun
+     * 2021/3/3 0:21
+     * PS:全排列
+     */
+    @Test
+    public void test46() {
+
+    }
+
+    public List<List<Integer>> permute(int[] nums) {
+
     }
 
 }

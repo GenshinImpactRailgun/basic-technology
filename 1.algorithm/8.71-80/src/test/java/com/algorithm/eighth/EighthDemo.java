@@ -3,7 +3,6 @@ package com.algorithm.eighth;
 import com.basic.comon.util.GsonUtil;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
 import java.util.Stack;
 
 /**
@@ -269,10 +268,62 @@ public class EighthDemo {
         int[] nums = new int[]{2, 0, 2, 1, 1, 0};
         sortColors(nums);
         GsonUtil.objectSoutJson(nums);
+        int[] nums2 = new int[]{2, 0, 2, 1, 1, 0};
+        sortColors2(nums2);
+        GsonUtil.objectSoutJson(nums2);
     }
 
+    /**
+     * railgun
+     * 2021/3/2 21:04
+     * PS:单指针
+     */
     public void sortColors(int[] nums) {
-        Arrays.sort(nums);
+        int n = nums.length, p = 0;
+        for (int i = 0; i < n; i++) {
+            if (0 == nums[i]) {
+                int temp = nums[i];
+                nums[i] = nums[p];
+                nums[p] = temp;
+                p++;
+            }
+        }
+        for (int i = p; i < n; i++) {
+            if (1 == nums[i]) {
+                int temp = nums[i];
+                nums[i] = nums[p];
+                nums[p] = temp;
+                p++;
+            }
+        }
+    }
+
+    /**
+     * railgun
+     * 2021/3/2 21:04
+     * PS:双指针
+     */
+    public void sortColors2(int[] nums) {
+        int n = nums.length, p0 = 0, p1 = 0;
+        for (int i = 0; i < n; i++) {
+            if (nums[i] == 1) {
+                int temp = nums[i];
+                nums[i] = nums[p1];
+                nums[p1] = temp;
+                p1++;
+            } else if (nums[i] == 0) {
+                int temp = nums[i];
+                nums[i] = nums[p0];
+                nums[p0] = temp;
+                if (p0 < p1) {
+                    temp = nums[i];
+                    nums[i] = nums[p1];
+                    nums[p1] = temp;
+                }
+                p0++;
+                p1++;
+            }
+        }
     }
 
 }

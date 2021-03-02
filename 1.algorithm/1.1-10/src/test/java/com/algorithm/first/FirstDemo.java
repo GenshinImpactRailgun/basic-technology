@@ -253,4 +253,70 @@ public class FirstDemo {
         return right - left - 1;
     }
 
+    /**
+     * railgun
+     * 2021/3/2 22:30
+     * PS:Z字形变换
+     */
+    @Test
+    public void test6() {
+        String s = "PAYPALISHIRING";
+        int n = 3;
+        System.out.println(convert(s, n));
+    }
+
+    /**
+     * railgun
+     * 2021/3/2 23:21
+     * PS:按行排序
+     */
+    public String convert(String s, int n) {
+        StringBuilder[] array = new StringBuilder[n];
+        for (int i = 0; i < array.length; i++) {
+            array[i] = new StringBuilder();
+        }
+        int length = s.length();
+        int row = 0, add = 1;
+        for (int i = 0; i < length; i++) {
+            array[row].append(s.charAt(i));
+            if (add > 0) {
+                if (row + add > n - 1) {
+                    add = -1;
+                }
+            } else {
+                if (row + add < 0) {
+                    add = 1;
+                }
+            }
+            add = (n == 1) ? 0 : add;
+            row += add;
+        }
+        StringBuilder result = new StringBuilder();
+        for (int i = 0; i < array.length; i++) {
+            result.append(array[i]);
+        }
+        return result.toString();
+    }
+    
+    /**
+     * railgun
+     * 2021/3/2 23:21
+     * PS:按行访问
+     */
+    public String convert2(String s, int numRows) {
+        if (numRows == 1) return s;
+        StringBuilder ret = new StringBuilder();
+        int n = s.length();
+        int cycleLen = 2 * numRows - 2;
+
+        for (int i = 0; i < numRows; i++) {
+            for (int j = 0; j + i < n; j += cycleLen) {
+                ret.append(s.charAt(j + i));
+                if (i != 0 && i != numRows - 1 && j + cycleLen - i < n)
+                    ret.append(s.charAt(j + cycleLen - i));
+            }
+        }
+        return ret.toString();
+    }
+
 }
