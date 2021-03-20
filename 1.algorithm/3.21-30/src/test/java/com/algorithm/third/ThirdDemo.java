@@ -519,4 +519,46 @@ public class ThirdDemo {
         return i + 1;
     }
 
+    /**
+     * railgun
+     * 2021/3/19 0:36
+     * PS:移除元素
+     */
+    @Test
+    public void test27() {
+        int[] nums = new int[]{0, 1, 2, 2, 3, 0, 4, 2};
+        int val = 2;
+        System.out.println(removeElement(nums, val));
+        GsonUtil.objectSoutJson(nums);
+
+        int[] nums2 = new int[]{0, 1, 2, 2, 3, 0, 4, 2};
+        int val2 = 2;
+        System.out.println(removeElement2(nums2, val2));
+        GsonUtil.objectSoutJson(nums2);
+    }
+
+    public int removeElement(int[] nums, int val) {
+        int i = 0, n = nums.length;
+        for (int j = 0; j < n; j++) {
+            if (nums[j] != val) {
+                nums[i] = nums[j];
+                i++;
+            }
+        }
+        return i;
+    }
+
+    public int removeElement2(int[] nums, int val) {
+        int i = 0, n = nums.length;
+        while (i < n) {
+            if (nums[i] == val) {
+                nums[i] = nums[n - 1];
+                n--;
+            } else {
+                i++;
+            }
+        }
+        return n;
+    }
+
 }

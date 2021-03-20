@@ -1,10 +1,9 @@
 package com.algorithm.fifth;
 
+import com.basic.comon.util.GsonUtil;
 import org.junit.jupiter.api.Test;
 
-import java.util.Deque;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * @Author: railgun
@@ -459,11 +458,80 @@ public class FifthDemo {
      */
     @Test
     public void test46() {
-
+        int[] nums = new int[]{1, 2, 3};
+        GsonUtil.objectSoutJson(permute(nums));
     }
 
     public List<List<Integer>> permute(int[] nums) {
+        int n = nums.length;
+        List<List<Integer>> result = new ArrayList<>();
+        if (n == 0) {
+            return result;
+        }
+        boolean[] used = new boolean[n];
+        Deque<Integer> path = new ArrayDeque<>();
+        dfs(nums, n, 0, path, used, result);
+        return result;
+    }
 
+    private void dfs(int[] nums, int n, int depth, Deque<Integer> path, boolean[] used, List<List<Integer>> result) {
+        if (depth == n) {
+            result.add(new ArrayList<>(path));
+            return;
+        }
+        for (int i = 0; i < nums.length; i++) {
+            if (!used[i]) {
+                path.addLast(nums[i]);
+                used[i] = true;
+                dfs(nums, n, depth + 1, path, used, result);
+                path.removeLast();
+                used[i] = false;
+            }
+        }
+    }
+
+    /**
+     * railgun
+     * 2021/3/19 0:51
+     * PS:全排列
+     */
+    @Test
+    public void test47() {
+        int[] nums = new int[]{1, 1, 2};
+        GsonUtil.objectSoutJson(permuteUnique(nums));
+    }
+
+    /**
+     * railgun
+     * 2021/3/19 0:53
+     * PS:回溯
+     */
+    boolean[] vis;
+
+    public List<List<Integer>> permuteUnique(int[] nums) {
+        List<List<Integer>> ans = new ArrayList<List<Integer>>();
+        List<Integer> perm = new ArrayList<Integer>();
+        vis = new boolean[nums.length];
+        Arrays.sort(nums);
+        backtrack(nums, ans, 0, perm);
+        return ans;
+    }
+
+    public void backtrack(int[] nums, List<List<Integer>> ans, int idx, List<Integer> perm) {
+        if (idx == nums.length) {
+            ans.add(new ArrayList<Integer>(perm));
+            return;
+        }
+        for (int i = 0; i < nums.length; ++i) {
+            if (vis[i] || (i > 0 && nums[i] == nums[i - 1] && !vis[i - 1])) {
+                continue;
+            }
+            perm.add(nums[i]);
+            vis[i] = true;
+            backtrack(nums, ans, idx + 1, perm);
+            vis[i] = false;
+            perm.remove(idx);
+        }
     }
 
 }

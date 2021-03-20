@@ -291,14 +291,14 @@ public class TenthDemo {
         }
         return result;
     }
-    
+
     /**
      * railgun
      * 2021/3/2 22:15
      * PS:不同的二叉搜索树Ⅱ
      */
     @Test
-    public void test95(){
+    public void test95() {
         int n = 3;
         GsonUtil.objectSoutJson(generateTrees(n));
     }
@@ -336,6 +336,86 @@ public class TenthDemo {
             }
         }
         return allTrees;
+    }
+
+    /**
+     * railgun
+     * 2021/3/17 0:43
+     * PS:不同的二叉搜索树
+     */
+    @Test
+    public void test96() {
+        int n = 3;
+        System.out.println(numTrees(n));
+    }
+
+    /**
+     * railgun
+     * 2021/3/17 1:03
+     * PS:动态规划
+     */
+    public int numTrees(int n) {
+        int[] G = new int[n + 1];
+        G[0] = 1;
+        G[1] = 1;
+        for (int i = 2; i <= n; i++) {
+            for (int j = 1; j <= i; j++) {
+                G[i] += G[j - 1] * G[i - j];
+            }
+        }
+        return G[n];
+    }
+
+    /**
+     * railgun
+     * 2021/3/17 0:59
+     * PS:卡塔兰数
+     */
+    public int numTrees2(int n) {
+        long C = 1;
+        for (int i = 0; i < n; ++i) {
+            C = C * 2 * (2 * i + 1) / (i + 2);
+        }
+        return (int) C;
+    }
+    
+    /**
+     * railgun
+     * 2021/3/20 17:54
+     * PS:交错字符串
+     */
+    @Test
+    public void test97(){
+        String s1 = "aabcc", s2 = "dbbca", s3 = "aadbbcbcac";
+        System.out.println(isInterleave(s1, s2, s3));
+    }
+
+    /**
+     * railgun
+     * 2021/3/20 18:02
+     * PS:动态规划
+     */
+    public boolean isInterleave(String s1, String s2, String s3) {
+        int n = s1.length(), m = s2.length(), t = s3.length();
+
+        if (n + m != t) {
+            return false;
+        }
+        boolean[][] f = new boolean[n + 1][m + 1];
+        f[0][0] = true;
+        for (int i = 0; i <= n; ++i) {
+            for (int j = 0; j <= m; ++j) {
+                int p = i + j - 1;
+                if (i > 0) {
+                    f[i][j] = f[i][j] || (f[i - 1][j] && s1.charAt(i - 1) == s3.charAt(p));
+                }
+                if (j > 0) {
+                    f[i][j] = f[i][j] || (f[i][j - 1] && s2.charAt(j - 1) == s3.charAt(p));
+                }
+            }
+        }
+
+        return f[n][m];
     }
 
 }

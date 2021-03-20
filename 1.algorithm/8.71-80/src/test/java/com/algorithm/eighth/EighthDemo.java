@@ -3,7 +3,7 @@ package com.algorithm.eighth;
 import com.basic.comon.util.GsonUtil;
 import org.junit.jupiter.api.Test;
 
-import java.util.Stack;
+import java.util.*;
 
 /**
  * @Author: railgun
@@ -322,6 +322,81 @@ public class EighthDemo {
                 }
                 p0++;
                 p1++;
+            }
+        }
+    }
+
+    /**
+     * railgun
+     * 2021/3/9 23:43
+     * PS:最小覆盖子串
+     */
+    @Test
+    public void test76() {
+        String s = "ADOBECODEBANC", t = "ABC";
+        System.out.println(minWindow(s, t));
+    }
+
+    /**
+     * railgun
+     * 2021/3/9 23:45
+     * PS:移动窗口
+     */
+    public String minWindow(String s, String t) {
+        return "";
+    }
+
+    /**
+     * railgun
+     * 2021/3/19 21:29
+     * PS:
+     */
+    @Test
+    public void test77() {
+        int n = 4, k = 2;
+        GsonUtil.objectSoutJson(combine(n, k));
+        GsonUtil.objectSoutJson(combine2(n, k));
+    }
+
+    public List<List<Integer>> combine(int n, int k) {
+        List<List<Integer>> result = new ArrayList<>();
+        Deque<Integer> path = new ArrayDeque<>();
+        backtrack(result, n, k, 1, path);
+        return result;
+    }
+
+    private void backtrack(List<List<Integer>> result, int n, int k, int begin, Deque<Integer> path) {
+        if (path.size() == k) {
+            result.add(new ArrayList<>(path));
+        } else {
+            for (int i = begin; i <= n; i++) {
+                path.addLast(i);
+                backtrack(result, n, k, i + 1, path);
+                path.removeLast();
+            }
+        }
+    }
+
+    /**
+     * railgun
+     * 2021/3/20 9:17
+     * PS:剪枝思想
+     */
+    public List<List<Integer>> combine2(int n, int k) {
+        List<List<Integer>> result = new ArrayList<>();
+        Deque<Integer> path = new ArrayDeque<>();
+        backtrack2(result, n, k, 1, path);
+        return result;
+    }
+
+    private void backtrack2(List<List<Integer>> result, int n, int k, int begin, Deque<Integer> path) {
+        if (path.size() == k) {
+            result.add(new ArrayList<>(path));
+        } else {
+            for (int i = begin; i <= n - (k - path.size()) + 1; i++) {
+                path.addLast(i);
+                backtrack2(result, n, k, i + 1, path);
+                path.removeLast();
             }
         }
     }

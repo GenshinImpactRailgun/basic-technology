@@ -369,4 +369,87 @@ public class SixthDemo {
         return false;
     }
 
+    /**
+     * railgun
+     * 2021/3/9 22:07
+     * PS:合并区间
+     */
+    @Test
+    public void test56() {
+        int[][] intervals = new int[][]{{1, 3}, {2, 6}, {8, 10}, {15, 18}};
+        GsonUtil.objectSoutJson(merge(intervals));
+    }
+
+    /**
+     * railgun
+     * 2021/3/9 23:08
+     * PS:排序
+     */
+    public int[][] merge(int[][] intervals) {
+        int n = intervals.length;
+        if (n == 0) {
+            return new int[0][0];
+        }
+        Arrays.sort(intervals, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] interval1, int[] interval2) {
+                return interval1[0] - interval2[0];
+            }
+        });
+        List<int[]> merged = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            int l = intervals[i][0], r = intervals[i][1];
+            if (merged.size() == 0 || merged.get(merged.size() - 1)[1] < l) {
+                merged.add(new int[]{l, r});
+            } else {
+                merged.get(merged.size() - 1)[1] = Math.max(merged.get(merged.size() - 1)[1], r);
+            }
+        }
+        return merged.toArray(new int[merged.size()][]);
+    }
+
+    /**
+     * railgun
+     * 2021/3/19 1:22
+     * PS:插入区间
+     */
+    @Test
+    public void test57() {
+        int[][] intervals = new int[][]{{1, 5}};
+        int[] newInterval = new int[]{2, 7};
+        GsonUtil.objectSoutJson(insert(intervals, newInterval));
+    }
+
+    public int[][] insert(int[][] intervals, int[] newInterval) {
+        int left = newInterval[0];
+        int right = newInterval[1];
+        boolean placed = false;
+        List<int[]> ansList = new ArrayList<int[]>();
+        for (int[] interval : intervals) {
+            if (interval[0] > right) {
+                // 在插入区间的右侧且无交集
+                if (!placed) {
+                    ansList.add(new int[]{left, right});
+                    placed = true;
+                }
+                ansList.add(interval);
+            } else if (interval[1] < left) {
+                // 在插入区间的左侧且无交集
+                ansList.add(interval);
+            } else {
+                // 与插入区间有交集，计算它们的并集
+                left = Math.min(left, interval[0]);
+                right = Math.max(right, interval[1]);
+            }
+        }
+        if (!placed) {
+            ansList.add(new int[]{left, right});
+        }
+        int[][] ans = new int[ansList.size()][2];
+        for (int i = 0; i < ansList.size(); ++i) {
+            ans[i] = ansList.get(i);
+        }
+        return ans;
+    }
+
 }
