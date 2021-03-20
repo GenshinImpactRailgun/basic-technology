@@ -4,9 +4,7 @@ import com.basic.comon.dataStructure.ListNode;
 import com.basic.comon.util.GsonUtil;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.LinkedList;
+import java.util.*;
 
 /**
  * @Author: railgun
@@ -473,6 +471,105 @@ public class NinthDemo {
             }
         }
         return dp[0][0][n];
+    }
+
+    /**
+     * railgun
+     * 2021/3/20 19:30
+     * PS:合并两个有序数组
+     */
+    @Test
+    public void test88() {
+
+    }
+
+    public void merge(int[] nums1, int m, int[] nums2, int n) {
+        // Make a copy of nums1.
+        int[] nums1_copy = new int[m];
+        System.arraycopy(nums1, 0, nums1_copy, 0, m);
+
+        // Two get pointers for nums1_copy and nums2.
+        int p1 = 0;
+        int p2 = 0;
+
+        // Set pointer for nums1
+        int p = 0;
+
+        // Compare elements from nums1_copy and nums2
+        // and add the smallest one into nums1.
+        while ((p1 < m) && (p2 < n))
+            nums1[p++] = (nums1_copy[p1] < nums2[p2]) ? nums1_copy[p1++] : nums2[p2++];
+
+        // if there are still elements to add
+        if (p1 < m)
+            System.arraycopy(nums1_copy, p1, nums1, p1 + p2, m + n - p1 - p2);
+        if (p2 < n)
+            System.arraycopy(nums2, p2, nums1, p1 + p2, m + n - p1 - p2);
+    }
+
+    /**
+     * railgun
+     * 2021/3/20 19:43
+     * PS:格雷编码
+     */
+    @Test
+    public void test89() {
+
+    }
+
+    public List<Integer> grayCode(int n) {
+        List<Integer> res = new ArrayList<Integer>() {{
+            add(0);
+        }};
+        int head = 1;
+        for (int i = 0; i < n; i++) {
+            for (int j = res.size() - 1; j >= 0; j--)
+                res.add(head + res.get(j));
+            head <<= 1;
+        }
+        return res;
+    }
+
+    /**
+     * railgun
+     * 2021/3/20 19:56
+     * PS:子集 II
+     */
+    @Test
+    public void test90(){
+
+    }
+
+    /**
+     * railgun
+     * 2021/3/20 19:57
+     * PS:位
+     */
+    public List<List<Integer>> subsetsWithDup(int[] num) {
+        Arrays.sort(num);
+        List<List<Integer>> lists = new ArrayList<>();
+        int subsetNum = 1<<num.length;
+        for(int i=0;i<subsetNum;i++){
+            List<Integer> list = new ArrayList<>();
+            boolean illegal=false;
+            for(int j=0;j<num.length;j++){
+                //当前位是 1
+                if((i>>j&1)==1){
+                    //当前是重复数字，并且前一位是 0，跳过这种情况
+                    if(j>0&&num[j]==num[j-1]&&(i>>(j-1)&1)==0){
+                        illegal=true;
+                        break;
+                    }else{
+                        list.add(num[j]);
+                    }
+                }
+            }
+            if(!illegal){
+                lists.add(list);
+            }
+
+        }
+        return lists;
     }
 
 }

@@ -5,6 +5,7 @@ import com.basic.comon.util.GsonUtil;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.PriorityQueue;
 
@@ -559,6 +560,114 @@ public class ThirdDemo {
             }
         }
         return n;
+    }
+
+    /**
+     * railgun
+     * 2021/3/20 19:08
+     * PS:实现 strStr
+     */
+    @Test
+    public void test28() {
+        String haystack = "hello", needle = "ll";
+        System.out.println(strStr(haystack, needle));
+    }
+
+    public int strStr(String haystack, String needle) {
+        int L = needle.length(), n = haystack.length();
+
+        for (int start = 0; start < n - L + 1; ++start) {
+            if (haystack.substring(start, start + L).equals(needle)) {
+                return start;
+            }
+        }
+        return -1;
+    }
+
+    /**
+     * railgun
+     * 2021/3/20 19:36
+     * PS:两数相除
+     */
+    @Test
+    public void test29() {
+
+    }
+
+    public int divide(int a, int b) {
+        long x = a, y = b;
+        boolean isNeg = false;
+        if ((x > 0 && y < 0) || (x < 0 && y > 0)) isNeg = true;
+        if (x < 0) x = -x;
+        if (y < 0) y = -y;
+        long l = 0, r = x;
+        while (l < r) {
+            long mid = l + r + 1 >> 1;
+            if (mul(mid, y) <= x) {
+                l = mid;
+            } else {
+                r = mid - 1;
+            }
+        }
+        long ans = isNeg ? -l : l;
+        if (ans > Integer.MAX_VALUE || ans < Integer.MIN_VALUE) return Integer.MAX_VALUE;
+        return (int) ans;
+    }
+
+    long mul(long a, long k) {
+        long ans = 0;
+        while (k > 0) {
+            if ((k & 1) == 1) ans += a;
+            k >>= 1;
+            a += a;
+        }
+        return ans;
+    }
+    
+    /**
+     * railgun
+     * 2021/3/20 19:49
+     * PS:串联所有单词的子串
+     */
+    @Test
+    public void test30(){
+
+    }
+
+    public List<Integer> findSubstring(String s, String[] words) {
+        List<Integer> res = new ArrayList<>();
+        if (s == null || s.length() == 0 || words == null || words.length == 0) return res;
+        HashMap<String, Integer> map = new HashMap<>();
+        int one_word = words[0].length();
+        int word_num = words.length;
+        int all_len = one_word * word_num;
+        for (String word : words) {
+            map.put(word, map.getOrDefault(word, 0) + 1);
+        }
+        for (int i = 0; i < one_word; i++) {
+            int left = i, right = i, count = 0;
+            HashMap<String, Integer> tmp_map = new HashMap<>();
+            while (right + one_word <= s.length()) {
+                String w = s.substring(right, right + one_word);
+                right += one_word;
+                if (!map.containsKey(w)) {
+                    count = 0;
+                    left = right;
+                    tmp_map.clear();
+                } else {
+                    tmp_map.put(w, tmp_map.getOrDefault(w, 0) + 1);
+                    count++;
+                    while (tmp_map.getOrDefault(w, 0) > map.getOrDefault(w, 0)) {
+                        String t_w = s.substring(left, left + one_word);
+                        count--;
+                        tmp_map.put(t_w, tmp_map.getOrDefault(t_w, 0) - 1);
+                        left += one_word;
+                    }
+                    if (count == word_num) res.add(left);
+                }
+            }
+        }
+        return res;
     }
 
 }

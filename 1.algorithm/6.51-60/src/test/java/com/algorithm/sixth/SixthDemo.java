@@ -451,5 +451,95 @@ public class SixthDemo {
         }
         return ans;
     }
+    
+    /**
+     * railgun
+     * 2021/3/20 19:24
+     * PS:最后一个单词的长度
+     */
+    @Test
+    public void test58(){
+
+    }
+
+    public int lengthOfLastWord(String s) {
+        int end = s.length() - 1;
+        while(end >= 0 && s.charAt(end) == ' ') end--;
+        if(end < 0) return 0;
+        int start = end;
+        while(start >= 0 && s.charAt(start) != ' ') start--;
+        return end - start;
+    }
+
+    /**
+     * railgun
+     * 2021/3/20 19:39
+     * PS:螺旋矩阵
+     */
+    @Test
+    public void test59(){
+
+    }
+
+    /**
+     * railgun
+     * 2021/3/20 19:40
+     * PS:模拟
+     */
+    public int[][] generateMatrix(int n) {
+        int maxNum = n * n;
+        int curNum = 1;
+        int[][] matrix = new int[n][n];
+        int row = 0, column = 0;
+        int[][] directions = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}}; // 右下左上
+        int directionIndex = 0;
+        while (curNum <= maxNum) {
+            matrix[row][column] = curNum;
+            curNum++;
+            int nextRow = row + directions[directionIndex][0], nextColumn = column + directions[directionIndex][1];
+            if (nextRow < 0 || nextRow >= n || nextColumn < 0 || nextColumn >= n || matrix[nextRow][nextColumn] != 0) {
+                directionIndex = (directionIndex + 1) % 4; // 顺时针旋转至下一个方向
+            }
+            row = row + directions[directionIndex][0];
+            column = column + directions[directionIndex][1];
+        }
+        return matrix;
+    }
+
+    /**
+     * railgun
+     * 2021/3/20 19:53
+     * PS:排列序列
+     */
+    @Test
+    public void test60(){
+
+    }
+
+    public String getPermutation(int n, int k) {
+        int[] factorial = new int[n];
+        factorial[0] = 1;
+        for (int i = 1; i < n; ++i) {
+            factorial[i] = factorial[i - 1] * i;
+        }
+
+        --k;
+        StringBuffer ans = new StringBuffer();
+        int[] valid = new int[n + 1];
+        Arrays.fill(valid, 1);
+        for (int i = 1; i <= n; ++i) {
+            int order = k / factorial[n - i] + 1;
+            for (int j = 1; j <= n; ++j) {
+                order -= valid[j];
+                if (order == 0) {
+                    ans.append(j);
+                    valid[j] = 0;
+                    break;
+                }
+            }
+            k %= factorial[n - i];
+        }
+        return ans.toString();
+    }
 
 }

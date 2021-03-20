@@ -378,14 +378,14 @@ public class TenthDemo {
         }
         return (int) C;
     }
-    
+
     /**
      * railgun
      * 2021/3/20 17:54
      * PS:交错字符串
      */
     @Test
-    public void test97(){
+    public void test97() {
         String s1 = "aabcc", s2 = "dbbca", s3 = "aadbbcbcac";
         System.out.println(isInterleave(s1, s2, s3));
     }
@@ -416,6 +416,148 @@ public class TenthDemo {
         }
 
         return f[n][m];
+    }
+
+    /**
+     * railgun
+     * 2021/3/20 19:32
+     * PS:验证二叉搜索树
+     */
+    @Test
+    public void test98() {
+
+    }
+
+    /**
+     * railgun
+     * 2021/3/20 19:32
+     * PS:中序遍历
+     */
+    public boolean isValidBST(TreeNode root) {
+        Deque<TreeNode> stack = new LinkedList<TreeNode>();
+        double inorder = -Double.MAX_VALUE;
+
+        while (!stack.isEmpty() || root != null) {
+            while (root != null) {
+                stack.push(root);
+                root = root.left;
+            }
+            root = stack.pop();
+            // 如果中序遍历得到的节点的值小于等于前一个 inorder，说明不是二叉搜索树
+            if (root.val <= inorder) {
+                return false;
+            }
+            inorder = root.val;
+            root = root.right;
+        }
+        return true;
+    }
+
+    /**
+     * railgun
+     * 2021/3/20 19:33
+     * PS:递归
+     */
+    public boolean isValidBST2(TreeNode root) {
+        return isValidBST(root, Long.MIN_VALUE, Long.MAX_VALUE);
+    }
+
+    public boolean isValidBST(TreeNode node, long lower, long upper) {
+        if (node == null) {
+            return true;
+        }
+        if (node.val <= lower || node.val >= upper) {
+            return false;
+        }
+        return isValidBST(node.left, lower, node.val) && isValidBST(node.right, node.val, upper);
+    }
+    
+    /**
+     * railgun
+     * 2021/3/20 19:46
+     * PS:恢复二叉搜索树
+     */
+    @Test
+    public void test99(){
+        
+    }
+
+    /**
+     * railgun
+     * 2021/3/20 19:46
+     * PS:Morris 中序遍历
+     */
+    public void recoverTree(TreeNode root) {
+        TreeNode x = null, y = null, pred = null, predecessor = null;
+
+        while (root != null) {
+            if (root.left != null) {
+                // predecessor 节点就是当前 root 节点向左走一步，然后一直向右走至无法走为止
+                predecessor = root.left;
+                while (predecessor.right != null && predecessor.right != root) {
+                    predecessor = predecessor.right;
+                }
+
+                // 让 predecessor 的右指针指向 root，继续遍历左子树
+                if (predecessor.right == null) {
+                    predecessor.right = root;
+                    root = root.left;
+                }
+                // 说明左子树已经访问完了，我们需要断开链接
+                else {
+                    if (pred != null && root.val < pred.val) {
+                        y = root;
+                        if (x == null) {
+                            x = pred;
+                        }
+                    }
+                    pred = root;
+
+                    predecessor.right = null;
+                    root = root.right;
+                }
+            }
+            // 如果没有左孩子，则直接访问右孩子
+            else {
+                if (pred != null && root.val < pred.val) {
+                    y = root;
+                    if (x == null) {
+                        x = pred;
+                    }
+                }
+                pred = root;
+                root = root.right;
+            }
+        }
+        swap(x, y);
+    }
+
+    public void swap(TreeNode x, TreeNode y) {
+        int tmp = x.val;
+        x.val = y.val;
+        y.val = tmp;
+    }
+    
+    /**
+     * railgun
+     * 2021/3/20 19:58
+     * PS:相同的树
+     */
+    @Test
+    public void test100(){
+
+    }
+
+    public boolean isSameTree(TreeNode p, TreeNode q) {
+        if (p == null && q == null) {
+            return true;
+        } else if (p == null || q == null) {
+            return false;
+        } else if (p.val != q.val) {
+            return false;
+        } else {
+            return isSameTree(p.left, q.left) && isSameTree(p.right, q.right);
+        }
     }
 
 }

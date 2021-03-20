@@ -4,8 +4,7 @@ import com.basic.comon.dataStructure.ListNode;
 import com.basic.comon.util.GsonUtil;
 import org.junit.jupiter.api.Test;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @Author: railgun
@@ -345,6 +344,121 @@ public class SeventhDemo {
         }
         result.reverse();
         return result.toString();
+    }
+
+    /**
+     * railgun
+     * 2021/3/20 19:26
+     * PS:文本左右对齐
+     */
+    @Test
+    public void test68() {
+    }
+
+    public List<String> fullJustify(String[] words, int maxWidth) {
+        List<String> list = new ArrayList();
+        int n = words.length, i = 0, j = 0, blank = 0, rest, wdCnt;
+        while (i < n) {
+            rest = maxWidth;
+            wdCnt = 0;
+            blank = 0;
+            while (j < n && rest >= words[j].length()) {
+                rest -= words[j++].length();
+                wdCnt++;
+                rest -= 1;  //如果后面还要接单词，至少要留一个空格
+                blank++;
+            }
+            blank += rest;
+            // System.out.println(blank);
+            StringBuilder sb = new StringBuilder();
+            //特殊情况1， 如果是最后一行， 单词之间只占一个空格
+            if (j >= n) {
+                while (i < j) {
+                    sb.append(words[i++]).append(" ");
+                }
+                sb.deleteCharAt(sb.length() - 1);
+                while (sb.length() < maxWidth) {
+                    sb.append(" ");
+                }
+            } else if (wdCnt == 1) {
+                //特殊情况2， 如果一行只有一个单词， 补齐右边的空格
+                while (i < j) {
+                    sb.append(words[i++]).append(" ");
+                }
+                sb.deleteCharAt(sb.length() - 1);
+                while (sb.length() < maxWidth) {
+                    sb.append(" ");
+                }
+            } else {
+                //普通情况
+                int mod = blank % (wdCnt - 1);
+                int bsn = blank / (wdCnt - 1);
+                while (i < j) {
+                    sb.append(words[i++]);
+                    int k = bsn + (mod > 0 ? 1 : 0);
+                    mod--;
+                    if (i < j) for (int l = 0; l < k; l++) sb.append(" ");
+                }
+            }
+            i = j;
+            list.add(sb.toString());
+        }
+        return list;
+    }
+
+    /**
+     * railgun
+     * 2021/3/20 19:42
+     * PS:x 的平方根
+     */
+    @Test
+    public void test69() {
+
+    }
+
+    /**
+     * railgun
+     * 2021/3/20 19:42
+     * PS:牛顿迭代
+     */
+    public int mySqrt(int x) {
+        if (x == 0) {
+            return 0;
+        }
+        double C = x, x0 = x;
+        while (true) {
+            double xi = 0.5 * (x0 + C / x0);
+            if (Math.abs(x0 - xi) < 1e-7) {
+                break;
+            }
+            x0 = xi;
+        }
+        return (int) x0;
+    }
+
+    /**
+     * railgun
+     * 2021/3/20 19:54
+     * PS:爬楼梯
+     */
+    @Test
+    public void test70(){
+
+    }
+
+    /**
+     * railgun
+     * 2021/3/20 19:55
+     * PS:动态规划
+     */
+    public int climbStairs(int n) {
+        int p = 0, q = 0, r = 1;
+        for (int i = 1; i <= n; ++i) {
+            p = q;
+            q = r;
+            r = p + q;
+        }
+        return r;
     }
 
 }

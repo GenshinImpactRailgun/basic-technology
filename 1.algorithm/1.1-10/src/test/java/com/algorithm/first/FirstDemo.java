@@ -346,4 +346,189 @@ public class FirstDemo {
         return result;
     }
 
+    /**
+     * railgun
+     * 2021/3/20 18:16
+     * PS:字符串转换整数
+     */
+    @Test
+    public void test8() {
+        String s = "-91283472332";
+        System.out.println(myAtoi(s));
+        System.out.println(myAtoi2(s));
+    }
+
+    /**
+     * railgun
+     * 2021/3/20 18:42
+     * PS:臃肿的逻辑代码
+     */
+    public int myAtoi(String s) {
+        boolean whetrimjd = true;
+        boolean whefhjd = true;
+        boolean whefs = false;
+        char[] sArray = s.toCharArray();
+        int result = 0;
+        for (int i = 0; i < sArray.length; i++) {
+            if (whetrimjd && ' ' == sArray[i]) {
+                continue;
+            }
+            if (whefhjd && '-' == sArray[i]) {
+                whefs = true;
+                whefhjd = false;
+                whetrimjd = false;
+                continue;
+            }
+            if (whefhjd && '+' == sArray[i]) {
+                whefhjd = false;
+                whetrimjd = false;
+                continue;
+            }
+            if ('0' <= sArray[i] && sArray[i] <= '9') {
+                whetrimjd = false;
+                whefhjd = false;
+                int pop = whefs ? -(sArray[i] - '0') : sArray[i] - '0';
+                if (result > Integer.MAX_VALUE / 10 || (result == Integer.MAX_VALUE / 10 && pop > 7)) {
+                    return Integer.MAX_VALUE;
+                }
+                if (result < Integer.MIN_VALUE / 10 || (result == Integer.MIN_VALUE / 10 && pop < -8)) {
+                    return Integer.MIN_VALUE;
+                }
+                result = result * 10 + pop;
+            } else {
+                break;
+            }
+        }
+        return result;
+    }
+
+    /**
+     * railgun
+     * 2021/3/20 18:54
+     * PS:状态机解法
+     */
+    public int myAtoi2(String str) {
+        Automaton automaton = new Automaton();
+        int length = str.length();
+        for (int i = 0; i < length; ++i) {
+            automaton.get(str.charAt(i));
+        }
+        return (int) (automaton.sign * automaton.ans);
+    }
+
+    class Automaton {
+        public int sign = 1;
+        public long ans = 0;
+        private String state = "start";
+        private Map<String, String[]> table = new HashMap<String, String[]>() {{
+            put("start", new String[]{"start", "signed", "in_number", "end"});
+            put("signed", new String[]{"end", "end", "in_number", "end"});
+            put("in_number", new String[]{"end", "end", "in_number", "end"});
+            put("end", new String[]{"end", "end", "end", "end"});
+        }};
+
+        public void get(char c) {
+            state = table.get(state)[get_col(c)];
+            if ("in_number".equals(state)) {
+                ans = ans * 10 + c - '0';
+                ans = sign == 1 ? Math.min(ans, (long) Integer.MAX_VALUE) : Math.min(ans, -(long) Integer.MIN_VALUE);
+            } else if ("signed".equals(state)) {
+                sign = c == '+' ? 1 : -1;
+            }
+        }
+
+        private int get_col(char c) {
+            if (c == ' ') {
+                return 0;
+            }
+            if (c == '+' || c == '-') {
+                return 1;
+            }
+            if (Character.isDigit(c)) {
+                return 2;
+            }
+            return 3;
+        }
+    }
+
+    /**
+     * railgun
+     * 2021/3/20 19:34
+     * PS:回文数
+     */
+    @Test
+    public void test9() {
+
+    }
+
+    public boolean isPalindrome(int x) {
+        // 特殊情况：
+        // 如上所述，当 x < 0 时，x 不是回文数。
+        // 同样地，如果数字的最后一位是 0，为了使该数字为回文，
+        // 则其第一位数字也应该是 0
+        // 只有 0 满足这一属性
+        if (x < 0 || (x % 10 == 0 && x != 0)) {
+            return false;
+        }
+
+        int revertedNumber = 0;
+        while (x > revertedNumber) {
+            revertedNumber = revertedNumber * 10 + x % 10;
+            x /= 10;
+        }
+
+        // 当数字长度为奇数时，我们可以通过 revertedNumber/10 去除处于中位的数字。
+        // 例如，当输入为 12321 时，在 while 循环的末尾我们可以得到 x = 12，revertedNumber = 123，
+        // 由于处于中位的数字不影响回文（它总是与自己相等），所以我们可以简单地将其去除。
+        return x == revertedNumber || x == revertedNumber / 10;
+    }
+
+    /**
+     * railgun
+     * 2021/3/20 19:47
+     * PS:正则表达式匹配
+     */
+    @Test
+    public void test10() {
+
+    }
+
+    /**
+     * railgun
+     * 2021/3/20 19:48
+     * PS:动态规划
+     */
+    public boolean isMatch(String s, String p) {
+        int m = s.length();
+        int n = p.length();
+
+        boolean[][] f = new boolean[m + 1][n + 1];
+        f[0][0] = true;
+        for (int i = 0; i <= m; ++i) {
+            for (int j = 1; j <= n; ++j) {
+                if (p.charAt(j - 1) == '*') {
+                    f[i][j] = f[i][j - 2];
+                    if (matches(s, p, i, j - 1)) {
+                        f[i][j] = f[i][j] || f[i - 1][j];
+                    }
+                } else {
+                    if (matches(s, p, i, j)) {
+                        f[i][j] = f[i - 1][j - 1];
+                    }
+                }
+            }
+        }
+        return f[m][n];
+    }
+
+    public boolean matches(String s, String p, int i, int j) {
+        if (i == 0) {
+            return false;
+        }
+        if (p.charAt(j - 1) == '.') {
+            return true;
+        }
+        return s.charAt(i - 1) == p.charAt(j - 1);
+    }
+
 }
