@@ -20,6 +20,7 @@
     <!-- 配置 -->
     <properties>
         <junit.version>5.5.0</junit.version>
+        <basic-common.version>1.0.0-SNAPSHOT</basic-common.version>
     </properties>
 
     <!-- 依赖 -->
@@ -30,6 +31,12 @@
             <artifactId>junit-jupiter-api</artifactId>
             <version>${junit.version}</version>
             <scope>test</scope>
+        </dependency>
+        <!-- basic-common 依赖 -->
+        <dependency>
+            <groupId>com.basic.technology</groupId>
+            <artifactId>basic-common</artifactId>
+            <version>${basic-common.version}</version>
         </dependency>
     </dependencies>
 

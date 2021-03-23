@@ -79,7 +79,7 @@ public class FirstDemo {
      * PS:哑结点的使用
      */
     private ListNode addTwoNumbers(ListNode l1, ListNode l2) {
-        ListNode result = new ListNode(-1), target = result;
+        ListNode result = new ListNode(0), target = result;
         int carry = 0;
         while (null != l1 || null != l2) {
             int value1 = 0;

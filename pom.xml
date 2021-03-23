@@ -15,7 +15,7 @@
         <!-- 算法模块 -->
         <module>1.algorithm</module>
         <!-- java -->
-        <!--<module>2.java</module>-->
+        <module>2.java</module>
     </modules>
 
 </project>
