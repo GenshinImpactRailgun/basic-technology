@@ -3,6 +3,9 @@ package com.java.basics;
 import com.basic.comon.util.GsonUtil;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Objects;
 
 /**
@@ -112,6 +115,11 @@ public class BasicsDemo {
     @Test
     public void test5() {
         System.out.println(Math.round(-1.5));
+        System.out.println(Math.round(-1.7));
+        System.out.println(Math.round(-1.3));
+        System.out.println(Math.round(1.5));
+        System.out.println(Math.round(1.7));
+        System.out.println(Math.round(1.3));
         System.out.println("-1 数轴为例，0.5向右取整，如果是 -1.6 结果就是 -2");
     }
 
@@ -167,6 +175,10 @@ public class BasicsDemo {
         String s1 = "demo";
         String s2 = new String("demo");
         System.out.println("分配到堆内存中");
+        System.out.println(s1.hashCode());
+        System.out.println(s2.hashCode());
+        System.out.println(System.identityHashCode(s1));
+        System.out.println(System.identityHashCode(s2));
     }
 
     /**
@@ -236,11 +248,41 @@ public class BasicsDemo {
 
     /**
      * railgun
+     * 2021/4/5 13:41
+     * PS:普通类和抽象类的区别
+     */
+    @Test
+    public void test12() {
+        Demo120 demo120 = new Demo120();
+        Demo121 demo121 = new Demo121() {
+            @Override
+            public void test() {
+                System.out.println("hello railgun abstract");
+            }
+        };
+        demo120.test();
+        demo121.test();
+        System.out.println("普通类不能有抽象方法，抽象类可以有抽象方法");
+        System.out.println("普通类可以直接实例化，抽象类不能直接实例化");
+    }
+
+    private class Demo120 {
+        public void test() {
+            System.out.println("hello railgun");
+        }
+    }
+
+    private abstract class Demo121 {
+        public abstract void test();
+    }
+
+    /**
+     * railgun
      * 2021/3/23 19:51
      * PS:抽象类能使用 final 修饰吗？
      */
     @Test
-    public void test12() {
+    public void test13() {
         System.out.println("不能，因为抽象类定义出来之后就是为了被继承的，但是被 final 修饰的类不能被继承！");
     }
 
@@ -250,12 +292,49 @@ public class BasicsDemo {
      * PS:接口和抽象类有啥区别
      */
     @Test
-    public void test13() {
+    public void test14() {
         System.out.println("抽象类的子类使用 extends 来继承；接口使用 implements 来实现接口");
         System.out.println("构造函数：抽象类可以有构造函数；接口不能有");
         System.out.println("main 方法：抽象类可以有 main 方法，并且我们能运行它；接口不能有 main 方法");
         System.out.println("抽象类单继承，接口多实现");
         System.out.println("接口方法默认是使用 public 修饰的，抽象类可以自定义修饰符");
+        Demo14 demo14 = new Demo14() {
+            @Override
+            public void main(String[] args) {
+                super.main(args);
+            }
+        };
+        demo14.main(new String[0]);
+        System.out.println("------------");
+        Demo142 demo142 = new Demo142();
+    }
+
+    /**
+     * railgun
+     * 2021/4/5 13:55
+     * PS:抽象类
+     */
+    public abstract class Demo14 {
+        public Demo14() {
+            System.out.println("执行构造函数");
+        }
+
+        public void main(String[] args) {
+            System.out.println("执行 main 方法");
+        }
+    }
+
+    public class Demo142 extends Demo14 {
+
+    }
+
+    /**
+     * railgun
+     * 2021/4/5 13:54
+     * PS:没有构造函数，没有 main 函数，方法必须是 public
+     */
+    private interface Demo141 {
+        public void tet();
     }
 
     /**
@@ -264,7 +343,7 @@ public class BasicsDemo {
      * PS:java io 流分为几种
      */
     @Test
-    public void test14() {
+    public void test15() {
         System.out.println("输入流和输出流");
         System.out.println("字节流和字符流");
     }
@@ -275,7 +354,7 @@ public class BasicsDemo {
      * PS:BIO、NIO、AIO 区别
      */
     @Test
-    public void test15() {
+    public void test16() {
         System.out.println("BIO：同步阻塞 IO，使用简便，并发处理能力低");
         System.out.println("NIO：同步非阻塞 IO，实现了多路复用");
         System.out.println("AIO：异步非阻塞 IO，异步 IO 操作基于事件和回调机制");
@@ -287,6 +366,13 @@ public class BasicsDemo {
      * PS:IO 详解
      */
 
-
+    /**
+     * railgun
+     * 2021/4/5 14:08
+     * PS:Files 的常用方法
+     */
+    public void test17(){
+        // exists、createFile、createDirectory、delete、copy、move、size、read、write
+    }
 
 }

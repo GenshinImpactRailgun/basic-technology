@@ -20,7 +20,7 @@ public class Server {
             ServerSocket ss = new ServerSocket(9999);
             // 2、监听客户端的 Socket 请求
             Socket s = ss.accept();
-            // 3、从 Socket 管道中获取一个字节输出流对象
+            // 3、从 Socket 管道中获取一个字节输入流对象
             InputStream inputStream = s.getInputStream();
             // 4、缓冲字节输入流包装秤缓冲字节输入流
             //BufferedInputStream bis = new BufferedInputStream(inputStream);
