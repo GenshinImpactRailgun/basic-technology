@@ -16,6 +16,7 @@
         <!-- 1-10 -->
         <module>1.basics</module>
         <module>2.Collection</module>
+        <module>4.concurrent</module>
     </modules>
 
     <!-- 配置 -->
