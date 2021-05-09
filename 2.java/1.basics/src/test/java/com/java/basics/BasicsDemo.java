@@ -48,10 +48,15 @@ public class BasicsDemo {
         Demo2 d1 = new Demo2("1"), d2 = new Demo2("1");
         // 不同
         System.out.println(d1 == d2);
-        // 不同，没有重写 equals 方法，如果如下方所示，重写了 equals 方法的对象用这种方法判断就就是对的了
+        // 相同，重写 equals 方法，比较 name 是否相同
         System.out.println(d1.equals(d2));
     }
 
+    /**
+     * @Author: railgun
+     * 2021/5/9 18:36
+     * PS: 重写 equals【判断依据是 name 是否相等】 与 hashCode
+     **/
     private class Demo2 {
         private String name;
 
@@ -83,6 +88,7 @@ public class BasicsDemo {
         System.out.println("不对，两个对象的 hashCode() 相同，equals() 不一定是 true");
         String s1 = "通话", s2 = "重地";
         System.out.println(String.format("s1:%d,s2:%d", s1.hashCode(), s2.hashCode()));
+        // 答案为 false
         System.out.println(s1.equals(s2));
     }
 
