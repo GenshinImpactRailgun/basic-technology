@@ -1,5 +1,7 @@
 package com.java.concurrent.deadlock;
 
+import java.util.concurrent.CopyOnWriteArraySet;
+
 /**
  * @Author: railgun
  * 2021/5/8 23:00
@@ -11,6 +13,11 @@ public class DeadLockTest {
         deadlock();
     }
 
+    /**
+     * railgun
+     * 2021/5/13 17:32
+     * PS: 死锁示例
+     **/
     public static void deadlock() {
         Object a = new Object(), b = new Object();
         Thread thread1 = new Thread(() -> {

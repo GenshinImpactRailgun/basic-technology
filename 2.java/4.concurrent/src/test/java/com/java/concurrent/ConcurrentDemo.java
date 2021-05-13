@@ -1,7 +1,9 @@
 package com.java.concurrent;
 
+import com.basic.comon.util.GsonUtil;
 import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import com.java.concurrent.util.ThreadUtil;
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.*;
@@ -32,7 +34,6 @@ public class ConcurrentDemo {
      **/
     public void startThread1() {
         $Thread thread = new $Thread();
-        thread.start();
         thread.start();
     }
 
@@ -219,7 +220,7 @@ public class ConcurrentDemo {
     /**
      * railgun
      * 2021/5/12 20:56
-     * PS: 线程池添加任务的顺序
+     * PS: 测试线程池添加任务的顺序
      * core ——> queue ——> maxPool
      **/
     public static void threadPoolExecutorOrder() {
@@ -256,7 +257,7 @@ public class ConcurrentDemo {
      * PS: 获取到子线程的异常
      **/
     public static void getChildrenThreadException() {
-        ThreadPoolExecutor threadPool = ThreadUtil.getCatchChildrenThreadExceptionThreadPool();
+        ThreadPoolExecutor threadPool = ThreadUtil.getCatchChildrenThreadExceptionThreadPoolByOverrideUncaughtException();
         threadPool.execute(() -> {
             System.out.println("我要产生异常了");
             System.out.println(1 / 0);
@@ -265,28 +266,273 @@ public class ConcurrentDemo {
 
     /**
      * railgun
-     * 2021/5/12 20:53
-     * PS: 如何监听所有线程执行结束
+     * 2021/5/13 10:40
+     * PS: 处理线程池异常
      **/
-    public static void listenAllThreadEnd() {
-        ThreadPoolExecutor threadPool = ThreadUtil.getDefaultThreadPool();
-        for (int i = 0; i < 10; i++) {
-            int finalI = i;
-            threadPool.execute(() -> {
-                execute(finalI);
-            });
-        }
-        threadPool.allowCoreThreadTimeOut(true);
-        //threadPool.shutdown();
+    private static void handleThreadPoolException() {
+        // 1、直接使用 try catch 方法
+        ThreadPoolExecutor threadPool1 = ThreadUtil.getDefaultThreadPool();
+        // 2、创建重写 uncaughtException 的线程池
+        ThreadPoolExecutor threadPool2 = ThreadUtil.getCatchChildrenThreadExceptionThreadPoolByOverrideUncaughtException();
+        // 3、创建重写 afterExecute 的线程池
+        ThreadPoolExecutor threadPool3 = ThreadUtil.getCatchChildrenThreadExceptionThreadPoolByOverrideAfterExecute();
+        threadPool1.execute(() -> {
+            try {
+                int i = 1 / 0;
+            } catch (Exception e) {
+                Thread t = Thread.currentThread();
+                System.out.println("【子线程中捕获异常】threadId = " + t.getId() + ", threadName = " + t.getName() + ", ex = " + e.getMessage());
+            }
+        });
+        threadPool2.execute(() -> {
+            int i = 1 / 0;
+        });
+        threadPool3.execute(() -> {
+            int i = 1 / 0;
+        });
+        threadPool1.allowCoreThreadTimeOut(true);
+        threadPool2.allowCoreThreadTimeOut(true);
+        threadPool3.allowCoreThreadTimeOut(true);
     }
 
-    private static CopyOnWriteArraySet<String> set = new CopyOnWriteArraySet<>();
+    /**
+     * railgun
+     * 2021/5/12 20:53
+     * PS: Thread 的 join 方法
+     **/
+    @SneakyThrows
+    public static void listenByJoin() {
+        CopyOnWriteArraySet<Thread> set = new CopyOnWriteArraySet<>();
+        for (int i = 0; i < 5; i++) {
+            Thread thread = new Thread(new Runnable() {
+                @SneakyThrows
+                @Override
+                public void run() {
+                    Thread.sleep(5000);
+                }
+            });
+            set.add(thread);
+            thread.start();
+        }
+        for (Thread item : set) {
+            item.join();
+        }
+        System.out.println("join 方法监听所有子线程执行结束；");
+    }
+
+    /**
+     * railgun
+     * 2021/5/13 14:34
+     * PS: 无线循环 isTerminated 监听所有线程执行结束
+     **/
+    @SneakyThrows
+    private static void listenByIsTerminated() {
+        // 线程池的 isTerminated 方法
+        ThreadPoolExecutor threadPool = ThreadUtil.getThreadPoolAllowCoreThreadTimeOut();
+        for (int i = 0; i < 4; i++) {
+            threadPool.execute(new Runnable() {
+                @SneakyThrows
+                @Override
+                public void run() {
+                    Thread.sleep(4000);
+                }
+            });
+        }
+        threadPool.shutdown();
+        for (; ; ) {
+            if (threadPool.isTerminated()) {
+                break;
+            } else {
+                Thread.sleep(1000);
+            }
+        }
+        System.out.println("isTerminated 方法监听所有线程执行结束；");
+    }
+
+    /**
+     * railgun
+     * 2021/5/13 14:35
+     * PS: CountDownLatch 实现监听所有线程执行结束
+     **/
+    @SneakyThrows
+    private static void listenByCountDownLatch() {
+        CountDownLatch latch = new CountDownLatch(4);
+        ThreadPoolExecutor threadPool = ThreadUtil.getThreadPoolAllowCoreThreadTimeOut();
+        for (int i = 0; i < 4; i++) {
+            threadPool.execute(new Runnable() {
+                @SneakyThrows
+                @Override
+                public void run() {
+                    Thread.sleep(3000);
+                    latch.countDown();
+                }
+            });
+        }
+        latch.await();
+        System.out.println("CountDownLatch 方法监听所有线程执行结束；");
+    }
+
+    /**
+     * railgun
+     * 2021/5/13 15:46
+     * PS: CyclicBarrier 同步屏障
+     **/
+    @SneakyThrows
+    private static void listenByCyclicBarrier() {
+        CyclicBarrier cyclicBarrier = new CyclicBarrier(5);
+        ThreadPoolExecutor threadPool = ThreadUtil.getThreadPoolAllowCoreThreadTimeOut();
+        for (int i = 0; i < 4; i++) {
+            threadPool.execute(new Runnable() {
+                @SneakyThrows
+                @Override
+                public void run() {
+                    Thread.sleep(2000);
+                    cyclicBarrier.await();
+                }
+            });
+        }
+        cyclicBarrier.await();
+        System.out.println("CyclicBarrier 同步屏障实现监听所有线程执行结束；");
+    }
+
+    /**
+     * railgun
+     * 2021/5/13 15:43
+     * PS: Future 的 isDone 监听线程是否结束
+     **/
+    @SneakyThrows
+    public static void listenByFutureIsDone() {
+        CopyOnWriteArraySet<Future<String>> set = new CopyOnWriteArraySet<>();
+        ThreadPoolExecutor threadPool = ThreadUtil.getThreadPoolAllowCoreThreadTimeOut();
+        for (int i = 0; i < 4; i++) {
+            Future<String> future = threadPool.submit(new Callable<String>() {
+                @SneakyThrows
+                @Override
+                public String call() {
+                    Thread.sleep(1000);
+                    return Thread.currentThread().getName();
+                }
+            });
+            set.add(future);
+        }
+        for (; ; ) {
+            boolean done = true;
+            for (Future<String> item : set) {
+                if (!item.isDone()) {
+                    done = false;
+                }
+            }
+            if (!done) {
+                Thread.sleep(1000);
+            } else {
+                break;
+            }
+        }
+        System.out.println("Future 的 isDone 实现监听所有线程执行结束；");
+    }
+
+    /**
+     * railgun
+     * 2021/5/13 16:53
+     * PS: future 异常处理
+     **/
+    public static void getFutureException() {
+        ThreadPoolExecutor threadPool = ThreadUtil.getThreadPoolAllowCoreThreadTimeOut();
+        threadPool.execute(new Runnable() {
+            @Override
+            public void run() {
+                int i = 1 / 0;
+            }
+        });
+        Future<String> future = threadPool.submit(new Callable<String>() {
+            @Override
+            public String call() {
+                int i = 1 / 0;
+                return Thread.currentThread().getName();
+            }
+        });
+        try {
+            future.get();
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        System.out.println();
+    }
+
+
+    /**
+     * railgun
+     * 2021/5/13 21:23
+     * PS: 使用 ThreadLocal
+     **/
+    public static void useThreadLocal() {
+        CopyOnWriteArraySet<Future<String>> set = new CopyOnWriteArraySet<>();
+        ThreadPoolExecutor threadPool = ThreadUtil.getThreadPoolAllowCoreThreadTimeOut();
+        for (int i = 0; i < 1; i++) {
+            threadPool.execute(new Runnable() {
+                @Override
+                public void run() {
+                    Double d = Math.random() * 10;
+                    ti.set(d.intValue());
+                    ti.get();
+                    ti.remove();
+
+                    ThreadLocalUser object = objectThreadLocal.get();
+                    GsonUtil.objectSoutJson(object);
+                    ThreadLocalUser object1 = objectWithInitial.get();
+                    GsonUtil.objectSoutJson(object1);
+                    objectWithInitial.set(new ThreadLocalUser("bleach", 13));
+                    //objectWithInitial.remove();
+                    ThreadLocalUser object2 = objectWithInitial.get();
+                    GsonUtil.objectSoutJson(object2);
+                }
+            });
+        }
+    }
+
+    /**
+     * 2021/5/13 22:20 @railgun 包装 Integer 对象
+     **/
+    private static ThreadLocal<Integer> ti = new ThreadLocal<>();
+
+    /**
+     * 2021/5/13 22:20 @railgun 包装 ThreadLocalUser 对象
+     **/
+    private static ThreadLocal<ThreadLocalUser> objectThreadLocal = new ThreadLocal<>();
+
+    /**
+     * 2021/5/13 22:20 @railgun 包装 ThreadLocalUser 对象时，执行初始化
+     **/
+    private static ThreadLocal<ThreadLocalUser> objectWithInitial = ThreadLocal.withInitial(() -> new ThreadLocalUser("railgun", 16));
+
 
     public static void main(String[] args) {
-        //createThreadPool1();
-        //listenAllThreadEnd();
+
+        // ------------------------------------- ThreadLocal 使用 -------------------------------------
+        useThreadLocal();
+
+        // ------------------------------------- 异常处理 -------------------------------------
+        //getFutureException();
+
+        // ------------------------------------- 监听所有线程执行结束 -------------------------------------
+        //listenByJoin();
+        //listenByIsTerminated();
+        //listenByCountDownLatch();
+        //listenByCyclicBarrier();
+        //listenByFutureIsDone();
+
+        // ------------------------------------- 处理线程池异常 -------------------------------------
+        //handleThreadPoolException();
+
+        // ------------------------------------- 捕获子线程的异常 -------------------------------------
+        //getChildrenThreadException();
+
+        // ------------------------------------- 如何优先执行 maxPool -------------------------------------
         //threadPoolExecutorPriorMaxPool();
-        getChildrenThreadException();
+
+        // ------------------------------------- 创建线程池，并使用 -------------------------------------
+        //createThreadPool1();
+
     }
 
     /**
@@ -322,6 +568,37 @@ public class ConcurrentDemo {
         }
         System.out.println(msg + "：执行结束【submit】");
         return msg;
+    }
+
+    /**
+     * @Author: railgun
+     * 2021/5/13 21:48
+     * PS: 用作测试的线程本地变量
+     **/
+    private static class ThreadLocalUser {
+        private String name;
+        private int age;
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+
+        public int getAge() {
+            return age;
+        }
+
+        public void setAge(int age) {
+            this.age = age;
+        }
+
+        public ThreadLocalUser(String name, int age) {
+            this.name = name;
+            this.age = age;
+        }
     }
 
 }

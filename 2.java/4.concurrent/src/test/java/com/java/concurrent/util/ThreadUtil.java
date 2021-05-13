@@ -67,6 +67,17 @@ public class ThreadUtil {
 
     /**
      * railgun
+     * 2021/5/13 16:31
+     * PS: 创建一个允许核心线程被回收的线程池
+     **/
+    public static ThreadPoolExecutor getThreadPoolAllowCoreThreadTimeOut() {
+        ThreadPoolExecutor threadPool = new ThreadPoolExecutor(CORE_POOL_SIZE, MAXIMUM_POOL_SIZE, KEEP_ALIVE_TIME, TimeUnit.SECONDS, QUEUE, THREAD_FACTORY, DEFAULT_HANDLER);
+        threadPool.allowCoreThreadTimeOut(true);
+        return threadPool;
+    }
+
+    /**
+     * railgun
      * 2021/5/12 21:04
      * PS: 创建优先 maxPool 的线程池
      **/
@@ -81,9 +92,9 @@ public class ThreadUtil {
     /**
      * railgun
      * 2021/5/12 22:12
-     * PS: 创建一个能够获取子线程异常的线程池
+     * PS: 创建一个能够获取子线程异常的线程池【通过重写 uncaughtException 方法】
      **/
-    public static ThreadPoolExecutor getCatchChildrenThreadExceptionThreadPool() {
+    public static ThreadPoolExecutor getCatchChildrenThreadExceptionThreadPoolByOverrideUncaughtException() {
         ThreadFactory threadFactory = new ThreadFactoryBuilder().setUncaughtExceptionHandler(new CustomClassToGetException()).build();
         ThreadPoolExecutor threadPool = new ThreadPoolExecutor(CORE_POOL_SIZE, MAXIMUM_POOL_SIZE, KEEP_ALIVE_TIME, TimeUnit.SECONDS, QUEUE, threadFactory, DEFAULT_HANDLER);
         System.out.println("");
@@ -95,12 +106,51 @@ public class ThreadUtil {
      * 2021/5/12 22:06
      * PS: 自定义线程池异常接收类，并且重写 uncaughtException 方法
      **/
-    static class CustomClassToGetException implements Thread.UncaughtExceptionHandler {
+    private static class CustomClassToGetException implements Thread.UncaughtExceptionHandler {
         @Override
         public void uncaughtException(Thread t, Throwable e) {
-            System.out.println("threadId = " + t.getId() + ", threadName = " + t.getName() + ", ex = " + e.getMessage());
+            System.out.println("【uncaughtException】threadId = " + t.getId() + ", threadName = " + t.getName() + ", ex = " + e.getMessage());
         }
     }
 
+    /**
+     * railgun
+     * 2021/5/12 22:12
+     * PS: 创建一个能够获取子线程异常的线程池【通过重写 afterExecute 方法】
+     **/
+    public static ThreadPoolExecutor getCatchChildrenThreadExceptionThreadPoolByOverrideAfterExecute() {
+        ThreadPoolExecutor threadPool = new ThreadPoolExecutorOverrideAfterExecute(CORE_POOL_SIZE, MAXIMUM_POOL_SIZE, KEEP_ALIVE_TIME, TimeUnit.SECONDS, QUEUE, THREAD_FACTORY, DEFAULT_HANDLER);
+        System.out.println("");
+        return threadPool;
+    }
+
+    /**
+     * railgun
+     * 2021/5/13 11:16
+     * PS: 自定义线程池重写 afterExecute 方法
+     **/
+    private static class ThreadPoolExecutorOverrideAfterExecute extends ThreadPoolExecutor {
+
+        /**
+         * railgun
+         * 2021/5/13 11:15
+         * PS: 线程池构造方法
+         **/
+        public ThreadPoolExecutorOverrideAfterExecute(int corePoolSize, int maximumPoolSize, long keepAliveTime, TimeUnit unit, ArrayBlockingQueue<Runnable> workQueue, ThreadFactory threadFactory, RejectedExecutionHandler handler) {
+            super(corePoolSize, maximumPoolSize, keepAliveTime, unit, workQueue, threadFactory, handler);
+        }
+
+        /**
+         * railgun
+         * 2021/5/13 11:15
+         * PS: 重写 afterExecute 方法获取异常
+         **/
+        @Override
+        protected void afterExecute(Runnable r, Throwable t) {
+            Thread thread = Thread.currentThread();
+            System.out.println("【afterExecute】threadId = " + thread.getId() + ", threadName = " + thread.getName() + ", ex = " + t.getMessage());
+        }
+
+    }
 
 }
