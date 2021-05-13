@@ -41,6 +41,13 @@
             <artifactId>basic-common</artifactId>
             <version>${basic-common.version}</version>
         </dependency>
+        <!-- lombok 依赖 -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>RELEASE</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
 </project>
