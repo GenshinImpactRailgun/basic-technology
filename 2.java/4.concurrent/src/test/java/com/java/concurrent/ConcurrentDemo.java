@@ -482,7 +482,8 @@ public class ConcurrentDemo {
                     ThreadLocalUser object1 = objectWithInitial.get();
                     GsonUtil.objectSoutJson(object1);
                     objectWithInitial.set(new ThreadLocalUser("bleach", 13));
-                    //objectWithInitial.remove();
+                    objectWithInitial.remove();
+                    objectWithInitial.set(new ThreadLocalUser("naruto", 16));
                     ThreadLocalUser object2 = objectWithInitial.get();
                     GsonUtil.objectSoutJson(object2);
                 }
