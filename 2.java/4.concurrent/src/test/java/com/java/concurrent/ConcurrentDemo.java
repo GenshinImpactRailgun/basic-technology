@@ -459,7 +459,6 @@ public class ConcurrentDemo {
         System.out.println();
     }
 
-
     /**
      * railgun
      * 2021/5/13 21:23
@@ -506,11 +505,39 @@ public class ConcurrentDemo {
      **/
     private static ThreadLocal<ThreadLocalUser> objectWithInitial = ThreadLocal.withInitial(() -> new ThreadLocalUser("railgun", 16));
 
+    /**
+     * railgun
+     * 2021/5/15 16:51
+     * PS: 共享 ThreadLocal 数据
+     **/
+    private static void shareThreadLocal() {
+        ThreadLocal<ThreadLocalUser> user = new ThreadLocal<>();
+        ThreadLocal<ThreadLocalUser> userShare = new InheritableThreadLocal<>();
+        user.set(new ThreadLocalUser("railgun", 17));
+        ThreadPoolExecutor threadPool = ThreadUtil.getPriorMaxPoolThreadPool();
+        for (int i = 0; i < 4; i++) {
+            final int TEMP = i;
+            threadPool.execute(new Runnable() {
+                @SneakyThrows
+                @Override
+                public void run() {
+                    System.out.println(Thread.currentThread().getName() + "，执行");
+                    System.out.println("user：" + GsonUtil.objectToJson(user.get()));
+                    System.out.println("userShare：" + GsonUtil.objectToJson(userShare.get()));
+                    Thread.sleep(5000);
+                    userShare.set(new ThreadLocalUser("railgun" + TEMP, 17 + TEMP));
+                }
+            });
+        }
+    }
 
     public static void main(String[] args) {
 
+        // ------------------------------------- 共享 ThreadLocal -------------------------------------
+        shareThreadLocal();
+
         // ------------------------------------- ThreadLocal 使用 -------------------------------------
-        useThreadLocal();
+        //useThreadLocal();
 
         // ------------------------------------- 异常处理 -------------------------------------
         //getFutureException();

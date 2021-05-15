@@ -85,6 +85,7 @@ public class ThreadUtil {
         TaskQueue<Runnable> queue = new TaskQueue<>(4);
         EagerThreadPoolExecutor priorMaxPoolThreadPool = new EagerThreadPoolExecutor(CORE_POOL_SIZE, MAXIMUM_POOL_SIZE, KEEP_ALIVE_TIME, TimeUnit.SECONDS, queue, THREAD_FACTORY, DEFAULT_HANDLER);
         queue.setExecutor(priorMaxPoolThreadPool);
+        priorMaxPoolThreadPool.allowCoreThreadTimeOut(true);
         System.out.println("");
         return priorMaxPoolThreadPool;
     }
