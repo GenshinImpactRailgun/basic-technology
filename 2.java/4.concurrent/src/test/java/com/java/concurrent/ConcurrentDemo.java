@@ -103,29 +103,6 @@ public class ConcurrentDemo {
         createThreadPool6();
     }
 
-    private static CopyOnWriteArrayList<Integer> list = new CopyOnWriteArrayList<>();
-
-    private void addSomethingToList() {
-        System.out.println(Thread.currentThread().getName() + "：" + list.size());
-        int[] nums = new int[]{2, 7, 9, 3, 1};
-        list.add(rob(nums));
-    }
-
-    /**
-     * railgun
-     * 2021/5/11 21:21
-     * PS: 打家劫舍
-     **/
-    private static int rob(int[] nums) {
-        int n = nums.length;
-        int[] dp = new int[n + 1];
-        dp[1] = nums[0];
-        for (int i = 2; i <= n; i++) {
-            dp[i] = Math.max(dp[i - 2] + nums[i - 1], dp[i - 1]);
-        }
-        return dp[n];
-    }
-
     /**
      * railgun
      * 2021/5/11 11:32
@@ -531,10 +508,51 @@ public class ConcurrentDemo {
         }
     }
 
+    /**
+     * railgun
+     * 2021/5/16 10:44
+     * PS: 内存泄漏
+     **/
+    public static void memoryLeak() {
+        ThreadLocal<byte[]> threadLocal = new ThreadLocal<>();
+        ThreadPoolExecutor threadPool = ThreadUtil.getThreadPoolAllowCoreThreadTimeOut();
+        for (int i = 0; i < 20; i++) {
+            threadPool.execute(new Runnable() {
+                @Override
+                public void run() {
+                    System.out.println(Thread.currentThread().getName() + "：开始执行；");
+                    try {
+                        //byte[] test = new byte[1024 * 1024 * 1024];
+                        threadLocal.set(new byte[1024 * 1024 * 1024]);
+                        threadLocal.remove();
+                        //Thread.sleep(1000);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    } finally {
+                        //threadLocal.remove();
+                    }
+                }
+            });
+        }
+    }
+
+    /**
+     * @Author: railgun
+     * 2021/5/16 16:21
+     * PS: lock 使用
+     **/
+    private class DemoLock {
+
+    }
+
+    @SneakyThrows
     public static void main(String[] args) {
 
+        // ------------------------------------- ThreadLcoal 内存泄漏 -------------------------------------
+        //memoryLeak();
+
         // ------------------------------------- 共享 ThreadLocal -------------------------------------
-        shareThreadLocal();
+        //shareThreadLocal();
 
         // ------------------------------------- ThreadLocal 使用 -------------------------------------
         //useThreadLocal();
