@@ -7,6 +7,8 @@ import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 
 import java.util.concurrent.*;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * @Author: railgun
@@ -541,12 +543,53 @@ public class ConcurrentDemo {
      * 2021/5/16 16:21
      * PS: lock 使用
      **/
-    private class DemoLock {
+    private static class DemoLock {
+        private String name;
+        private Integer age;
+        private Lock lock = new ReentrantLock();
 
+        {
+            name = "railgun";
+            age = 0;
+        }
+
+        public void addAge() {
+            lock.lock();
+            for (int i = 0; i < 1000; i++) {
+                age++;
+            }
+            lock.unlock();
+        }
+    }
+
+    @SneakyThrows
+    @Test
+    private static void useLock() {
+        int n = 6;
+        CyclicBarrier cyclicBarrier = new CyclicBarrier(n);
+        ThreadPoolExecutor threadPool = ThreadUtil.getPriorMaxPoolThreadPool();
+        DemoLock demoLock = new DemoLock();
+        for (int i = 0; i < n; i++) {
+            threadPool.execute(new Runnable() {
+                @SneakyThrows
+                @Override
+                public void run() {
+                    demoLock.addAge();
+                    System.out.println(demoLock.age);
+                    cyclicBarrier.await();
+                }
+            });
+        }
+        cyclicBarrier.await();
+        System.out.println("执行结束");
+        System.out.println(demoLock.age);
     }
 
     @SneakyThrows
     public static void main(String[] args) {
+
+        // ------------------------------------- lock 使用 -------------------------------------
+        useLock();
 
         // ------------------------------------- ThreadLcoal 内存泄漏 -------------------------------------
         //memoryLeak();
