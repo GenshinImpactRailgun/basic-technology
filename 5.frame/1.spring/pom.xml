@@ -15,6 +15,7 @@
     <modules>
         <module>1.ioc</module>
         <module>2.hellospring</module>
+        <module>2.ioc2</module>
     </modules>
 
 </project>
