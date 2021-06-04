@@ -9,6 +9,32 @@ public class User {
 
     private String name;
 
+    private Integer age;
+
+    /**
+     * railgun
+     * 2021/6/4 16:58
+     * PS: 无参构造
+     **/
+    public User() {
+        System.out.println("执行 User 无参构造");
+    }
+
+    /**
+     * railgun
+     * 2021/6/4 16:59
+     * PS: 有参构造
+     **/
+    public User(String name, Integer age) {
+        this.name = name;
+        this.age = age;
+        System.out.println("有参构造执行 name：" + name + "，age：" + age);
+    }
+
+    public void show() {
+        System.out.println("name=" + name);
+    }
+
     public String getName() {
         return name;
     }
@@ -17,12 +43,12 @@ public class User {
         this.name = name;
     }
 
-    public void show() {
-        System.out.println("name=" + name);
+    public Integer getAge() {
+        return age;
     }
 
-    public User() {
-        System.out.println("执行 User 无参构造");
+    public void setAge(Integer age) {
+        this.age = age;
     }
 
 }

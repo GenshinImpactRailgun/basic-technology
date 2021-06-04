@@ -4,8 +4,37 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         https://www.springframework.org/schema/beans/spring-beans.xsd">
 
+    <!-- 无参构造 -->
     <bean id="user" class="com.frame.spring.ioc2.pojo.User">
         <property name="name" value="railgun"/>
     </bean>
+
+    <!-- 有参构造 依据参数类型 -->
+    <bean id="user2" class="com.frame.spring.ioc2.pojo.User">
+        <constructor-arg type="java.lang.String" value="railgun"/>
+        <constructor-arg type="java.lang.Integer" value="17"/>
+    </bean>
+
+    <!-- 有参构造 依据参数顺序 -->
+    <bean id="user3" class="com.frame.spring.ioc2.pojo.User">
+        <constructor-arg index="0" value="ch"/>
+        <constructor-arg index="1" value="18"/>
+    </bean>
+
+    <!-- 有参构造 依据参数名称 -->
+    <bean id="user4" class="com.frame.spring.ioc2.pojo.User">
+        <constructor-arg name="name" value="th"/>
+        <constructor-arg name="age" value="19"/>
+    </bean>
+
+    <!-- 别名，同一个对象 -->
+    <alias name="user" alias="userdkfjidji"/>
+
+    <!--
+    id 唯一标识
+    class 全限定名
+    name 别名
+    -->
+    <bean id="user5" class="com.frame.spring.ioc2.pojo.User" name="u1 u2,u3;u4" scope="singleton"/>
 
 </beans>
