@@ -34,6 +34,7 @@
     id 唯一标识
     class 全限定名
     name 别名
+    scope 单例模式、多列模式
     -->
     <bean id="user5" class="com.frame.spring.ioc2.pojo.User" name="u1 u2,u3;u4" scope="singleton"/>
 
