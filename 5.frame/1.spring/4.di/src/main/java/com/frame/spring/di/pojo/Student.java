@@ -95,4 +95,11 @@ public class Student {
                 ", info=" + info +
                 '}';
     }
+
+    public Student(){}
+
+    public Student(String name){
+        this.name = name;
+    }
+
 }

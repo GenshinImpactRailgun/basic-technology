@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:c="http://www.springframework.org/schema/c"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        https://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!-- 喵咪 -->
+    <bean id="cat" class="com.frame.spring.autowired.pojo.Cat"/>
+    <!-- 狗狗 -->
+    <bean id="dog" class="com.frame.spring.autowired.pojo.Dog"/>
+    <!-- p 名称空间装配 -->
+    <bean id="people" class="com.frame.spring.autowired.pojo.People" p:cat-ref="cat" p:dog-ref="dog"/>
+    <!-- c 名称空间装配 -->
+    <bean id="people2" class="com.frame.spring.autowired.pojo.People" c:cat-ref="cat" c:dog-ref="dog"/>
+    <!-- 依据名字自动装配 -->
+    <bean id="people3" class="com.frame.spring.autowired.pojo.People" p:name="柏杨" autowire="byName"/>
+    <!-- 依据类型自动装配 -->
+    <bean id="people4" class="com.frame.spring.autowired.pojo.People" p:name="柏杨" autowire="byType"/>
+    <!-- 使用注解自动装配 -->
+    <bean id="people5" class="com.frame.spring.autowired.pojo.People"/>
+    <!-- 开启注解支持 -->
+    <context:annotation-config/>
+</beans>
