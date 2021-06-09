@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/aop
+        https://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <bean id="baseService" class="com.frame.spring.aop.service.BaseServiceImpl"/>
+    <bean id="logService" class="com.frame.spring.aop.service.LogService"/>
+    <bean id="mosquitoService" class="com.frame.spring.aop.service.MosquitoServiceImpl"/>
+    <bean id="tableService" class="com.frame.spring.aop.service.TableServiceImpl"/>
+    <bean id="diyService" class="com.frame.spring.aop.service.DiyService"/>
+
+    <!-- 方式二，自定义类实现 -->
+    <!-- aop 配置 -->
+    <aop:config>
+        <!-- 自定义切面 ref 要引用的类，功能增强的类 -->
+        <aop:aspect ref="diyService">
+            <!-- 切入点 express 表达式 execution(* * * * *)【修饰词 返回值 列名 方法名 参数】【两个点表示有任意的参数】 -->
+            <aop:pointcut id="pointcut" expression="execution(* com.frame.spring.aop.service.BaseServiceImpl.*(..))"/>
+            <!-- 通知 -->
+            <aop:before method="before" pointcut-ref="pointcut"/>
+            <aop:after method="after" pointcut-ref="pointcut"/>
+        </aop:aspect>
+    </aop:config>
+
+</beans>

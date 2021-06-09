@@ -20,6 +20,8 @@
         <module>5.autowired</module>
         <module>6.annotation</module>
         <module>7.configuration</module>
+        <module>8.proxy</module>
+        <module>9.aop</module>
     </modules>
 
 </project>
