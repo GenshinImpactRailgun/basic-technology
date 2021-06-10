@@ -22,6 +22,7 @@
         <module>7.configuration</module>
         <module>8.proxy</module>
         <module>9.aop</module>
+        <module>10.mybatis</module>
     </modules>
 
 </project>
