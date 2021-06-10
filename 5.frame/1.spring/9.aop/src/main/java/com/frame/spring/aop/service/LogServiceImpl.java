@@ -10,7 +10,7 @@ import java.lang.reflect.Method;
  * 2021/6/10 0:21
  * PS:
  **/
-public class LogService implements MethodBeforeAdvice, AfterReturningAdvice {
+public class LogServiceImpl implements MethodBeforeAdvice, AfterReturningAdvice {
 
     /**
      * PS: 方法执行前调用的方法
@@ -44,4 +44,9 @@ public class LogService implements MethodBeforeAdvice, AfterReturningAdvice {
         assert target != null;
         System.out.println("类名：" + target.getClass().getName() + "方法名：" + method.getName() + "，返回结果为：" + returnValue);
     }
+
+    public void recordLog() {
+        System.out.println("日志服务执行记录日志服务；");
+    }
+
 }

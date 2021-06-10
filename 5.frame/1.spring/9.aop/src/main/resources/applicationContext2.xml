@@ -8,10 +8,10 @@
         https://www.springframework.org/schema/aop/spring-aop.xsd">
 
     <bean id="baseService" class="com.frame.spring.aop.service.BaseServiceImpl"/>
-    <bean id="logService" class="com.frame.spring.aop.service.LogService"/>
+    <bean id="logService" class="com.frame.spring.aop.service.LogServiceImpl"/>
     <bean id="mosquitoService" class="com.frame.spring.aop.service.MosquitoServiceImpl"/>
     <bean id="tableService" class="com.frame.spring.aop.service.TableServiceImpl"/>
-    <bean id="diyService" class="com.frame.spring.aop.service.DiyService"/>
+    <bean id="diyService" class="com.frame.spring.aop.service.DiyServiceImpl"/>
 
     <!-- 方式二，自定义类实现 -->
     <!-- aop 配置 -->

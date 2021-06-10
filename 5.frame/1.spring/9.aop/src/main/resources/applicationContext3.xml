@@ -11,14 +11,12 @@
     <bean id="logService" class="com.frame.spring.aop.service.LogServiceImpl"/>
     <bean id="mosquitoService" class="com.frame.spring.aop.service.MosquitoServiceImpl"/>
     <bean id="tableService" class="com.frame.spring.aop.service.TableServiceImpl"/>
+    <bean id="diyService" class="com.frame.spring.aop.service.DiyServiceImpl"/>
 
-    <!-- 方式一，使用原生 Spring API 接口 -->
-    <!-- aop 配置 -->
-    <aop:config>
-        <!-- 切入点 express 表达式 execution(* * * * *)【修饰词 返回值 列名 方法名 参数】【两个点表示有任意的参数】 -->
-        <aop:pointcut id="pointcut" expression="execution(* com.frame.spring.aop.service.BaseServiceImpl.*(..))"/>
-        <!-- 执行环绕 -->
-        <aop:advisor advice-ref="logService" pointcut-ref="pointcut"/>
-    </aop:config>
+    <!-- 使用注解实现 AOP -->
+    <bean id="annotationPointCut" class="com.frame.spring.aop.service.AnnotationPointCut"/>
+    <!-- 开启注解支持 【proxy-target-class="false" 使用的是】【jdk proxy-target-class="true" 使用的是 cglib】 -->
+    <!-- 如果目标类是接口的实现类，则必须使用 cglib -->
+    <aop:aspectj-autoproxy proxy-target-class="true"/>
 
 </beans>

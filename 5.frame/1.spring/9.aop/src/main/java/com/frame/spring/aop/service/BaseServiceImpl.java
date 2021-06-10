@@ -9,22 +9,22 @@ public class BaseServiceImpl<T> implements BaseService<T> {
 
     @Override
     public void insert() {
-        System.out.println("新增");
+        System.out.println("业务方法：新增");
     }
 
     @Override
     public void delete() {
-        System.out.println("删除");
+        System.out.println("业务方法：删除");
     }
 
     @Override
     public void update() {
-        System.out.println("更新");
+        System.out.println("业务方法：更新");
     }
 
     @Override
     public void select() {
-        System.out.println("查询");
+        System.out.println("业务方法：查询");
     }
 
     @Override
