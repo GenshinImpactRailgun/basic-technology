@@ -4,14 +4,14 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         https://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <!-- 使用 -->
-    <bean id="userTestMapper" class="com.frame.spring.mybatis.dao.UserTestMapperImpl">
-        <constructor-arg name="sqlSessionTemplate" ref="sqlSessionTemplate"/>
+    <!-- 使用  extends SqlSessionDaoSupport 的方式实现 sqlSession 的注入 -->
+    <bean id="userTestMapper" class="com.frame.spring.transaction.dao.UserTestMapperImpl">
+        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
     </bean>
 
-    <!-- 使用  extends SqlSessionDaoSupport 的方式实现 sqlSession 的注入 -->
-    <bean id="userTestMapper2" class="com.frame.spring.mybatis.dao.UserTestMapper2Impl">
-        <property name="sqlSessionFactory" ref="sqlSessionFactory"/>
+    <!-- 业务逻辑层 -->
+    <bean id="userTestService" class="com.frame.spring.transaction.service.UserTestServiceImpl">
+        <constructor-arg name="userTestMapper" ref="userTestMapper"/>
     </bean>
 
     <!-- 引入其他配置文件 -->

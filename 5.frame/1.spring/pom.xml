@@ -23,6 +23,7 @@
         <module>8.proxy</module>
         <module>9.aop</module>
         <module>10.mybatis</module>
+        <module>11.transaction</module>
     </modules>
 
 </project>

@@ -38,4 +38,13 @@ public class TestDemo {
         List<UserTest> list = mapper.selectUserTestAll();
         list.forEach(GsonUtil::objectSoutJson);
     }
+
+    @Test
+    public void test3(){
+        ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+        UserTestMapper mapper = context.getBean("userTestMapper2", UserTestMapper.class);
+        List<UserTest> list = mapper.selectUserTestAll();
+        list.forEach(GsonUtil::objectSoutJson);
+    }
+
 }

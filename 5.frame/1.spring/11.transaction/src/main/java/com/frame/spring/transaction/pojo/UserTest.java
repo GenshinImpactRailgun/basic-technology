@@ -1,6 +1,8 @@
-package com.frame.spring.mybatis.pojo;
+package com.frame.spring.transaction.pojo;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * @Author: railgun
@@ -8,6 +10,8 @@ import lombok.Data;
  * PS: 用户测试对象
  **/
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class UserTest {
 
     private Integer id;
