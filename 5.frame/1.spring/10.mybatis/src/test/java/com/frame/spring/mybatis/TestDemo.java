@@ -8,6 +8,8 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.junit.jupiter.api.Test;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -25,6 +27,14 @@ public class TestDemo {
         SqlSessionFactory factory = new SqlSessionFactoryBuilder().build(inputStream);
         SqlSession session = factory.openSession(true);
         UserTestMapper mapper = session.getMapper(UserTestMapper.class);
+        List<UserTest> list = mapper.selectUserTestAll();
+        list.forEach(GsonUtil::objectSoutJson);
+    }
+
+    @Test
+    public void test2() {
+        ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
+        UserTestMapper mapper = context.getBean("userTestMapper", UserTestMapper.class);
         List<UserTest> list = mapper.selectUserTestAll();
         list.forEach(GsonUtil::objectSoutJson);
     }
