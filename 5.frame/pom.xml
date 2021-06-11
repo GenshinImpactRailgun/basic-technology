@@ -13,7 +13,8 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>1.spring</module>
+        <!--<module>1.spring</module>-->
+        <module>2.springmvc</module>
     </modules>
 
     <!-- 配置 -->
