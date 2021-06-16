@@ -9,7 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>2.hello</artifactId>
+    <artifactId>3.annotation</artifactId>
 
     <!-- 依赖 -->
     <dependencies>
