@@ -11,13 +11,16 @@
 
     <artifactId>3.annotation</artifactId>
 
+    <!-- 指定该方式，不需要手动添加到 服务中 -->
+    <packaging>war</packaging>
+
     <!-- 依赖 -->
     <dependencies>
         <!-- spring -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
-            <version>5.3.7</version>
+            <version>5.1.9.RELEASE</version>
         </dependency>
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -33,6 +36,13 @@
             <groupId>javax.servlet</groupId>
             <artifactId>jstl</artifactId>
             <version>1.2</version>
+        </dependency>
+        <!-- lombok 语法糖 -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.20</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 

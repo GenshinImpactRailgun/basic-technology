@@ -1,4 +1,4 @@
-package com.frame.springmvc.annotation;
+package com.frame.springmvc.annotation.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

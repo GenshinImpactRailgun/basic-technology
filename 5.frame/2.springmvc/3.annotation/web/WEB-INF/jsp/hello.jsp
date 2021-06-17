@@ -13,4 +13,15 @@
 <body>
 ${msg}
 </body>
+<script type="text/javascript">
+    let user = {id: '89', name: '超电磁炮'};
+    console.log(user);
+    console.log('---------- 分割线 ----------');
+    let json = JSON.stringify(user);
+    console.log(json);
+    console.log('---------- 分割线 ----------');
+    let demo = JSON.parse(json);
+    console.log(demo);
+    console.log('---------- 分割线 ----------');
+</script>
 </html>
