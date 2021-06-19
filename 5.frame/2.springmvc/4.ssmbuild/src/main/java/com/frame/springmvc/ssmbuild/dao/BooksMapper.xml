@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.frame.springmvc.ssmbuild.dao.BooksMapper">
+    <!-- 增加一个 Books -->
+    <insert id="addBook" parameterType="Books">
+        insert into books(book_name, book_counts, detail)
+        values (#{bookName}, #{bookCounts}, #{detail})
+    </insert>
+
+    <!-- 根据 id 删除一个 Books -->
+    <delete id="deleteBookById" parameterType="java.lang.Integer">
+        delete
+        from books
+        where book_id = #{bookId}
+    </delete>
+
+    <!-- 更新 Books -->
+    <update id="updateBook" parameterType="Books">
+        update books
+        set book_name   = #{bookName},
+            book_counts = #{bookCounts},
+            detail      = #{detail}
+        where book_id = #{bookId}
+    </update>
+
+    <!-- 根据 id 查询，返回一个 Books -->
+    <select id="queryBookById" resultType="java.util.Map">
+        select *
+        from books
+        where book_id = #{bookId}
+    </select>
+
+    <!--查询全部Book-->
+    <select id="queryAllBook" resultType="java.util.Map">
+        SELECT *
+        from books
+    </select>
+</mapper>
