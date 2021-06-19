@@ -17,6 +17,8 @@
         <module>2.hello</module>
         <module>3.annotation</module>
         <module>4.ssmbuild</module>
+        <module>5.interceptor</module>
+        <module>6.filehandle</module>
     </modules>
 
 </project>
