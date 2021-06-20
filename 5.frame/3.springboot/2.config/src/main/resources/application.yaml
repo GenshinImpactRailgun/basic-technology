@@ -1,0 +1,40 @@
+person:
+  name: qinjiang${random.uuid}
+  age: ${random.int}
+  happy: false
+  birth: 2000/01/01
+  maps: { k1: v1,k2: v2 }
+  lists:
+    - code
+    - girl
+    - music
+  dog:
+    first-name: ${person.name:railgun}的旺财
+    age: 1
+
+dog:
+  name: ConfigurationProperties 优先级是否高于 Value
+  first-name: ${person.name:railgun}的旺财
+  age: 1
+
+name-test: railgun测试是否支持驼峰
+
+
+spring:
+  profiles:
+    active: dev1
+
+# 打印自动配置加载情况
+debug: true
+
+---
+server:
+  port: 8085
+spring:
+  profiles: dev1
+
+---
+server:
+  port: 8086
+spring:
+  profiles: test1
