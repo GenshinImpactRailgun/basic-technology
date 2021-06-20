@@ -15,6 +15,7 @@
     <modules>
         <module>1.helloworld</module>
         <module>2.config</module>
+        <module>3.web</module>
     </modules>
 
 </project>
