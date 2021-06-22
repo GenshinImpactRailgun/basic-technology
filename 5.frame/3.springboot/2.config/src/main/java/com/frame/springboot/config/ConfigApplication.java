@@ -9,8 +9,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * PS: 启动类
  **/
 @SpringBootApplication
-public class RailgunApplication {
+public class ConfigApplication {
     public static void main(String[] args) {
-        SpringApplication.run(RailgunApplication.class);
+        SpringApplication.run(ConfigApplication.class);
     }
 }

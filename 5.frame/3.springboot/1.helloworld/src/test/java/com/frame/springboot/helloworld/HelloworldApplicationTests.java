@@ -1,24 +1,23 @@
-package com.frame.springboot.web;
+package com.frame.springboot.helloworld;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 /**
  * @Author: railgun
- * 2021/6/21 0:25
- * PS: 测试类
+ * 2021/6/20 15:07
+ * PS: 测试
  **/
 @SpringBootTest
-public class RailgunApplicationTests {
+public class HelloworldApplicationTests {
 
     /**
      * railgun
-     * 2021/6/21 0:26
-     * PS: 测试类
+     * 2021/6/20 15:09
+     * PS: 执行测试方法
      **/
     @Test
-    public void contextLoads() {
-
+    void contextLoads() {
     }
 
 }

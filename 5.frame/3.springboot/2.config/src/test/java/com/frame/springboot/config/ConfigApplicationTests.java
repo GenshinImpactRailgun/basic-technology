@@ -13,7 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
  * PS: 启动类
  **/
 @SpringBootTest
-public class RailgunApplicationTests {
+public class ConfigApplicationTests {
 
     @Autowired
     private Dog dog;
