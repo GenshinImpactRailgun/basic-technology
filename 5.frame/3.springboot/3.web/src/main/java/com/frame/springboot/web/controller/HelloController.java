@@ -4,6 +4,7 @@ import com.basic.comon.Constant;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -13,6 +14,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
  **/
 @Controller
 public class HelloController {
+
+    private final TestController testController;
+
+    public HelloController(TestController testController) {
+        this.testController = testController;
+    }
 
     /**
      * railgun
@@ -29,6 +36,14 @@ public class HelloController {
     public String test1(Model model) {
         model.addAttribute("msg", Constant.SLOGAN);
         return "test";
+    }
+
+    @ResponseBody
+    @GetMapping(value = "test2/{taskId}")
+    public String test2(@PathVariable(value = "taskId") String taskId) {
+        testController.setTaskId(taskId);
+        testController.useTaskId();
+        return Constant.SLOGAN;
     }
 
 }
