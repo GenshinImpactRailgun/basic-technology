@@ -17,6 +17,7 @@
         <module>2.config</module>
         <module>3.web</module>
         <module>4.data</module>
+        <module>5.mybatis</module>
     </modules>
 
 </project>
