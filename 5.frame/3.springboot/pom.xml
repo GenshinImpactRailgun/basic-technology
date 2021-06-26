@@ -19,6 +19,8 @@
         <module>4.data</module>
         <module>5.mybatis</module>
         <module>6.security</module>
+        <module>7.shiro</module>
+        <module>8.shiroDemo</module>
     </modules>
 
 </project>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<p th:text="${msg}" style="color: red;"></p>
+<form th:action="@{/login-in}" method="post">
+    <div>
+        <label>
+            用户名：
+        </label>
+        <div>
+            <input type="text" placeholder="用户名" name="username">
+        </div>
+    </div>
+    <div>
+        <label>
+            密码：
+        </label>
+        <div>
+            <input type="password" placeholder="密码" name="pwd">
+        </div>
+    </div>
+    <div>
+        <input type="checkbox" name="remember"> 记住我
+    </div>
+    <input type="submit" class="bubble-legend-symbol" value="提交">
+</form>
+</body>
+</html>
