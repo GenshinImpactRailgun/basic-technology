@@ -22,6 +22,7 @@
         <module>7.shiro</module>
         <module>8.shiroDemo</module>
         <module>9.swagger</module>
+        <module>10.task</module>
     </modules>
 
 </project>
