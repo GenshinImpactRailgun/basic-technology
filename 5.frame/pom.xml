@@ -15,7 +15,8 @@
     <modules>
         <!--<module>1.spring</module>-->
         <!--<module>2.springmvc</module>-->
-        <module>3.springboot</module>
+        <!--<module>3.springboot</module>-->
+        <module>4.springcloud</module>
     </modules>
 
     <!-- 配置 -->
