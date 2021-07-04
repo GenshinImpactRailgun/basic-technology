@@ -70,14 +70,27 @@ public class DemoController {
     @Value(value = "${whichRibbon:}")
     private String whichRibbon;
 
+    @Value(value = "${server.port:}")
+    private String serverPort;
+
     /**
      * railgun
      * 2021/7/4 16:29
      * PS:
      **/
     @GetMapping("get-which-ribbon")
-    public String getWhichRibbon(){
+    public String getWhichRibbon() {
         return whichRibbon;
+    }
+
+    /**
+     * railgun
+     * 2021/7/4 18:44
+     * PS: 获取哪一个配置
+     **/
+    @GetMapping("get-server-port")
+    public String getServerPort() {
+        return serverPort;
     }
 
 }

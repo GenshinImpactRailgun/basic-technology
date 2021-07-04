@@ -20,14 +20,17 @@ public class DeptServiceImpl implements DeptService {
         this.deptMapper = deptMapper;
     }
 
+    @Override
     public Boolean addDept(Dept dept) {
         return deptMapper.addDept(dept);
     }
 
+    @Override
     public Dept queryById(Integer id) {
         return deptMapper.queryById(id);
     }
 
+    @Override
     public List<Dept> queryAll() {
         return deptMapper.queryAll();
     }

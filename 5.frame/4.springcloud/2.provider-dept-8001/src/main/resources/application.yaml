@@ -31,7 +31,7 @@ spring:
     useGlobalDataSourceStat: true
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
   profiles:
-    active: dev2
+    active: dev1
 
 mybatis:
   # mapper 文件位置地址

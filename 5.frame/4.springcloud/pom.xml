@@ -147,6 +147,12 @@
                 <artifactId>spring-cloud-starter-ribbon</artifactId>
                 <version>${spring.cloud.starter.version}</version>
             </dependency>
+            <!-- feign 服务端负载均衡依赖 -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-feign</artifactId>
+                <version>${spring.cloud.starter.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
