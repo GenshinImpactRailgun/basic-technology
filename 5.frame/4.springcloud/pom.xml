@@ -25,10 +25,10 @@
         <mybatis.starter.version>2.1.1</mybatis.starter.version>
         <druid.version>1.1.21</druid.version>
         <mysql.conn.version>5.1.47</mysql.conn.version>
-        <spring.boot.version>2.2.2.RELEASE</spring.boot.version>
+        <spring.boot.starter.version>2.2.2.RELEASE</spring.boot.starter.version>
         <spring.cloud.version>Hoxton.SR11</spring.cloud.version>
         <basic.common.version>1.0.0-SNAPSHOT</basic.common.version>
-        <eureka.server.version>1.4.7.RELEASE</eureka.server.version>
+        <spring.cloud.starter.version>1.4.7.RELEASE</spring.cloud.starter.version>
     </properties>
 
     <!-- 依赖管理 -->
@@ -46,7 +46,7 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
-                <version>${spring.boot.version}</version>
+                <version>${spring.boot.starter.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -65,7 +65,7 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-jdbc</artifactId>
-                <version>${spring.boot.version}</version>
+                <version>${spring.boot.starter.version}</version>
             </dependency>
             <!-- mybatis-SprinbBoot 启动器 -->
             <dependency>
@@ -101,13 +101,13 @@
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-web</artifactId>
-                <version>${spring.boot.version}</version>
+                <version>${spring.boot.starter.version}</version>
             </dependency>
             <!-- springboot单元测试 -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-test</artifactId>
-                <version>${spring.boot.version}</version>
+                <version>${spring.boot.starter.version}</version>
                 <scope>test</scope>
                 <!-- 剔除依赖 -->
                 <exclusions>
@@ -127,19 +127,25 @@
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-starter-eureka-server</artifactId>
-                <version>${eureka.server.version}</version>
+                <version>${spring.cloud.starter.version}</version>
             </dependency>
             <!-- 注册中心 客户端【注册到注册中心的各种应用】 -->
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-starter-eureka</artifactId>
-                <version>${eureka.server.version}</version>
+                <version>${spring.cloud.starter.version}</version>
             </dependency>
             <!-- actuator 完善监控信息 -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-actuator</artifactId>
-                <version>${spring.boot.version}</version>
+                <version>${spring.boot.starter.version}</version>
+            </dependency>
+            <!-- ribbon 客户端负载均衡依赖 -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-ribbon</artifactId>
+                <version>${spring.cloud.starter.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

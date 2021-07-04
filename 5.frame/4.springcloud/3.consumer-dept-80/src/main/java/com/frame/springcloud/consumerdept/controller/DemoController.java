@@ -15,7 +15,12 @@ import java.util.List;
 @RestController
 public class DemoController {
 
-    private static final String REST_URL_PREFEX = "http://127.0.0.1:8001/";
+    /**
+     * 2021/7/4 15:47 @railgun 由 ribbon 实现负载均衡，不能定死访问地址
+     * 应该通过服务名访问
+     **/
+    private static final String REST_URL_PREFEX_IP = "http://127.0.0.1:8001/";
+    private static final String REST_URL_PREFEX = "http://2.PROVIDER-DEPT-8001/";
 
     /**
      * railgun
@@ -56,6 +61,16 @@ public class DemoController {
     @PostMapping("add-dept")
     public Boolean addDept(@RequestBody Dept dept) {
         return restTemplate.postForObject(REST_URL_PREFEX + "add-dept", dept, Boolean.class);
+    }
+
+    /**
+     * railgun
+     * 2021/7/4 16:37
+     * PS: 测试负载均衡接口
+     **/
+    @GetMapping("get-which-ribbon")
+    public String getWhichRibbon() {
+        return restTemplate.getForObject(REST_URL_PREFEX + "get-which-ribbon", String.class);
     }
 
 }

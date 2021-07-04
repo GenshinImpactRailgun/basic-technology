@@ -4,6 +4,7 @@ import com.frame.springcloud.api.pojo.Dept;
 import com.frame.springcloud.providerdept.service.DeptService;
 import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.web.bind.annotation.*;
@@ -64,6 +65,19 @@ public class DemoController {
         map.put("services", services);
         map.put("instances", instances);
         return map;
+    }
+
+    @Value(value = "${whichRibbon:}")
+    private String whichRibbon;
+
+    /**
+     * railgun
+     * 2021/7/4 16:29
+     * PS:
+     **/
+    @GetMapping("get-which-ribbon")
+    public String getWhichRibbon(){
+        return whichRibbon;
     }
 
 }

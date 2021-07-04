@@ -5,3 +5,16 @@ server:
 logging:
   level:
     com.frame.springcloud: info
+
+# 注册中心配置
+eureka:
+  client:
+    service-url:
+      defaultZone: http://railgun0.com:7000/eureka/,http://railgun1.com:7001/eureka/,http://railgun2.com:7002/eureka/
+    # 不向 Eureka 中注册自己【测试需要，所以将配置注释掉】
+    #register-with-eureka: false
+  instance:
+    instance-id: consumer-dept
+info:
+  app.name: railgun-consumer
+  company.name: raigun.com

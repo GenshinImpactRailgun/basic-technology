@@ -1,3 +1,11 @@
+spring:
+  profiles:
+    active: dev2
+
+# 7000 端口的注册中心
+---
+spring:
+  profiles: dev
 server:
   port: 7000
 
@@ -5,7 +13,7 @@ server:
 eureka:
   instance:
     # Eureka 服务器端实例名称
-    hostname: localhost
+    hostname: railgun.com
   client:
     # 是否向 eureka 注册自己
     register-with-eureka: false
@@ -13,4 +21,46 @@ eureka:
     fetch-registry: false
     service-url:
       # 其他应用向注册中心注册的地址
-      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+      defaultZone: http://railgun1.com:7001/eureka/,http://railgun2.com:7002/eureka/
+
+# 7001 端口的注册中心
+---
+spring:
+  profiles: dev1
+server:
+  port: 7001
+
+# Eureka 配置
+eureka:
+  instance:
+    # Eureka 服务器端实例名称
+    hostname: railgun1.com
+  client:
+    # 是否向 eureka 注册自己
+    register-with-eureka: false
+    # 为 false 表示自己是注册中心
+    fetch-registry: false
+    service-url:
+      # 其他应用向注册中心注册的地址
+      defaultZone: http://railgun.com:7000/eureka/,http://railgun2.com:7002/eureka/
+
+# 7002 端口的注册中心
+---
+spring:
+  profiles: dev2
+server:
+  port: 7002
+
+# Eureka 配置
+eureka:
+  instance:
+    # Eureka 服务器端实例名称
+    hostname: railgun2.com
+  client:
+    # 是否向 eureka 注册自己
+    register-with-eureka: false
+    # 为 false 表示自己是注册中心
+    fetch-registry: false
+    service-url:
+      # 其他应用向注册中心注册的地址
+      defaultZone: http://railgun.com:7000/eureka/,http://railgun1.com:7001/eureka/
