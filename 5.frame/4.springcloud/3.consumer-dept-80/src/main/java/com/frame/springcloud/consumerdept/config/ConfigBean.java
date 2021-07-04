@@ -1,5 +1,6 @@
 package com.frame.springcloud.consumerdept.config;
 
+import com.netflix.loadbalancer.AvailabilityFilteringRule;
 import com.netflix.loadbalancer.IRule;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;
@@ -36,7 +37,7 @@ public class ConfigBean {
      **/
     @Bean
     public IRule getRule() {
-        return new RailgunRule();
+        return new AvailabilityFilteringRule();
     }
 
 }

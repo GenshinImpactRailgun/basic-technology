@@ -31,7 +31,7 @@ spring:
     useGlobalDataSourceStat: true
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
   profiles:
-    active: dev1
+    active: dev
 
 mybatis:
   # mapper 文件位置地址
@@ -64,7 +64,10 @@ spring:
 whichRibbon: dev
 eureka:
   instance:
+    # Eureka 描述信息
     instance-id: provider-dept
+    # 为 true 可以显示服务的 ip
+    prefer-ip-address: true
 
 # dev1 配置的客户端
 ---

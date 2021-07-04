@@ -1,7 +1,9 @@
 package com.frame.springcloud.api.service;
 
 import com.frame.springcloud.api.pojo.Dept;
+import com.frame.springcloud.api.service.hystrix.DeptClientServiceFallbackFactory;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,8 +14,10 @@ import java.util.List;
  * @Author: railgun
  * 2021/7/4 18:31
  * PS: 接口
+ * fallbackFactory   设置服务降级对应的实现类
  **/
-@FeignClient(value = "2.PROVIDER-DEPT-8001")
+@Component
+@FeignClient(value = "2.PROVIDER-DEPT-8001", fallbackFactory = DeptClientServiceFallbackFactory.class)
 public interface DeptClientService {
     /**
      * PS: 增加一个部门
@@ -56,4 +60,26 @@ public interface DeptClientService {
      **/
     @GetMapping("get-server-port")
     String getServerPort();
+
+    /**
+     * PS: 熔断器方式调用接口
+     *
+     * @param id
+     * @Author: railgun
+     * @return: com.frame.springcloud.api.pojo.Dept
+     * 2021/7/4 22:46
+     **/
+    @GetMapping("hystrix/get-dept-by-id/{id}")
+    Dept queryByIdHystrix(@PathVariable("id") Integer id);
+
+    /**
+     * PS: 熔断器获取所有的部门
+     *
+     * @Author: railgun
+     * @return: java.util.List<com.frame.springcloud.api.pojo.Dept>
+     * 2021/7/4 22:55
+     **/
+    @GetMapping("hystrix/get-all")
+    List<Dept> getAllHystrix();
+
 }

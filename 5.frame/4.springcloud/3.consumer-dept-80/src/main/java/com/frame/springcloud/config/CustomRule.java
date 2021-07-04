@@ -1,7 +1,7 @@
 package com.frame.springcloud.config;
 
+import com.netflix.loadbalancer.AvailabilityFilteringRule;
 import com.netflix.loadbalancer.IRule;
-import com.netflix.loadbalancer.RoundRobinRule;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -22,7 +22,8 @@ public class CustomRule {
      **/
     @Bean
     public IRule getRule() {
-        return new RoundRobinRule();
+        // 负载均衡策略为，存活的的应用中轮询
+        return new AvailabilityFilteringRule();
     }
 
 }

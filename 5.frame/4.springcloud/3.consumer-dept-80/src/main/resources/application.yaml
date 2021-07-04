@@ -18,3 +18,8 @@ eureka:
 info:
   app.name: railgun-consumer
   company.name: raigun.com
+
+feign:
+  hystrix:
+    # 开启服务降级功能
+    enabled: true

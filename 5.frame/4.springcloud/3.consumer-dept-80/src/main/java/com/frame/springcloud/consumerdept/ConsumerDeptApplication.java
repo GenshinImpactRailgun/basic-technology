@@ -7,6 +7,8 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.cloud.netflix.ribbon.RibbonClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.ComponentScans;
 
 /**
  * @Author: railgun
@@ -20,13 +22,19 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
  * @ComponentScan("com.frame.springcloud.api") 该方式会导致本工程下的 bean 的注入失效
  * PS：不需要 @ComponentScans 注解，并不需要扫描 com.frame.springcloud.api 改路径下的文件
  * DeptClientService 的注入已经由 @EnableFeignClients 注解完成操作了
+ * ------ feign 使用解释结束 ------
+ *
+ * ------ 服务降级作用在客户端的一定要加以下注解 否则 api  应用路径下配置的 bean 会扫描不到
+ * @ComponentScans({@ComponentScan("com.frame.springcloud.api")})
+ * ------ 服务降级解释结束 ------
+ *
  **/
 @SpringBootApplication
 @EnableEurekaClient
 @EnableDiscoveryClient
 @RibbonClient(name = "2.PROVIDER-DEPT-8001", configuration = CustomRule.class)
 @EnableFeignClients(basePackages = {"com.frame.springcloud"})
-//@ComponentScans({@ComponentScan("com.frame.springcloud.api")})
+@ComponentScans({@ComponentScan("com.frame.springcloud.api")})
 //@ComponentScan("com.frame.springcloud.api")
 public class ConsumerDeptApplication {
     public static void main(String[] args) {

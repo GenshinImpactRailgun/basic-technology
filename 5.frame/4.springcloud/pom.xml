@@ -153,6 +153,12 @@
                 <artifactId>spring-cloud-starter-feign</artifactId>
                 <version>${spring.cloud.starter.version}</version>
             </dependency>
+            <!-- hystrix 熔断器 -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-hystrix</artifactId>
+                <version>${spring.cloud.starter.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
