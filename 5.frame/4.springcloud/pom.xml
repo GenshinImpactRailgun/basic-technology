@@ -13,6 +13,8 @@
     <modules>
         <module>1.api</module>
         <module>2.provider-dept-8001</module>
+        <module>3.consumer-dept-80</module>
+        <module>4.eureka</module>
     </modules>
 
     <properties>
@@ -24,13 +26,15 @@
         <druid.version>1.1.21</druid.version>
         <mysql.conn.version>5.1.47</mysql.conn.version>
         <spring.boot.version>2.2.2.RELEASE</spring.boot.version>
-        <spring.cloud.version>Greenwich.SR1</spring.cloud.version>
+        <spring.cloud.version>Hoxton.SR11</spring.cloud.version>
         <basic.common.version>1.0.0-SNAPSHOT</basic.common.version>
+        <eureka.server.version>1.4.7.RELEASE</eureka.server.version>
     </properties>
 
     <!-- 依赖管理 -->
     <dependencyManagement>
         <dependencies>
+            <!-- SpringCloud 依赖 -->
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
@@ -38,6 +42,7 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            <!-- SpringBoot 依赖 -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
@@ -57,16 +62,16 @@
                 <artifactId>druid</artifactId>
                 <version>${druid.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-jdbc</artifactId>
+                <version>${spring.boot.version}</version>
+            </dependency>
             <!-- mybatis-SprinbBoot 启动器 -->
             <dependency>
                 <groupId>org.mybatis.spring.boot</groupId>
                 <artifactId>mybatis-spring-boot-starter</artifactId>
                 <version>${mybatis.starter.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-starter-jdbc</artifactId>
-                <version>${spring.boot.version}</version>
             </dependency>
             <!-- 测试相关 -->
             <dependency>
@@ -86,6 +91,7 @@
                 <artifactId>slf4j-log4j12</artifactId>
                 <version>${slf4j.version}</version>
             </dependency>
+            <!-- 日志门面 -->
             <dependency>
                 <groupId>log4j</groupId>
                 <artifactId>log4j</artifactId>
@@ -116,6 +122,24 @@
                 <groupId>com.basic.technology</groupId>
                 <artifactId>basic-common</artifactId>
                 <version>${basic.common.version}</version>
+            </dependency>
+            <!-- 注册中心 服务端 -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-eureka-server</artifactId>
+                <version>${eureka.server.version}</version>
+            </dependency>
+            <!-- 注册中心 客户端【注册到注册中心的各种应用】 -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-eureka</artifactId>
+                <version>${eureka.server.version}</version>
+            </dependency>
+            <!-- actuator 完善监控信息 -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-actuator</artifactId>
+                <version>${spring.boot.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

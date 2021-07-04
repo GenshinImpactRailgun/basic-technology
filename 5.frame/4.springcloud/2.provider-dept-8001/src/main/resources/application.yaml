@@ -1,5 +1,5 @@
 server:
-  port: 10001
+  port: 8001
 
 
 spring:
@@ -41,3 +41,19 @@ mybatis:
   configuration:
     # 下划线转驼峰设置
     map-underscore-to-camel-case: true
+
+# 日志配置
+logging:
+  level:
+    com.frame.springcloud: info
+
+# 注册中心配置
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:7000/eureka/
+  instance:
+    instance-id: provider-dept
+info:
+  app.name: railgun-springcloud-dept
+  company.name: raigun.com

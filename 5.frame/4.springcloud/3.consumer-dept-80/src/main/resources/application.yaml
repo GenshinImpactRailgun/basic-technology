@@ -1,0 +1,7 @@
+server:
+  port: 80
+
+# 日志配置
+logging:
+  level:
+    com.frame.springcloud: info
