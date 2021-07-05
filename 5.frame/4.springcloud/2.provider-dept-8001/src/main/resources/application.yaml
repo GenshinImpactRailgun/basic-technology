@@ -49,7 +49,8 @@ logging:
 eureka:
   client:
     service-url:
-      defaultZone: http://railgun0.com:7000/eureka/,http://railgun1.com:7001/eureka/,http://railgun2.com:7002/eureka/
+      #defaultZone: http://railgun.com:7000/eureka/,http://railgun1.com:7001/eureka/,http://railgun2.com:7002/eureka/
+      defaultZone: http://railgun.com:7000/eureka/
 
 info:
   app.name: railgun-provider
@@ -68,6 +69,8 @@ eureka:
     instance-id: provider-dept
     # 为 true 可以显示服务的 ip
     prefer-ip-address: true
+    # Eureka 注册中心应用名称
+    appname: 2.PROVIDER-DEPT-8001
 
 # dev1 配置的客户端
 ---
@@ -79,6 +82,8 @@ whichRibbon: dev1
 eureka:
   instance:
     instance-id: provider-dept1
+    # Eureka 注册中心应用名称
+    appname: 2.PROVIDER-DEPT-8001
 
 # dev2 配置的客户端
 ---
@@ -90,3 +95,5 @@ whichRibbon: dev2
 eureka:
   instance:
     instance-id: provider-dept2
+    # Eureka 注册中心应用名称
+    appname: 2.PROVIDER-DEPT-8001

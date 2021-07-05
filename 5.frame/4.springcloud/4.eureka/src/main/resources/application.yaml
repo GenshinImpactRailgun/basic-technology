@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: dev2
+    active: dev
 
 # 7000 端口的注册中心
 ---

@@ -1,15 +1,9 @@
 server:
-  port: 80
+  port: 10000
 
 spring:
   application:
-    # 远程调用的时候的服务名
-    name: 3.consumer-dept-80
-
-# 日志配置
-logging:
-  level:
-    com.frame.springcloud: info
+    name: 6.zuul
 
 # 注册中心配置
 eureka:
@@ -20,14 +14,20 @@ eureka:
     # 不向 Eureka 中注册自己【测试需要，所以将配置注释掉】
     #register-with-eureka: false
   instance:
-    instance-id: consumer-dept
+    instance-id: zuul
     # Eureka 注册中心应用名称
-    appname: 3.consumer-dept-80
+    appname: 6.zuul
+    # 显示 ip
+    prefer-ip-address: true
 info:
-  app.name: railgun-consumer
+  app.name: railgun-zuul
   company.name: raigun.com
 
-feign:
-  hystrix:
-    # 开启服务降级功能
-    enabled: true
+zuul:
+  routes:
+    mydept.serviceId: 3.consumer-dept-80
+    mydept.path: /mydept/**
+  #  隐藏全部的微服务名称
+  ignored-services: "*"
+  # 访问的时候统一的前缀
+  prefix: /railgun

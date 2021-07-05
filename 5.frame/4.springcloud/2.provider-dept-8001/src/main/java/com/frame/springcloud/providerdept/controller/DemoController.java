@@ -2,13 +2,13 @@ package com.frame.springcloud.providerdept.controller;
 
 import com.frame.springcloud.api.pojo.Dept;
 import com.frame.springcloud.providerdept.service.DeptService;
-import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -61,7 +61,7 @@ public class DemoController {
     public Map<String, Object> getDiscoveryMessage() {
         List<String> services = discoveryClient.getServices();
         List<ServiceInstance> instances = discoveryClient.getInstances("2.PROVIDER-DEPT-8001");
-        Map<String, Object> map = Maps.newHashMapWithExpectedSize(2);
+        Map<String, Object> map = new HashMap<>(4);
         map.put("services", services);
         map.put("instances", instances);
         return map;
