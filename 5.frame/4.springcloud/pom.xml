@@ -15,6 +15,7 @@
         <module>2.provider-dept-8001</module>
         <module>3.consumer-dept-80</module>
         <module>4.eureka</module>
+        <module>5.hystrixdashboard</module>
     </modules>
 
     <properties>
@@ -157,6 +158,12 @@
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-starter-hystrix</artifactId>
+                <version>${spring.cloud.starter.version}</version>
+            </dependency>
+            <!-- hystrix dashboard 流监控 -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-netflix-hystrix-dashboard</artifactId>
                 <version>${spring.cloud.starter.version}</version>
             </dependency>
         </dependencies>
