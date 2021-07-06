@@ -1,0 +1,30 @@
+server:
+  port: 11000
+
+spring:
+  application:
+    name: 7.config-server
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://gitee.com/ai39Me/spring-cloud-config.git
+
+# 注册中心配置
+eureka:
+  client:
+    service-url:
+      #defaultZone: http://railgun.com:7000/eureka/,http://railgun1.com:7001/eureka/,http://railgun2.com:7002/eureka/
+      defaultZone: http://railgun.com:7000/eureka/
+    # 不向 Eureka 中注册自己【测试需要，所以将配置注释掉】
+    #register-with-eureka: false
+  instance:
+    instance-id: config-server
+    # Eureka 注册中心应用名称
+    appname: 7.config-server
+    # 显示 ip
+    prefer-ip-address: true
+info:
+  app.name: railgun-config-server
+  company.name: raigun.com
+

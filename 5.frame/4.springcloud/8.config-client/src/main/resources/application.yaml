@@ -1,0 +1,20 @@
+server:
+  port: 11001
+
+# 注册中心配置
+eureka:
+  client:
+    service-url:
+      #defaultZone: http://railgun.com:7000/eureka/,http://railgun1.com:7001/eureka/,http://railgun2.com:7002/eureka/
+      defaultZone: http://railgun.com:7000/eureka/
+    # 不向 Eureka 中注册自己【测试需要，所以将配置注释掉】
+    #register-with-eureka: false
+  instance:
+    instance-id: config-client
+    # Eureka 注册中心应用名称
+    appname: 8.config-client
+    # 显示 ip
+    prefer-ip-address: true
+info:
+  app.name: railgun-config-client
+  company.name: raigun.com

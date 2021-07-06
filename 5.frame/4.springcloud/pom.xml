@@ -17,6 +17,8 @@
         <module>4.eureka</module>
         <module>5.hystrixdashboard</module>
         <module>6.zuul</module>
+        <module>7.config-server</module>
+        <module>8.config-client</module>
     </modules>
 
     <properties>
@@ -31,6 +33,7 @@
         <spring.cloud.version>Hoxton.SR11</spring.cloud.version>
         <basic.common.version>1.0.0-SNAPSHOT</basic.common.version>
         <spring.cloud.starter.version>1.4.7.RELEASE</spring.cloud.starter.version>
+        <spring.cloud.config.server.version>2.2.8.RELEASE</spring.cloud.config.server.version>
     </properties>
 
     <!-- 依赖管理 -->
@@ -178,6 +181,18 @@
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-starter-zuul</artifactId>
                 <version>${spring.cloud.starter.version}</version>
+            </dependency>
+            <!-- config 配置中心【包含客户端的引用】 -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-config</artifactId>
+                <version>${spring.cloud.starter.version}</version>
+            </dependency>
+            <!-- config 配置中心【服务端 引用】 -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-config-server</artifactId>
+                <version>${spring.cloud.config.server.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

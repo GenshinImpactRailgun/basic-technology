@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: 8.config-client
+  cloud:
+    config:
+      uri: http://127.0.0.1:11000/
+      name: application
+      profile: dev
+      label: master
+    # 修复github webhook 只能刷新config server 无法刷新config client的问题
+    bus:
+      id: ${spring.application.name}:${spring.cloud.config.profile}:${random.value}
