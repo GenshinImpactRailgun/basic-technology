@@ -28,3 +28,9 @@ info:
   app.name: railgun-config-server
   company.name: raigun.com
 
+management:
+  endpoints:
+    web:
+      exposure:
+        # 为了暴露actuator的接口
+        include: "*"
