@@ -7,6 +7,10 @@ spring:
       name: application
       profile: dev
       label: master
-    # 修复github webhook 只能刷新config server 无法刷新config client的问题
-    bus:
-      id: ${spring.application.name}:${spring.cloud.config.profile}:${random.value}
+
+# 不安全的操作 暴露 endpoints
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
