@@ -15,9 +15,9 @@
         <!-- 算法模块 -->
         <!--<module>1.algorithm</module>-->
         <!-- java 基础 -->
-        <!--<module>2.java</module>-->
+        <module>2.java</module>
         <!-- 框架 -->
-        <module>5.frame</module>
+        <!--<module>5.frame</module>-->
     </modules>
 
 </project>
