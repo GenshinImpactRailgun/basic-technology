@@ -11,11 +11,80 @@
 
     <artifactId>3.Kafka</artifactId>
 
-    <!-- jar 包打包 -->
-    <packaging>jar</packaging>
+    <!-- 依赖管理 -->
+    <packaging>pom</packaging>
 
-    <!-- 当前模块需要的依赖。如果父依赖中已经引入了，直接引入，不需要增加版本号 -->
-    <dependencies>
-    </dependencies>
+    <modules>
+        <module>1.producer</module>
+        <module>2.consumer</module>
+        <module>3.streams</module>
+        <module>4.connect</module>
+        <module>5.admin</module>
+    </modules>
+
+    <properties>
+        <junit.version>5.5.0</junit.version>
+        <lombok.version>1.18.20</lombok.version>
+        <slf4j.version>1.7.21</slf4j.version>
+        <log4j.version>1.2.17</log4j.version>
+        <mybatis.starter.version>2.1.1</mybatis.starter.version>
+        <druid.version>1.1.21</druid.version>
+        <mysql.conn.version>5.1.47</mysql.conn.version>
+        <spring.boot.starter.version>2.2.2.RELEASE</spring.boot.starter.version>
+        <spring.cloud.version>Hoxton.SR11</spring.cloud.version>
+        <basic.common.version>1.0.0-SNAPSHOT</basic.common.version>
+        <spring.cloud.starter.version>1.4.7.RELEASE</spring.cloud.starter.version>
+        <spring.cloud.config.server.version>2.2.8.RELEASE</spring.cloud.config.server.version>
+        <kafka.clients.version>2.7.0</kafka.clients.version>
+        <kafka.streams.version>2.7.0</kafka.streams.version>
+    </properties>
+
+    <!-- 依赖管理 -->
+    <dependencyManagement>
+        <dependencies>
+            <!-- 测试 -->
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-api</artifactId>
+                <version>${junit.version}</version>
+            </dependency>
+            <!-- lombok -->
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+            </dependency>
+            <!-- 日志 -->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-log4j12</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+            <!-- 日志门面 -->
+            <dependency>
+                <groupId>log4j</groupId>
+                <artifactId>log4j</artifactId>
+                <version>${log4j.version}</version>
+            </dependency>
+            <!-- 工具包依赖 -->
+            <dependency>
+                <groupId>com.basic.technology</groupId>
+                <artifactId>basic-common</artifactId>
+                <version>${basic.common.version}</version>
+            </dependency>
+            <!-- kafka API 接口依赖【producer、consumer、admin】 -->
+            <dependency>
+                <groupId>org.apache.kafka</groupId>
+                <artifactId>kafka-clients</artifactId>
+                <version>${kafka.clients.version}</version>
+            </dependency>
+            <!-- kafka API 接口依赖【streams】 -->
+            <dependency>
+                <groupId>org.apache.kafka</groupId>
+                <artifactId>kafka-streams</artifactId>
+                <version>${kafka.streams.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
 </project>
