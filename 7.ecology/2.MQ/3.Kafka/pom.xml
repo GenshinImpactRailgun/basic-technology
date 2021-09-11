@@ -20,6 +20,7 @@
         <module>3.streams</module>
         <module>4.connect</module>
         <module>5.admin</module>
+        <module>6.spring-boot-demo</module>
     </modules>
 
     <properties>
@@ -37,6 +38,8 @@
         <spring.cloud.config.server.version>2.2.8.RELEASE</spring.cloud.config.server.version>
         <kafka.clients.version>2.7.0</kafka.clients.version>
         <kafka.streams.version>2.7.0</kafka.streams.version>
+        <spring.boot.version>2.5.4</spring.boot.version>
+        <spring.kafka.version>2.7.6</spring.kafka.version>
     </properties>
 
     <!-- 依赖管理 -->
@@ -83,6 +86,32 @@
                 <groupId>org.apache.kafka</groupId>
                 <artifactId>kafka-streams</artifactId>
                 <version>${kafka.streams.version}</version>
+            </dependency>
+            <!-- SpringBoot web starter -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-web</artifactId>
+                <version>${spring.boot.version}</version>
+            </dependency>
+            <!-- SpringBoot test starter -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-test</artifactId>
+                <version>${spring.boot.version}</version>
+                <scope>test</scope>
+                <!-- 剔除依赖 -->
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.junit.vintage</groupId>
+                        <artifactId>junit-vintage-engine</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <!-- spring kafka 集成依赖 -->
+            <dependency>
+                <groupId>org.springframework.kafka</groupId>
+                <artifactId>spring-kafka</artifactId>
+                <version>${spring.kafka.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

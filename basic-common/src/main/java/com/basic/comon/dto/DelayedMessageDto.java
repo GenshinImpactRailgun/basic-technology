@@ -1,6 +1,5 @@
 package com.basic.comon.dto;
 
-import com.sun.istack.internal.NotNull;
 import lombok.Data;
 import lombok.ToString;
 
@@ -53,7 +52,7 @@ public class DelayedMessageDto implements Delayed {
      * PS: 覆写延迟方法
      */
     @Override
-    public long getDelay(@NotNull TimeUnit unit) {
+    public long getDelay(TimeUnit unit) {
         return compareTime - System.currentTimeMillis();
     }
 
@@ -63,7 +62,7 @@ public class DelayedMessageDto implements Delayed {
      * PS: 覆写比较方法
      */
     @Override
-    public int compareTo(@NotNull Delayed o) {
+    public int compareTo(Delayed o) {
         DelayedMessageDto item = (DelayedMessageDto) o;
         long diff = this.compareTime - item.compareTime;
         if (diff <= 0) {
