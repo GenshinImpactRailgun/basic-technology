@@ -31,6 +31,8 @@ spring:
 
 logging:
   level:
+    cn.*: INFO
+    com.*: INFO
     org:
       springframework:
         # spring-kafka INFO 日志太多了，所以我们限制只打印 ERROR 级别

@@ -27,15 +27,15 @@
             <artifactId>lombok</artifactId>
         </dependency>
         <!-- 日志 -->
-        <!--<dependency>
+        <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-log4j12</artifactId>
         </dependency>
-        &lt;!&ndash; 日志门面 &ndash;&gt;
+        <!-- 日志门面 -->
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
-        </dependency>-->
+        </dependency>
         <!-- 工具包依赖 -->
         <dependency>
             <groupId>com.basic.technology</groupId>

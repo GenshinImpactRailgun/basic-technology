@@ -114,9 +114,11 @@ public class KafkaProducerDemoTests {
     public void test3() {
         Properties props = new Properties();
         props.setProperty("bootstrap.servers", "192.168.39.39:9092,192.168.39.40:9092,192.168.39.41:9092");
+        // 设置了 transactional.id 之后，默认开启幂等性，acks 设置为 all，retries 设置为 Integer.MAX_VALUE【来源于官方文档的说明】
         props.put("transactional.id", "my-transactional-id");
         Producer<String, String> producer = new KafkaProducer<>(props, new StringSerializer(), new StringSerializer());
 
+        // 开启事务之前一定得执行该方法
         producer.initTransactions();
 
         try {
