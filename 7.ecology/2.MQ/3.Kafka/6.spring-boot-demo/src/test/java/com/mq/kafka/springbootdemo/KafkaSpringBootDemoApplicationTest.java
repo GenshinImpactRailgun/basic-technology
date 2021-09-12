@@ -25,7 +25,7 @@ public class KafkaSpringBootDemoApplicationTest {
     @Test
     public void testSyncSend() {
         int id = (int) (System.currentTimeMillis() / 1000);
-        SendResult<String, Object> result = producer.syncSend(String.valueOf(id), "hello kiana");
+        SendResult<String, Object> result = producer.syncSend(String.valueOf(id), "你好，琪亚娜");
         log.info("[testSyncSend][发送编号：[{}] 发送结果：[{}]]", id, result);
 
         try {

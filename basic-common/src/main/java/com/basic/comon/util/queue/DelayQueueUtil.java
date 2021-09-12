@@ -15,7 +15,6 @@ import java.util.concurrent.ThreadPoolExecutor;
  * 2021/9/1
  * PS: 延迟队列工具类
  */
-@Slf4j
 public class DelayQueueUtil {
 
     /**
