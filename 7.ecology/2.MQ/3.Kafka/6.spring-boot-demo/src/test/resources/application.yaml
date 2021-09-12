@@ -13,6 +13,15 @@ spring:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       # 消息的 value 的序列化
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      # 【批量发送消息设置的三个参数：消息数量、消息的内存、超时时间。满足其一就会执行批量发送消息】
+      # 每次批量发送消息数量
+      batch-size: 1
+      # 批量发送消息的最大内存
+      buffer-memory: 1024000
+      properties:
+        # 超过这个时间就发送消息
+        linger:
+          ms: 0
     # Kafka Consumer 配置项
     consumer:
       # 设置消费者分组最初的消费进度为 earliest 。可参考博客 https://blog.csdn.net/lishuangzhe7047/article/details/74530417 理解

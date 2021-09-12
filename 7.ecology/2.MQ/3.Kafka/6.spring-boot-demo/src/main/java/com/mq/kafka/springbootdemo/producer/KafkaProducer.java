@@ -26,7 +26,7 @@ public class KafkaProducer {
     /**
      * railgun
      * 2021/9/11 11:29
-     * PS:
+     * PS: 同步发送消息
      */
     public SendResult<String, Object> syncSend(String id, String content) {
         KafkaMessageDto message = new KafkaMessageDto();
@@ -46,7 +46,7 @@ public class KafkaProducer {
     /**
      * railgun
      * 2021/9/11 11:29
-     * PS:
+     * PS: 异步发送消息
      */
     public ListenableFuture<SendResult<String, Object>> asyncSend(String id, String content) {
         KafkaMessageDto message = new KafkaMessageDto();
@@ -54,7 +54,9 @@ public class KafkaProducer {
         message.setId(id);
         message.setContent(content);
         // 异步发送消息
-        return kafkaTemplate.send(message.getTopic(), message);
+        ListenableFuture<SendResult<String, Object>> result = kafkaTemplate.send(message.getTopic(), message);
+        // kafkaTemplate flush 调用之后可以立即发送 消息 给 broker，但是此次会话之后的消息就都不能发送了
+        return result;
     }
 
 }
