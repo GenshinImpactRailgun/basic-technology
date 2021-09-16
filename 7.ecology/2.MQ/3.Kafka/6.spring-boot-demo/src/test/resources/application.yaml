@@ -8,7 +8,7 @@ spring:
       # 0-不应答。1-leader 应答。all-所有 leader 和 follower 应答。
       acks: all
       # 发送失败时，重试发送的次数
-      retries: 0
+      retries: 10
       # 消息的 key 的序列化
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       # 消息的 value 的序列化
@@ -22,21 +22,37 @@ spring:
         # 超过这个时间就发送消息
         linger:
           ms: 0
+      # 事务前缀
+      # transaction-id-prefix: demo
     # Kafka Consumer 配置项
     consumer:
       # 设置消费者分组最初的消费进度为 earliest 。可参考博客 https://blog.csdn.net/lishuangzhe7047/article/details/74530417 理解
       auto-offset-reset: earliest
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      # poll 一次拉取的阻塞的最大时长，单位：毫秒。这里指的是阻塞拉取需要满足至少 fetch-min-size 大小的消息
+      # fetch-max-wait: 10000
+      # poll 一次消费拉取的最小数据量，单位：字节
+      # fetch-min-size: 10
+      # poll 一次消费拉取的最大数量
+      # max-poll-records: 100
       properties:
+        isolation:
+        # 读取已经提交的信息
+        #level: read_committed
         spring:
           json:
             trusted:
               packages: com.mq.kafka.springbootdemo.Dto
-    # Kafka Consumer Listener 监听器配置
+      # 关闭自动提交配置【emm，默认也是关闭的】
+      enable-auto-commit: false
     listener:
+      # 监听器类型，默认为 SINGLE ，只监听单条消息。这里我们配置 BATCH ，监听多条消息，批量消费
+      # type: BATCH
       # 消费监听接口监听的主题不存在时，默认会报错。所以通过设置为 false ，解决报错
       missing-topics-fatal: false
+      # 消息被消费完成，再提交消费进度
+      ack-mode: MANUAL_IMMEDIATE
 
 logging:
   level:
@@ -47,4 +63,5 @@ logging:
       apache:
         # kafka INFO 日志太多了，所以我们限制只打印 ERROR 级别
         kafka: ERROR
-
+server:
+  port: 8081

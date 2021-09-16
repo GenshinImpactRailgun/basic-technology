@@ -59,4 +59,50 @@ public class KafkaProducer {
         return result;
     }
 
+    /**
+     * railgun
+     * 2021/9/13 9:08
+     * PS: 发送消息到指定分区【依据 key 的 hash 值】
+     */
+    public ListenableFuture<SendResult<String, Object>> sendMessageToAppointPartitionByKey(String id, String content) {
+        KafkaMessageDto message = KafkaMessageDto.initKafkaMessageDto(id, content);
+        // 依据 key 的 hash 值，来确定投递到哪一个分区
+        return kafkaTemplate.send(message.getTopic(), KafkaConstant.APPOINT_SEND_PARTITION_KEY, message);
+    }
+
+    /**
+     * railgun
+     * 2021/9/13 9:28
+     * PS: 发送消息到指定分区【依据 partition【整形】 来指定】
+     */
+    public ListenableFuture<SendResult<String, Object>> sendMessageToAppointPartitionByPartition(String id, String content) {
+        KafkaMessageDto message = KafkaMessageDto.initKafkaMessageDto(id, content);
+        // 投递消息到第 partition【n，从 0 开始】 个 partition 分区
+        return kafkaTemplate.send(message.getTopic(), 2, KafkaConstant.APPOINT_SEND_PARTITION_KEY, message);
+    }
+
+    /**
+     * railgun
+     * 2021/9/13 12:30
+     * PS: 事务模式发送消息
+     */
+    public String syncSendInTransaction(Integer id, String content, Runnable runner) throws ExecutionException, InterruptedException {
+        return kafkaTemplate.executeInTransaction(kafkaOperations -> {
+            // 创建 Demo07Message 消息
+            KafkaMessageDto message = KafkaMessageDto.initKafkaMessageDto(String.valueOf(id), content);
+            try {
+                SendResult<String, Object> sendResult = kafkaOperations.send(KafkaConstant.TEST_TOPIC, message).get();
+                log.info("[doInOperations][发送编号：[{}] 发送结果：[{}]]", id, sendResult);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+
+            // 本地业务逻辑... biubiubiu
+            runner.run();
+
+            // 返回结果
+            return "success";
+        });
+    }
+
 }

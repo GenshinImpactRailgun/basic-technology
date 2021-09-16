@@ -6,7 +6,11 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.kafka.support.SendResult;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.concurrent.ListenableFutureCallback;
+
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutionException;
 
 /**
  * @Author: railgun
@@ -63,10 +67,39 @@ public class KafkaSpringBootDemoApplicationTest {
      */
     @Test
     public void sendBatch() {
-        int num = 10;
+        int num = 1;
         for (int i = 0; i < num; i++) {
             producer.asyncSend("railgun-uuid-" + i, "你好，琪亚娜，第 " + i + " 次");
         }
+    }
+
+    /**
+     * railgun
+     * 2021/9/13 9:36
+     * PS: 测试并发消费消息
+     */
+    @Test
+    public void testSendConcurrent() {
+        int num = 40;
+        for (int i = 1; i <= num; i++) {
+            // producer.asyncSend("railgun-uuid-" + i, "你好，琪亚娜，第 " + i + " 次");
+            // producer.sendMessageToAppointPartitionByKey("railgun-uuid-" + i, "你好，琪亚娜，第 " + i + " 次");
+            producer.sendMessageToAppointPartitionByPartition("railgun-uuid-" + i, "你好，琪亚娜，第 " + i + " 次");
+        }
+    }
+
+    @Test
+    public void testSyncSendInTransaction() throws ExecutionException, InterruptedException {
+        int id = (int) (System.currentTimeMillis() / 1000);
+        producer.syncSendInTransaction(id, "你好，芽衣", () -> {
+            log.info("[run][我要开始睡觉了]");
+            try {
+                Thread.sleep(10 * 1000L);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            log.info("[run][我睡醒了]");
+        });
     }
 
 }

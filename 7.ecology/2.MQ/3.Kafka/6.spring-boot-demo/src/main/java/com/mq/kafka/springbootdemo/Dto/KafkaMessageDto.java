@@ -1,5 +1,6 @@
 package com.mq.kafka.springbootdemo.Dto;
 
+import com.basic.comon.constant.KafkaConstant;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -12,6 +13,7 @@ import java.io.Serializable;
  * 2021/9/11 11:18
  * PS:
  * Accessors：支持链式编程
+ * NoArgsConstructor：无参构造函数
  */
 @Data
 @ToString
@@ -43,5 +45,18 @@ public class KafkaMessageDto implements Serializable {
      * 2021/9/11 11:18 @railgun time
      */
     private String timeStamp;
+
+    /**
+     * railgun
+     * 2021/9/13 9:09
+     * PS: 初始化 kafka 消息传递载体对象
+     */
+    public static KafkaMessageDto initKafkaMessageDto(String id, String content) {
+        KafkaMessageDto dto = new KafkaMessageDto();
+        dto.setId(id);
+        dto.setContent(content);
+        dto.setTopic(KafkaConstant.TEST_TOPIC);
+        return dto;
+    }
 
 }
