@@ -1,0 +1,13 @@
+server:
+  port: 7000
+
+# Eureka 配置
+eureka:
+  instance:
+    # Eureka 服务器端实例名称
+    hostname: railgun.com
+  client:
+    # 是否向 eureka 注册自己
+    register-with-eureka: false
+    # 为 false 表示自己是注册中心
+    fetch-registry: false

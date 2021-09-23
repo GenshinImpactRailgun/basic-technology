@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.mq.kafka.springboot.autoconfigure.config.HelloServiceAutoConfiguration,\
+  com.mq.kafka.springboot.autoconfigure.config.KafkaAutoConfiguration

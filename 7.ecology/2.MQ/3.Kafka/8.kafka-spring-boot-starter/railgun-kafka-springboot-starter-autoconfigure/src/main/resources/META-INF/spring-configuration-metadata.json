@@ -1,0 +1,41 @@
+{
+  "groups": [
+    {
+      "name": "railgun.hello",
+      "type": "com.mq.kafka.springboot.autoconfigure.properties.HelloProperties",
+      "sourceType": "com.mq.kafka.springboot.autoconfigure.properties.HelloProperties"
+    },
+    {
+      "name": "railgun.kafka",
+      "type": "com.mq.kafka.springboot.autoconfigure.properties.KafkaProperties",
+      "sourceType": "com.mq.kafka.springboot.autoconfigure.properties.KafkaProperties"
+    }
+  ],
+  "properties": [
+    {
+      "name": "railgun.hello.prefix",
+      "type": "java.lang.String",
+      "description": "2021\/9\/17 1:02 @railgun 前缀",
+      "sourceType": "com.mq.kafka.springboot.autoconfigure.properties.HelloProperties"
+    },
+    {
+      "name": "railgun.hello.suffix",
+      "type": "java.lang.String",
+      "description": "2021\/9\/17 1:03 @railgun 后缀",
+      "sourceType": "com.mq.kafka.springboot.autoconfigure.properties.HelloProperties"
+    },
+    {
+      "name": "railgun.kafka.group-id",
+      "type": "java.lang.String",
+      "description": "2021\/9\/20 20:44 @railgun 消费者消费对应的分组",
+      "sourceType": "com.mq.kafka.springboot.autoconfigure.properties.KafkaProperties"
+    },
+    {
+      "name": "railgun.kafka.topic",
+      "type": "java.lang.String",
+      "description": "2021\/9\/20 20:44 @railgun 监听的主题",
+      "sourceType": "com.mq.kafka.springboot.autoconfigure.properties.KafkaProperties"
+    }
+  ],
+  "hints": []
+}

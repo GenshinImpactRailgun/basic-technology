@@ -53,20 +53,39 @@ spring:
       missing-topics-fatal: false
       # 消息被消费完成，再提交消费进度
       ack-mode: MANUAL_IMMEDIATE
+  application:
+    name: 2.bronya
 
+server:
+  port: 8001
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://railgun.com:7000/eureka/
+  instance:
+    # Eureka 描述信息
+    instance-id: 2.bronya
+    # 为 true 可以显示服务的 ip
+    prefer-ip-address: true
+    # Eureka 注册中心应用名称
+    appname: 2.bronya
+
+# 日志配置
 logging:
   level:
-    org:
-      springframework:
-        # spring-kafka INFO 日志太多了，所以我们限制只打印 ERROR 级别
-        kafka: ERROR
-      apache:
-        # kafka INFO 日志太多了，所以我们限制只打印 ERROR 级别
-        kafka: ERROR
-server:
-  port: 8081
+    com.frame.springcloud: info
+
+info:
+  app.name: 2.bronya
+  company.name: raigun.com
+
+# 消息队列相关配置
+mq:
+  # 消息队列类型
+  type: kafka
 
 railgun:
-  hello:
-    prefix: 早安111
-    suffix: 晚安111
+  kafka:
+    topic: my-topic
+    group-id: bronya-group

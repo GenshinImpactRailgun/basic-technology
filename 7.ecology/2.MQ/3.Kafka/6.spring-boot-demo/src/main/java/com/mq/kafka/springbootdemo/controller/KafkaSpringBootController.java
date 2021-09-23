@@ -1,7 +1,10 @@
 package com.mq.kafka.springbootdemo.controller;
 
+import com.mq.kafka.springboot.autoconfigure.service.inter.HelloService;
 import com.mq.kafka.springbootdemo.service.inter.DemoService;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,11 +21,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("kafka-spring-boot")
 public class KafkaSpringBootController {
 
-    private final DemoService demoService;
+    @Autowired
+    private DemoService demoService;
 
-    public KafkaSpringBootController(DemoService demoService) {
-        this.demoService = demoService;
-    }
+    @Autowired
+    @Qualifier(value = "railgunHelloService")
+    private HelloService helloService;
 
     /**
      * railgun
@@ -52,6 +56,12 @@ public class KafkaSpringBootController {
             throw new Exception("抛出了异常");
         }
         demoService.producerExecute("这是第二条消息");
+    }
+
+    @ResponseBody
+    @GetMapping("test-hello")
+    public String testHello() {
+        return helloService.sayHello("，琪亚娜");
     }
 
 }

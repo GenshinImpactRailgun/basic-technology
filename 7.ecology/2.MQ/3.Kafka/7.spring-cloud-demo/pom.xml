@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.basic.technology</groupId>
+        <artifactId>3.Kafka</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>7.spring-cloud-demo</artifactId>
+
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>1.kiana</module>
+        <module>2.bronya</module>
+        <!--<module>3.sakura</module>
+        <module>4.mei</module>
+        <module>5.seele</module>-->
+        <module>eureka</module>
+    </modules>
+
+    <properties>
+        <junit.version>5.5.0</junit.version>
+        <lombok.version>1.18.20</lombok.version>
+        <slf4j.version>1.7.21</slf4j.version>
+        <log4j.version>1.2.17</log4j.version>
+        <mybatis.starter.version>2.1.1</mybatis.starter.version>
+        <druid.version>1.1.21</druid.version>
+        <mysql.conn.version>5.1.47</mysql.conn.version>
+        <spring.boot.starter.version>2.2.2.RELEASE</spring.boot.starter.version>
+        <spring.cloud.version>Hoxton.SR11</spring.cloud.version>
+        <basic.common.version>1.0.0-SNAPSHOT</basic.common.version>
+        <spring.cloud.starter.version>1.4.7.RELEASE</spring.cloud.starter.version>
+        <spring.cloud.config.server.version>2.2.8.RELEASE</spring.cloud.config.server.version>
+        <spring.kafka.version>2.4.2.RELEASE</spring.kafka.version>
+        <kafka.clients.version>2.4.0</kafka.clients.version>
+    </properties>
+
+    <!-- 依赖管理 -->
+    <dependencyManagement>
+        <dependencies>
+            <!-- SpringCloud 依赖 -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring.cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!-- SpringBoot 依赖 -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-dependencies</artifactId>
+                <version>${spring.boot.starter.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <!-- 数据库 -->
+            <dependency>
+                <groupId>mysql</groupId>
+                <artifactId>mysql-connector-java</artifactId>
+                <version>${mysql.conn.version}</version>
+            </dependency>
+            <!-- 数据库连接池 -->
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid</artifactId>
+                <version>${druid.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-jdbc</artifactId>
+                <version>${spring.boot.starter.version}</version>
+            </dependency>
+            <!-- mybatis-SprinbBoot 启动器 -->
+            <dependency>
+                <groupId>org.mybatis.spring.boot</groupId>
+                <artifactId>mybatis-spring-boot-starter</artifactId>
+                <version>${mybatis.starter.version}</version>
+            </dependency>
+            <!-- 测试相关 -->
+            <dependency>
+                <groupId>org.junit.jupiter</groupId>
+                <artifactId>junit-jupiter-api</artifactId>
+                <version>${junit.version}</version>
+            </dependency>
+            <!-- lombok -->
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+            </dependency>
+            <!-- 日志 -->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-log4j12</artifactId>
+                <version>${slf4j.version}</version>
+            </dependency>
+            <!-- 日志门面 -->
+            <dependency>
+                <groupId>log4j</groupId>
+                <artifactId>log4j</artifactId>
+                <version>${log4j.version}</version>
+            </dependency>
+            <!-- springboot web -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-web</artifactId>
+                <version>${spring.boot.starter.version}</version>
+            </dependency>
+            <!-- springboot单元测试 -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-test</artifactId>
+                <version>${spring.boot.starter.version}</version>
+                <scope>test</scope>
+                <!-- 剔除依赖 -->
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.junit.vintage</groupId>
+                        <artifactId>junit-vintage-engine</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <!-- 工具包依赖 -->
+            <dependency>
+                <groupId>com.basic.technology</groupId>
+                <artifactId>basic-common</artifactId>
+                <version>${basic.common.version}</version>
+                <!-- 剔除依赖 -->
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.apache.kafka</groupId>
+                        <artifactId>kafka-clients</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <!-- 注册中心 服务端 -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-eureka-server</artifactId>
+                <version>${spring.cloud.starter.version}</version>
+            </dependency>
+            <!-- 注册中心 客户端【注册到注册中心的各种应用】 -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-eureka</artifactId>
+                <version>${spring.cloud.starter.version}</version>
+            </dependency>
+            <!-- 注册中心 客户端【注册到注册中心的各种应用】 -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+                <version>${spring.cloud.starter.version}</version>
+            </dependency>
+            <!-- actuator 完善监控信息 -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-actuator</artifactId>
+                <version>${spring.boot.starter.version}</version>
+            </dependency>
+            <!-- ribbon 客户端负载均衡依赖 -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-ribbon</artifactId>
+                <version>${spring.cloud.starter.version}</version>
+            </dependency>
+            <!-- feign 服务端负载均衡依赖 -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-feign</artifactId>
+                <version>${spring.cloud.starter.version}</version>
+            </dependency>
+            <!-- hystrix 熔断器 -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-hystrix</artifactId>
+                <version>${spring.cloud.starter.version}</version>
+            </dependency>
+            <!-- hystrix dashboard 流监控 -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-netflix-hystrix-dashboard</artifactId>
+                <version>${spring.cloud.starter.version}</version>
+            </dependency>
+            <!-- zuul 路由网关 -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-zuul</artifactId>
+                <version>${spring.cloud.starter.version}</version>
+            </dependency>
+            <!-- config 配置中心【包含客户端的引用】 -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-starter-config</artifactId>
+                <version>${spring.cloud.starter.version}</version>
+            </dependency>
+            <!-- config 配置中心【服务端 引用】 -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-config-server</artifactId>
+                <version>${spring.cloud.config.server.version}</version>
+            </dependency>
+            <!-- 自定义启动器 -->
+            <dependency>
+                <groupId>com.basic.technology</groupId>
+                <artifactId>railgun-kafka-springboot-starter</artifactId>
+                <version>${basic.common.version}</version>
+                <!-- 剔除依赖 -->
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.apache.kafka</groupId>
+                        <artifactId>kafka-clients</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <!-- spring kafka 集成依赖 -->
+            <dependency>
+                <groupId>org.springframework.kafka</groupId>
+                <artifactId>spring-kafka</artifactId>
+                <version>${spring.kafka.version}</version>
+            </dependency>
+            <!-- kafka API 接口依赖【producer、consumer、admin】 -->
+            <dependency>
+                <groupId>org.apache.kafka</groupId>
+                <artifactId>kafka-clients</artifactId>
+                <version>${kafka.clients.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+</project>

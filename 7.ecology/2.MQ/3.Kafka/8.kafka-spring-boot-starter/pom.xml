@@ -2,27 +2,23 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <parent>
-        <groupId>com.basic.technology</groupId>
-        <artifactId>2.MQ</artifactId>
-        <version>1.0.0-SNAPSHOT</version>
-    </parent>
+
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>3.Kafka</artifactId>
+    <parent>
+        <groupId>com.basic.technology</groupId>
+        <artifactId>3.Kafka</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+
+    <artifactId>8.kafka-spring-boot-starter</artifactId>
 
     <!-- 依赖管理 -->
     <packaging>pom</packaging>
 
     <modules>
-        <module>1.producer</module>
-        <module>2.consumer</module>
-        <module>3.streams</module>
-        <module>4.connect</module>
-        <module>5.admin</module>
-        <module>6.spring-boot-demo</module>
-        <module>7.spring-cloud-demo</module>
-        <module>8.kafka-spring-boot-starter</module>
+        <module>railgun-kafka-springboot-starter</module>
+        <module>railgun-kafka-springboot-starter-autoconfigure</module>
     </modules>
 
     <properties>
@@ -38,10 +34,9 @@
         <basic.common.version>1.0.0-SNAPSHOT</basic.common.version>
         <spring.cloud.starter.version>1.4.7.RELEASE</spring.cloud.starter.version>
         <spring.cloud.config.server.version>2.2.8.RELEASE</spring.cloud.config.server.version>
-        <kafka.clients.version>2.7.0</kafka.clients.version>
-        <kafka.streams.version>2.7.0</kafka.streams.version>
-        <spring.boot.version>2.5.4</spring.boot.version>
-        <spring.kafka.version>2.7.6</spring.kafka.version>
+        <spring.boot.version>2.2.2.RELEASE</spring.boot.version>
+        <spring.kafka.version>2.4.2.RELEASE</spring.kafka.version>
+        <kafka.clients.version>2.4.0</kafka.clients.version>
     </properties>
 
     <!-- 依赖管理 -->
@@ -76,23 +71,24 @@
                 <groupId>com.basic.technology</groupId>
                 <artifactId>basic-common</artifactId>
                 <version>${basic.common.version}</version>
-            </dependency>
-            <!-- kafka API 接口依赖【producer、consumer、admin】 -->
-            <dependency>
-                <groupId>org.apache.kafka</groupId>
-                <artifactId>kafka-clients</artifactId>
-                <version>${kafka.clients.version}</version>
-            </dependency>
-            <!-- kafka API 接口依赖【streams】 -->
-            <dependency>
-                <groupId>org.apache.kafka</groupId>
-                <artifactId>kafka-streams</artifactId>
-                <version>${kafka.streams.version}</version>
+                <!-- 剔除依赖 -->
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.apache.kafka</groupId>
+                        <artifactId>kafka-clients</artifactId>
+                    </exclusion>
+                </exclusions>
             </dependency>
             <!-- SpringBoot web starter -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-starter-web</artifactId>
+                <version>${spring.boot.version}</version>
+            </dependency>
+            <!-- 引入 spring-boot-starter；所有 starter 的基本配置 -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter</artifactId>
                 <version>${spring.boot.version}</version>
             </dependency>
             <!-- SpringBoot test starter -->
@@ -124,6 +120,11 @@
                 <groupId>org.slf4j</groupId>
                 <artifactId>jul-to-slf4j</artifactId>
                 <version>1.7.32</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-configuration-processor</artifactId>
+                <version>${spring.boot.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
