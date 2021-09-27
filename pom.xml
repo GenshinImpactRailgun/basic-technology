@@ -15,11 +15,11 @@
         <!-- 算法模块 -->
         <!--<module>1.algorithm</module>-->
         <!-- java 基础 -->
-        <!--<module>2.java</module>-->
+        <module>2.java</module>
         <!-- 框架 -->
         <!--<module>5.frame</module>-->
         <!-- 生态【缓存、消息队列、搜索引擎】 -->
-        <module>7.ecology</module>
+        <!--<module>7.ecology</module>-->
     </modules>
 
 </project>
