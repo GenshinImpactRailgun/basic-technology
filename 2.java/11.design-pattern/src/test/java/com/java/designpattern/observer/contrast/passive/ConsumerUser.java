@@ -25,20 +25,6 @@ public class ConsumerUser {
     private String nickname;
 
     /**
-     * 2021/9/29 @railgun 关注 up 主 列表
-     */
-    private List<VideoProducer> followList = new CopyOnWriteArrayList<>();
-
-    /**
-     * railgun
-     * 2021/9/29
-     * PS: 关注某个 up 主
-     */
-    public void addVideoProducer(VideoProducer videoProducer) {
-        this.followList.add(videoProducer);
-    }
-
-    /**
      * railgun
      * 2021/9/29
      * PS: 视频消费者接收到了消息
