@@ -9,15 +9,19 @@ import com.java.designpattern.observer.service.inter.Observer;
  */
 public class ConsumerUser implements Observer {
 
-    private VideoProducer videoProducer;
+    /**
+     * 2021/10/5 14:15 @railgun 主题对应的引用【接收通知之后，数据从该引用中获取】
+     */
+    private final VideoProducer videoProducer;
 
     public ConsumerUser(VideoProducer videoProducer) {
+        this.videoProducer = videoProducer;
         videoProducer.registerObserver(this);
     }
 
     @Override
     public void onMessage() {
-        System.out.println("接收到了消息");
+        System.out.println("接收到了消息为：" + videoProducer.toString());
     }
 
 }
