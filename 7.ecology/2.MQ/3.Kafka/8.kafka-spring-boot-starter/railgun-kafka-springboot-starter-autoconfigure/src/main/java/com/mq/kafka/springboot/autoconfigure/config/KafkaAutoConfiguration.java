@@ -51,7 +51,6 @@ public class KafkaAutoConfiguration {
     @Configuration
     @ConditionalOnClass(name = {"org.springframework.kafka.core.KafkaTemplate"})
     @ConditionalOnProperty(prefix = "mq", name = "type", havingValue = "kafka", matchIfMissing = true)
-    @Import(KafkaAutoConfiguration.class)
     protected static class KafkaProducerClass {
 
         /**
@@ -73,7 +72,6 @@ public class KafkaAutoConfiguration {
      */
     @Configuration
     @ConditionalOnProperty(prefix = "railgun.kafka", name = "topic", matchIfMissing = false)
-    @Import(KafkaAutoConfiguration.class)
     protected static class KafkaConsumerClass {
 
         private final KafkaConsumerService consumerService;
