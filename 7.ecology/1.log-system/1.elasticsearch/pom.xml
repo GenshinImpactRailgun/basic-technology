@@ -11,11 +11,104 @@
 
     <artifactId>1.elasticsearch</artifactId>
 
-    <!-- jar 包打包 -->
-    <packaging>jar</packaging>
+    <!-- 依赖管理 -->
+    <packaging>pom</packaging>
 
-    <!-- 当前模块需要的依赖。如果父依赖中已经引入了，直接引入，不需要增加版本号 -->
-    <dependencies>
-    </dependencies>
+    <modules>
+        <module>1.es-springboot-demo</module>
+    </modules>
+
+    <properties>
+        <junit.version>5.5.0</junit.version>
+        <lombok.version>1.18.20</lombok.version>
+        <slf4j.version>1.7.21</slf4j.version>
+        <log4j.version>1.2.17</log4j.version>
+        <mybatis.starter.version>2.1.1</mybatis.starter.version>
+        <druid.version>1.1.21</druid.version>
+        <mysql.conn.version>5.1.47</mysql.conn.version>
+        <spring.boot.starter.version>2.2.2.RELEASE</spring.boot.starter.version>
+        <spring.cloud.version>Hoxton.SR11</spring.cloud.version>
+        <basic.common.version>1.0.0-SNAPSHOT</basic.common.version>
+        <spring.cloud.starter.version>1.4.7.RELEASE</spring.cloud.starter.version>
+        <spring.cloud.config.server.version>2.2.8.RELEASE</spring.cloud.config.server.version>
+        <kafka.clients.version>2.7.0</kafka.clients.version>
+        <kafka.streams.version>2.7.0</kafka.streams.version>
+        <spring.boot.version>2.5.4</spring.boot.version>
+        <spring.kafka.version>2.7.6</spring.kafka.version>
+        <elasticsearch.version>7.3.0</elasticsearch.version>
+        <hutool.all.version>5.7.4</hutool.all.version>
+        <jul.to.slf4j.version>1.7.32</jul.to.slf4j.version>
+    </properties>
+
+    <!-- 依赖管理 -->
+    <dependencyManagement>
+        <dependencies>
+            <!-- lombok -->
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+            </dependency>
+            <!-- 工具包依赖 -->
+            <dependency>
+                <groupId>com.basic.technology</groupId>
+                <artifactId>basic-common</artifactId>
+                <version>${basic.common.version}</version>
+            </dependency>
+            <!-- SpringBoot web starter -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-web</artifactId>
+                <version>${spring.boot.version}</version>
+            </dependency>
+            <!-- SpringBoot test starter -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-test</artifactId>
+                <version>${spring.boot.version}</version>
+                <scope>test</scope>
+                <!-- 剔除依赖 -->
+                <exclusions>
+                    <!-- 测试依赖 -->
+                    <exclusion>
+                        <groupId>org.junit.vintage</groupId>
+                        <artifactId>junit-vintage-engine</artifactId>
+                    </exclusion>
+                    <exclusion>
+                        <groupId>org.junit.jupiter</groupId>
+                        <artifactId>junit-jupiter</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>jul-to-slf4j</artifactId>
+                <version>${jul.to.slf4j.version}</version>
+            </dependency>
+
+            <!-- es依赖 -->
+            <dependency>
+                <groupId>org.elasticsearch.client</groupId>
+                <artifactId>elasticsearch-rest-high-level-client</artifactId>
+                <version>${elasticsearch.version}</version>
+            </dependency>
+
+            <!-- 配置解析处理 -->
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-configuration-processor</artifactId>
+                <optional>true</optional>
+                <version>${spring.boot.version}</version>
+            </dependency>
+
+            <!-- hu tool 工具 -->
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.all.version}</version>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
 
 </project>
