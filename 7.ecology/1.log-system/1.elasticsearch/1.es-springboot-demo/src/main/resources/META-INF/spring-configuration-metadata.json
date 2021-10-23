@@ -1,0 +1,105 @@
+{
+  "groups": [
+    {
+      "name": "elasticsearch",
+      "type": "com.logsystem.es.springbootdemo.property.ElasticsearchProperties",
+      "sourceType": "com.logsystem.es.springbootdemo.property.ElasticsearchProperties"
+    },
+    {
+      "name": "elasticsearch.account",
+      "type": "com.logsystem.es.springbootdemo.property.ElasticsearchProperties$Account",
+      "sourceType": "com.logsystem.es.springbootdemo.property.ElasticsearchProperties",
+      "sourceMethod": "getAccount()"
+    },
+    {
+      "name": "elasticsearch.index",
+      "type": "com.logsystem.es.springbootdemo.property.ElasticsearchProperties$Index",
+      "sourceType": "com.logsystem.es.springbootdemo.property.ElasticsearchProperties",
+      "sourceMethod": "getIndex()"
+    }
+  ],
+  "properties": [
+    {
+      "name": "elasticsearch.account.password",
+      "type": "java.lang.String",
+      "description": "2021\/10\/23 railgun 认证密码",
+      "sourceType": "com.logsystem.es.springbootdemo.property.ElasticsearchProperties$Account"
+    },
+    {
+      "name": "elasticsearch.account.username",
+      "type": "java.lang.String",
+      "description": "2021\/10\/23 railgun 认证用户",
+      "sourceType": "com.logsystem.es.springbootdemo.property.ElasticsearchProperties$Account"
+    },
+    {
+      "name": "elasticsearch.cluster-name",
+      "type": "java.lang.String",
+      "description": "2021\/10\/23 railgun 集群名称",
+      "sourceType": "com.logsystem.es.springbootdemo.property.ElasticsearchProperties",
+      "defaultValue": "elasticsearch"
+    },
+    {
+      "name": "elasticsearch.cluster-nodes",
+      "type": "java.util.List<java.lang.String>",
+      "description": "2021\/10\/23 railgun 集群节点",
+      "sourceType": "com.logsystem.es.springbootdemo.property.ElasticsearchProperties"
+    },
+    {
+      "name": "elasticsearch.connect-timeout",
+      "type": "java.lang.Integer",
+      "description": "2021\/10\/23 railgun 连接超时时间(毫秒)",
+      "sourceType": "com.logsystem.es.springbootdemo.property.ElasticsearchProperties",
+      "defaultValue": 1000
+    },
+    {
+      "name": "elasticsearch.connection-request-timeout",
+      "type": "java.lang.Integer",
+      "description": "2021\/10\/23 railgun 连接请求超时时间",
+      "sourceType": "com.logsystem.es.springbootdemo.property.ElasticsearchProperties",
+      "defaultValue": 500
+    },
+    {
+      "name": "elasticsearch.index.number-of-replicas",
+      "type": "java.lang.Integer",
+      "description": "2021\/10\/23 railgun 副本数量",
+      "sourceType": "com.logsystem.es.springbootdemo.property.ElasticsearchProperties$Index",
+      "defaultValue": 0
+    },
+    {
+      "name": "elasticsearch.index.number-of-shards",
+      "type": "java.lang.Integer",
+      "description": "2021\/10\/23 railgun 分片数量",
+      "sourceType": "com.logsystem.es.springbootdemo.property.ElasticsearchProperties$Index",
+      "defaultValue": 3
+    },
+    {
+      "name": "elasticsearch.max-connect-per-route",
+      "type": "java.lang.Integer",
+      "description": "2021\/10\/23 railgun 每个路由的最大连接数量",
+      "sourceType": "com.logsystem.es.springbootdemo.property.ElasticsearchProperties",
+      "defaultValue": 10
+    },
+    {
+      "name": "elasticsearch.max-connect-total",
+      "type": "java.lang.Integer",
+      "description": "2021\/10\/23 railgun 最大连接总数量",
+      "sourceType": "com.logsystem.es.springbootdemo.property.ElasticsearchProperties",
+      "defaultValue": 30
+    },
+    {
+      "name": "elasticsearch.schema",
+      "type": "java.lang.String",
+      "description": "2021\/10\/23 railgun 请求协议",
+      "sourceType": "com.logsystem.es.springbootdemo.property.ElasticsearchProperties",
+      "defaultValue": "http"
+    },
+    {
+      "name": "elasticsearch.socket-timeout",
+      "type": "java.lang.Integer",
+      "description": "2021\/10\/23 railgun socket 超时时间",
+      "sourceType": "com.logsystem.es.springbootdemo.property.ElasticsearchProperties",
+      "defaultValue": 30000
+    }
+  ],
+  "hints": []
+}

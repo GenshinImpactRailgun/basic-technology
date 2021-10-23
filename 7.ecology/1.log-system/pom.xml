@@ -12,8 +12,8 @@
 
     <modules>
         <module>1.elasticsearch</module>
-        <module>2.logstash</module>
-        <module>3.kibana</module>
+<!--        <module>2.logstash</module>-->
+<!--        <module>3.kibana</module>-->
     </modules>
 
     <properties>

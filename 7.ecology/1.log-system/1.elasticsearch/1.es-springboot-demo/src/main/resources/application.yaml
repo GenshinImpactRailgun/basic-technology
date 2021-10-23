@@ -1,3 +1,11 @@
+elasticsearch:
+  cluster-nodes:
+    - 192.168.39.39:9200
+  account:
+    username: root
+    password: 19961022bleach
 spring:
   elasticsearch:
-    hosts: 192.168.39.39:9200
+    rest:
+      username:
+      password:

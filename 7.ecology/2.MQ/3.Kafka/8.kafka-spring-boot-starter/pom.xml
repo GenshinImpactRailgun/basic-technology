@@ -121,6 +121,7 @@
                 <artifactId>jul-to-slf4j</artifactId>
                 <version>1.7.32</version>
             </dependency>
+            <!-- 提供配置文件中的提示 自动生成 spring-configuration-metadata.json -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-configuration-processor</artifactId>

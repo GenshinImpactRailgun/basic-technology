@@ -16,11 +16,11 @@
         <!-- 日志系统 -->
         <module>1.log-system</module>
         <!-- 消息队列 -->
-        <module>2.MQ</module>
+<!--        <module>2.MQ</module>-->
         <!-- 缓存 -->
-        <module>4.cache</module>
+<!--        <module>4.cache</module>-->
         <!-- 注册中心 -->
-        <module>5.registration-center</module>
+<!--        <module>5.registration-center</module>-->
     </modules>
 
     <!-- 配置 -->

@@ -12,7 +12,6 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  * PS: 示例配置
  */
 @Data
-@ToString
 @NoArgsConstructor
 @Accessors(chain = true)
 @ConfigurationProperties(prefix = "railgun.kafka")
