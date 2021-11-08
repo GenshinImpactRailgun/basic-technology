@@ -6,6 +6,7 @@ import com.logsystem.es.springbootdemo.pojo.dto.Lol;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.builder.SearchSourceBuilder;
@@ -25,6 +26,10 @@ import java.util.Map;
 @Slf4j
 @Service
 public class LolServiceImpl extends EsserviceImpl {
+
+    public LolServiceImpl(RestHighLevelClient client) {
+        super(client);
+    }
 
     public void insertBach(String index, List<Lol> list) {
         if (list.isEmpty()) {

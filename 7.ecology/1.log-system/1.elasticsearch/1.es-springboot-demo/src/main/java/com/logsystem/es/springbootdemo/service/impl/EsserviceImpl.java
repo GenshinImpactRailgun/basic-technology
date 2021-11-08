@@ -2,6 +2,7 @@ package com.logsystem.es.springbootdemo.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
 import com.logsystem.es.springbootdemo.service.inter.IEsService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.elasticsearch.action.admin.indices.create.CreateIndexRequest;
 import org.elasticsearch.action.admin.indices.create.CreateIndexResponse;
@@ -27,10 +28,10 @@ import java.io.IOException;
  */
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class EsserviceImpl implements IEsService {
 
-    @Autowired
-    public RestHighLevelClient client;
+    public final RestHighLevelClient client;
 
     protected static final RequestOptions COMMON_OPTIONS;
 
@@ -45,6 +46,7 @@ public class EsserviceImpl implements IEsService {
     public void createIndexRequest(String index) {
         CreateIndexRequest createIndexRequest = new CreateIndexRequest(index).settings(Settings.builder().put("index.number_of_shards", 1).put("index.number_of_replicas", 0));
         try {
+            client.indices().create(new CreateIndexRequest("dfdfd"), RequestOptions.DEFAULT);
             CreateIndexResponse response = client.indices().create(createIndexRequest, COMMON_OPTIONS);
             log.info(" 所有节点确认响应 : {}", response.isAcknowledged());
             log.info(" 所有分片的复制未超时 :{}", response.isShardsAcknowledged());

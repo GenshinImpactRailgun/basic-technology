@@ -1,7 +1,10 @@
 package com.logsystem.es.springbootdemo;
 
+import com.basic.comon.util.string.UUIDUtils;
 import com.logsystem.es.springbootdemo.pojo.dto.Lol;
+import com.logsystem.es.springbootdemo.pojo.dto.UserDto;
 import com.logsystem.es.springbootdemo.service.impl.LolServiceImpl;
+import com.logsystem.es.springbootdemo.util.ElasticsearchUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -21,6 +24,69 @@ public class EsTest {
 
     @Autowired
     private LolServiceImpl lolService;
+
+    @Test
+    public void test() {
+        railgunTest();
+    }
+
+    private void railgunTest() {
+        UserDto userDto = new UserDto();
+        userDto.setId(UUIDUtils.generate());
+        userDto.setUsername("Kiana Kaslana");
+        userDto.setAlias("琪亚娜");
+
+        UserDto userDto1 = new UserDto();
+        userDto1.setId(UUIDUtils.generate());
+        userDto1.setUsername("Bronya Zaychik");
+        userDto1.setAlias("布洛妮娅");
+
+        UserDto userDto2 = new UserDto();
+        userDto2.setId(UUIDUtils.generate());
+        userDto2.setUsername("Yae Sakura");
+        userDto2.setAlias("八重樱");
+
+        UserDto userDto3 = new UserDto();
+        userDto3.setId(UUIDUtils.generate());
+        userDto3.setUsername("mei");
+        userDto3.setAlias("芽衣");
+
+        UserDto userDto4 = new UserDto();
+        userDto4.setId(UUIDUtils.generate());
+        userDto4.setUsername("Seele Vollerei");
+        userDto4.setAlias("希尔");
+
+        ElasticsearchUtils.createIndex("railgun-index");
+        if (ElasticsearchUtils.deleteDocument("railgun-index", userDto.getId())
+                && ElasticsearchUtils.deleteDocument("railgun-index", userDto1.getId())
+                && ElasticsearchUtils.deleteDocument("railgun-index", userDto2.getId())
+                && ElasticsearchUtils.deleteDocument("railgun-index", userDto3.getId())
+                && ElasticsearchUtils.deleteDocument("railgun-index", userDto4.getId())) {
+            System.out.println("所有内容清空成功");
+        }
+        if (ElasticsearchUtils.createDocument("railgun-index", userDto.getId(), userDto)) {
+            System.out.println("创建成功");
+        }
+        if (ElasticsearchUtils.createDocument("railgun-index", userDto1.getId(), userDto1)) {
+            System.out.println("创建成功");
+        }
+        if (ElasticsearchUtils.createDocument("railgun-index", userDto2.getId(), userDto2)) {
+            System.out.println("创建成功");
+        }
+        if (ElasticsearchUtils.createDocument("railgun-index", userDto3.getId(), userDto3)) {
+            System.out.println("创建成功");
+        }
+        if (ElasticsearchUtils.createDocument("railgun-index", userDto4.getId(), userDto4)) {
+            System.out.println("创建成功");
+        }
+
+        UserDto userDtoFrom = ElasticsearchUtils.getDocument("railgun-index", userDto3.getId(), UserDto.class);
+
+        List<UserDto> userDtos = ElasticsearchUtils.searchFuzzy("railgun-index", "username", "i", UserDto.class);
+
+        System.out.println(userDtoFrom);
+    }
+
 
     @Test
     public void createIndex() {
