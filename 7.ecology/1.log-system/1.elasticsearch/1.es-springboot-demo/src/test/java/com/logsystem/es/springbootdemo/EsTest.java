@@ -1,15 +1,32 @@
 package com.logsystem.es.springbootdemo;
 
+import com.basic.comon.util.GsonUtil;
 import com.basic.comon.util.string.UUIDUtils;
 import com.logsystem.es.springbootdemo.pojo.dto.Lol;
 import com.logsystem.es.springbootdemo.pojo.dto.UserDto;
 import com.logsystem.es.springbootdemo.service.impl.LolServiceImpl;
 import com.logsystem.es.springbootdemo.util.ElasticsearchUtils;
+import lombok.SneakyThrows;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.ArrayUtils;
+import org.elasticsearch.action.search.SearchRequest;
+import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.action.search.SearchScrollRequest;
+import org.elasticsearch.client.RequestOptions;
+import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.common.unit.Fuzziness;
+import org.elasticsearch.common.unit.TimeValue;
+import org.elasticsearch.index.query.*;
+import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.builder.SearchSourceBuilder;
+import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -25,68 +42,381 @@ public class EsTest {
     @Autowired
     private LolServiceImpl lolService;
 
+    @Autowired
+    private RestHighLevelClient restHighLevelClient;
+
     @Test
     public void test() {
         railgunTest();
     }
 
+    @SneakyThrows
     private void railgunTest() {
-        UserDto userDto = new UserDto();
-        userDto.setId(UUIDUtils.generate());
-        userDto.setUsername("Kiana Kaslana");
-        userDto.setAlias("琪亚娜");
+        String index = "railgun-index";
+        // 初始化建立索引
+        ElasticsearchUtils.createIndex(index);
 
-        UserDto userDto1 = new UserDto();
-        userDto1.setId(UUIDUtils.generate());
-        userDto1.setUsername("Bronya Zaychik");
-        userDto1.setAlias("布洛妮娅");
+        // List<UserDto> userDtoList = initGetUser();
 
-        UserDto userDto2 = new UserDto();
-        userDto2.setId(UUIDUtils.generate());
-        userDto2.setUsername("Yae Sakura");
-        userDto2.setAlias("八重樱");
+        // 删除历史文档
+        // deleteHistoryDocument(index, userDtoList);
 
-        UserDto userDto3 = new UserDto();
-        userDto3.setId(UUIDUtils.generate());
-        userDto3.setUsername("mei");
-        userDto3.setAlias("芽衣");
+        // 创建新文档
+        // createNewDocument(index, userDtoList);
 
-        UserDto userDto4 = new UserDto();
-        userDto4.setId(UUIDUtils.generate());
-        userDto4.setUsername("Seele Vollerei");
-        userDto4.setAlias("希尔");
-
-        ElasticsearchUtils.createIndex("railgun-index");
-        if (ElasticsearchUtils.deleteDocument("railgun-index", userDto.getId())
-                && ElasticsearchUtils.deleteDocument("railgun-index", userDto1.getId())
-                && ElasticsearchUtils.deleteDocument("railgun-index", userDto2.getId())
-                && ElasticsearchUtils.deleteDocument("railgun-index", userDto3.getId())
-                && ElasticsearchUtils.deleteDocument("railgun-index", userDto4.getId())) {
-            System.out.println("所有内容清空成功");
-        }
-        if (ElasticsearchUtils.createDocument("railgun-index", userDto.getId(), userDto)) {
-            System.out.println("创建成功");
-        }
-        if (ElasticsearchUtils.createDocument("railgun-index", userDto1.getId(), userDto1)) {
-            System.out.println("创建成功");
-        }
-        if (ElasticsearchUtils.createDocument("railgun-index", userDto2.getId(), userDto2)) {
-            System.out.println("创建成功");
-        }
-        if (ElasticsearchUtils.createDocument("railgun-index", userDto3.getId(), userDto3)) {
-            System.out.println("创建成功");
-        }
-        if (ElasticsearchUtils.createDocument("railgun-index", userDto4.getId(), userDto4)) {
-            System.out.println("创建成功");
-        }
-
-        UserDto userDtoFrom = ElasticsearchUtils.getDocument("railgun-index", userDto3.getId(), UserDto.class);
-
-        List<UserDto> userDtos = ElasticsearchUtils.searchFuzzy("railgun-index", "username", "i", UserDto.class);
-
-        System.out.println(userDtoFrom);
+        test4();
     }
 
+    /**
+     * railgun
+     * 2021/11/14 12:03
+     * 精确查询
+     */
+    @SneakyThrows
+    private void test1() {
+        // 单个匹配termQuery
+        // 不分词查询 参数1： 字段名，参数2：字段查询值，因为不分词，所以汉字只能查询一个字，英语是一个单词.
+        // TODO 英文录入的时候，分词出来之后，如果使用不在单词库的英文拼写。会导致英文单词的检索检索不到内容。
+        QueryBuilder queryBuilder1 = QueryBuilders.termQuery("username", "mei");
+
+        // 多个匹配
+        // 不分词查询，参数1： 字段名，参数2：多个字段查询值,因为不分词，所以汉字只能查询一个字，英语是一个单词.
+        QueryBuilder queryBuilder2 = QueryBuilders.termsQuery("username", "Sakura", "Vollerei");
+
+        //分词查询，采用默认的分词器
+        // TODO 使用这种方式检索的数据不会有不在单词字典中，而导致检索不到的问题
+        QueryBuilder queryBuilder3 = QueryBuilders.matchQuery("username", "Sakura");
+
+
+        //分词查询，采用默认的分词器
+        QueryBuilder queryBuilder4 = QueryBuilders.multiMatchQuery("Sakura", "username", "mei", "kiana");
+
+        //匹配所有文件，相当于就没有设置查询条件
+        QueryBuilder queryBuilder5 = QueryBuilders.matchAllQuery();
+
+    }
+
+    /**
+     * railgun
+     * 2021/11/14 12:03
+     * 模糊查询
+     */
+    @SneakyThrows
+    private void test2() {
+        //模糊查询常见的5个方法如下
+        //1.常用的字符串查询
+        //左右模糊
+        // 内容不区分大小写，但是需要完全匹配，才能检索到
+        QueryStringQueryBuilder queryBuilder1 = QueryBuilders.queryStringQuery("me").field("username");
+
+
+
+
+        //2.常用的用于推荐相似内容的查询
+        //如果不指定filedName，则默认全部，常用在相似内容的推荐上
+        // TODO 【不同版本对应的 addLikeText 方法不一样，得更正一下】
+        // QueryBuilders.moreLikeThisQuery(new String[] {"fieldName"}).addLikeText("pipeidhua");
+
+
+
+        //3.前缀查询  如果字段没分词，就匹配整个字段前缀
+        // TODO 单词首字母大写会找不到内容
+        // TODO 匹配的是单词的前缀，而不是整个文本的前缀【不必要匹配整个单词 也能找到】
+        PrefixQueryBuilder queryBuilder2 = QueryBuilders.prefixQuery("username", "kiana");
+
+
+
+
+        //4.fuzzy query:分词模糊查询，通过增加fuzziness模糊属性来查询,如能够匹配hotelName为tel前或后加一个字母的文档，fuzziness 的含义是检索的term 前后增加或减少n个单词的匹配查询
+        // 仅限变换一步就能查询到的数据
+        FuzzyQueryBuilder queryBuilder3 = QueryBuilders.fuzzyQuery("username", "kian").fuzziness(Fuzziness.ONE);
+
+
+
+        //5.wildcard query:通配符查询，支持* 任意字符串；？任意一个字符
+        // 前面是 fieldname 后面是带匹配字符的字符串
+        WildcardQueryBuilder queryBuilder4 = QueryBuilders.wildcardQuery("username", "ki*");
+        // 任意匹配占位符
+        WildcardQueryBuilder queryBuilder5 = QueryBuilders.wildcardQuery("username", "ki?n?");
+
+
+    }
+
+    /**
+     * railgun
+     * 2021/11/14 12:04
+     * 范围查询
+     */
+    @SneakyThrows
+    private void test3() {
+        // 闭区间查询
+        // 从小到大
+        QueryBuilder queryBuilder0 = QueryBuilders.rangeQuery("username").from("kiana").to("bronya");
+
+
+        // 开区间查询
+        // 默认是true，也就是包含
+        QueryBuilder queryBuilder1 = QueryBuilders.rangeQuery("username").from("kiana").to("Bronya").includeUpper(false).includeLower(false);
+
+
+        // 大于
+        QueryBuilder queryBuilder2 = QueryBuilders.rangeQuery("username").gt("kiana");
+
+
+        // 大于等于
+        QueryBuilder queryBuilder3 = QueryBuilders.rangeQuery("username").gte("bronya");
+
+
+        // 小于
+        QueryBuilder queryBuilder4 = QueryBuilders.rangeQuery("fieldName").lt("fieldValue");
+
+
+        // 小于等于
+        QueryBuilder queryBuilder5 = QueryBuilders.rangeQuery("fieldName").lte("fieldValue");
+
+
+
+    }
+
+    /**
+     * railgun
+     * 2021/11/14 12:04
+     * 组合查询 & 多条件查询 & 布尔查询
+     */
+    @SneakyThrows
+    private void test4() {
+        BoolQueryBuilder queryBuilder = QueryBuilders.boolQuery();
+
+
+        //文档必须完全匹配条件，相当于and
+        QueryBuilders.boolQuery().must();
+
+
+
+        //文档必须不匹配条件，相当于not
+        QueryBuilders.boolQuery().mustNot();
+
+
+
+        //至少满足一个条件，这个文档就符合should，相当于or
+        QueryBuilders.boolQuery().should();
+
+
+        // 模糊匹配 bronya 并且 在 a - s 区间内
+        WildcardQueryBuilder wildcardQueryBuilder = QueryBuilders.wildcardQuery("username", "ki*");
+        RangeQueryBuilder rangeQueryBuilder = QueryBuilders.rangeQuery("username").from("kiana").to("Bronya").includeUpper(false).includeLower(false);
+        queryBuilder.must(wildcardQueryBuilder);
+        queryBuilder.should(rangeQueryBuilder);
+
+
+
+        // 搜索源生成器
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(queryBuilder);
+        // 搜索请求
+        SearchRequest searchRequest = new SearchRequest().indices("railgun-index").source(searchSourceBuilder);
+        // 搜索响应
+        SearchResponse search = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+
+    }
+
+    /**
+     * railgun
+     * 2021/11/13 17:00
+     * 滚动查询依据 scrollId 继续往下查询
+     */
+    private <T> List<T> searchScroll(String index, String key, String value, Class<T> clazz, int page, int size, String scrollId) {
+        List<T> list = new ArrayList<>();
+        try {
+            SearchScrollRequest scrollRequest = new SearchScrollRequest(scrollId);
+            scrollRequest.scroll(TimeValue.timeValueSeconds(30));
+            SearchResponse response = restHighLevelClient.scroll(scrollRequest, RequestOptions.DEFAULT);
+            scrollId = response.getScrollId();
+            System.out.println("scrollId：" + scrollId);
+            if (ArrayUtils.isNotEmpty(response.getHits().getHits())) {
+                Arrays.asList(response.getHits().getHits()).forEach(item -> list.add(GsonUtil.jsonToObject(GsonUtil.objectToJson(item.getSourceAsMap()), clazz)));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    /**
+     * railgun
+     * 2021/11/13 16:48
+     * 滚动查询
+     */
+    private <T> List<T> searchScroll(String index, String key, String value, Class<T> clazz, int page, int size) {
+        List<T> list = new ArrayList<>();
+
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(QueryBuilders.matchQuery(key, value));
+        searchSourceBuilder.size(size);
+
+        SearchRequest searchRequest = new SearchRequest(index);
+        searchRequest.source(searchSourceBuilder);
+        searchRequest.scroll(TimeValue.timeValueMinutes(1L));
+        try {
+            SearchResponse response = restHighLevelClient.search(searchRequest, RequestOptions.DEFAULT);
+            String scrollId = response.getScrollId();
+            System.out.println("【scrollId：" + scrollId + "】");
+            if (ArrayUtils.isNotEmpty(response.getHits().getHits())) {
+                Arrays.asList(response.getHits().getHits()).forEach(item -> {
+                    list.add(GsonUtil.jsonToObject(GsonUtil.objectToJson(item.getSourceAsMap()), clazz));
+                });
+            }
+
+            SearchScrollRequest scrollRequest = new SearchScrollRequest(scrollId);
+            scrollRequest.scroll(TimeValue.timeValueSeconds(30));
+            response = restHighLevelClient.scroll(scrollRequest, RequestOptions.DEFAULT);
+            scrollId = response.getScrollId();
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+
+    /**
+     * railgun
+     * 2021/11/13 16:06
+     * 依据字段名称、字段内容全匹配查询
+     */
+    private <T> List<T> search(String index, String key, String value, Class<T> clazz) {
+        List<T> list = new ArrayList<>();
+        // 直接构造模糊查询构造器
+        QueryBuilder matchQueryBuilderOther = QueryBuilders.matchQuery(key, value).fuzziness(Fuzziness.ZERO);
+
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(matchQueryBuilderOther);
+
+        SearchRequest searchRequestOther = new SearchRequest();
+        searchRequestOther.indices(index);
+        searchRequestOther.source(searchSourceBuilder);
+
+        try {
+            SearchResponse response = restHighLevelClient.search(searchRequestOther, RequestOptions.DEFAULT);
+            SearchHit[] hits = response.getHits().getHits();
+            if (ArrayUtils.isNotEmpty(hits)) {
+                Arrays.asList(hits).forEach(item -> list.add(GsonUtil.jsonToObject(GsonUtil.objectToJson(item.getSourceAsMap()), clazz)));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    /**
+     * railgun
+     * 2021/11/13 16:06
+     * 依据字段名称、字段内容模糊匹配查询最大两次变更次数
+     */
+    private <T> List<T> searchFuzzy(String index, String key, String value, Class<T> clazz) {
+        List<T> list = new ArrayList<>();
+        // 直接构造模糊查询构造器
+        QueryBuilder matchQueryBuilderOther = QueryBuilders.matchQuery(key, value).fuzziness(Fuzziness.TWO);
+
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.query(matchQueryBuilderOther);
+
+        SearchRequest searchRequestOther = new SearchRequest();
+        searchRequestOther.indices(index);
+        searchRequestOther.source(searchSourceBuilder);
+
+        try {
+            SearchResponse response = restHighLevelClient.search(searchRequestOther, RequestOptions.DEFAULT);
+            SearchHit[] hits = response.getHits().getHits();
+            if (ArrayUtils.isNotEmpty(hits)) {
+                Arrays.asList(hits).forEach(item -> list.add(GsonUtil.jsonToObject(GsonUtil.objectToJson(item.getSourceAsMap()), clazz)));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    /**
+     * railgun
+     * 2021/11/13 16:06
+     * 依据字段名称、字段内容模糊匹配查询最大两次变更次数【命中部分使用高亮标出】
+     */
+    private <T> List<T> searchFuzzyHighlight(String index, String key, String value, Class<T> clazz) {
+        List<T> list = new ArrayList<>();
+        // 构造高亮查询构造器
+        HighlightBuilder highlightBuilder = new HighlightBuilder();
+        //设置标签前缀
+        highlightBuilder.preTags("<font color='red'>");
+        //设置标签后缀
+        highlightBuilder.postTags("</font>");
+        highlightBuilder.field("name");
+        HighlightBuilder.Field highlightTitle = new HighlightBuilder.Field(key);
+        // highlightTitle.highlighterType("unified");
+        // highlightTitle.highlighterType("plain");
+        // highlightTitle.highlighterType("fvh");
+        highlightBuilder.field(highlightTitle);
+
+        // 模糊匹配构造器
+        QueryBuilder queryBuilder = QueryBuilders.matchQuery(key, value).fuzziness(Fuzziness.TWO);
+
+        SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
+        searchSourceBuilder.highlighter(highlightBuilder);
+        searchSourceBuilder.query(queryBuilder);
+
+        SearchRequest searchRequestOther = new SearchRequest();
+        searchRequestOther.indices(index);
+        searchRequestOther.source(searchSourceBuilder);
+
+        try {
+            SearchResponse response = restHighLevelClient.search(searchRequestOther, RequestOptions.DEFAULT);
+            SearchHit[] hits = response.getHits().getHits();
+            if (ArrayUtils.isNotEmpty(hits)) {
+                Arrays.asList(hits).forEach(item -> list.add(GsonUtil.jsonToObject(GsonUtil.objectToJson(item.getSourceAsMap()), clazz)));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    /**
+     * railgun
+     * 2021/11/13 16:03
+     * 创建新文档
+     */
+    private void createNewDocument(String index, List<UserDto> userDtoList) {
+        if (CollectionUtils.isNotEmpty(userDtoList)) {
+            userDtoList.forEach(item -> ElasticsearchUtils.createDocument(index, item.getId(), item));
+        }
+    }
+
+    /**
+     * railgun
+     * 2021/11/13 15:54
+     * 删除历史文档
+     */
+    private void deleteHistoryDocument(String index, List<UserDto> userDtoList) {
+        if (CollectionUtils.isNotEmpty(userDtoList)) {
+            userDtoList.forEach(item -> ElasticsearchUtils.deleteDocument(index, item.getId()));
+        }
+    }
+
+    public List<UserDto> initGetUser() {
+        List<String> username = Arrays.asList("Kiana Kaslana", "Bronya Zaychik", "Yae Sakura", "Raiden Mei", "Seele Vollerei");
+        List<String> alias = Arrays.asList("琪亚娜·卡斯兰娜", "布洛妮娅·扎伊切克", "八重樱", "雷电芽衣", "希儿·芙乐艾");
+        List<UserDto> userDtoList = new ArrayList<>();
+        // 组装 1000 个对象
+        for (int i = 0; i < 1000; i++) {
+            UserDto userDto = new UserDto();
+            userDto.setId(UUIDUtils.generate());
+            userDto.setUsername(username.get(i % 5));
+            userDto.setAlias(alias.get(i % 5));
+            userDtoList.add(userDto);
+        }
+        return userDtoList;
+    }
 
     @Test
     public void createIndex() {
